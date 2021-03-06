@@ -13,7 +13,7 @@
 #define LIGHT_CYAN '\e[1;36m'
 #define RED "\e[0;31m"
 #define LIGHT_RED '\e[1;31m'
-#define PURPLE '\e[0;35m'
+#define PURPLE "\e[0;35m"
 #define LIGHT_PURPLE '\e[1;35m'
 #define BROWN '\e[0;33m'
 #define YELLOW "\e[1;33m"
@@ -50,8 +50,8 @@ void isEmpty(std::string str, bool empty, std::string color) {
 	std::cout << color << str << (!empty ? RED : GREEN) << empty << "\n" << NC;
 }
 
-void print_size(size_t size, std::string str) {
-	std::cout << str << size;
+void printSize(std::string str, size_t size, std::string color) {
+	std::cout << color << str << PURPLE << size << "\n" << NC;
 }
 
 template<typename T>
@@ -60,12 +60,19 @@ void emptyLists(std::list<T> &original, ft::list<T> &copy) {
 	isEmpty("My List is Empty:       ", copy.empty(), MYLIST);
 }
 
+template<typename T>
+void sizeLists(std::list<T> &original, ft::list<T> &copy) {
+	printSize("Original List Size: ", original.size(), ORIGINAL);
+	printSize("My List Size:       ", copy.size(), MYLIST);
+}
+
 int main() {
 	ft::list<int> copy;
 	std::list<int> original;
 
 	printMethod("EMPTY");
 	emptyLists(original, copy);
+	sizeLists(original, copy);
 
 	printMethod("PUSH BACK");
 	for (int i = 0; i < 10; i += 2) {
@@ -73,9 +80,9 @@ int main() {
 		copy.push_back(i + 2);
 	}
 	emptyLists(original, copy);
+	sizeLists(original, copy);
 	printList(original, "Push back");
 	printList(copy, "Push back");
-//	std::cout << "Size My List";
 
 	printMethod("POP BACK");
 
@@ -85,6 +92,7 @@ int main() {
 	copy.pop_back();
 
 	emptyLists(original, copy);
+	sizeLists(original, copy);
 	printList(original, "Pop back");
 	printList(copy, "Pop back");
 

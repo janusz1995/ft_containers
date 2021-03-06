@@ -72,7 +72,7 @@ namespace ft {
 //		typedef ptrdiff_t difference_type;
 
 		list() {
-			size = 0;
+			list_size = 0;
 			head = new node();
 			last = new node();
 			last->prev = head;
@@ -87,13 +87,14 @@ namespace ft {
 			myNode->next = last;
 			last->prev->next = myNode;
 			last->prev = myNode;
-			size++;
+			list_size++;
 		}
 
 		void pop_back() {
 			node *preLast = last->prev;
 			preLast->prev->next = last;
 			last->prev = preLast->prev;
+			list_size--;
 			delete preLast;
 		}
 
@@ -107,11 +108,11 @@ namespace ft {
 		{ return (std::numeric_limits<size_type>::max() / sizeof(node)); }
 
 		bool empty() {
-			return ((this->size == 0) ? true : false);
+			return ((this->list_size == 0) ? true : false);
 		}
-//		size_type size() {
-//			return (this->size);
-//		}
+		size_type size() {
+			return (this->list_size);
+		}
 
 		// push back
 		// pop back
@@ -120,7 +121,7 @@ namespace ft {
 	private:
 		listNode<T> *head;
 		listNode<T> *last;
-		size_type size;
+		size_type list_size;
 	};
 }
 

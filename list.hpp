@@ -49,6 +49,15 @@ namespace ft {
 			this->pointer = this->pointer->next;
 			return (it);
 		}
+		iteratorList& operator--() { // --it
+			this->pointer = this->pointer->prev;
+			return (*this);
+		}
+
+		iteratorList operator--(int) { // it--
+			this->pointer = this->pointer->prev;
+			return (*this);
+		}
 	};
 
 	template < class T, class Alloc = std::allocator<T> > class list {
@@ -70,6 +79,7 @@ namespace ft {
 			head->next = last;
 		}
 
+		// push back
 		void push_back(const value_type &val) {
 			// insert(end, val)
 			node *myNode = new node(val);
@@ -80,6 +90,13 @@ namespace ft {
 			size++;
 		}
 
+		void pop_back() {
+			node *preLast = last->prev;
+			preLast->prev->next = last;
+			last->prev = preLast->prev;
+			delete preLast;
+		}
+
 		iterator begin()
 		{ return (iterator (this->head->next)); }
 
@@ -88,6 +105,13 @@ namespace ft {
 
 		size_type max_size() const
 		{ return (std::numeric_limits<size_type>::max() / sizeof(node)); }
+
+		bool empty() {
+			return ((this->size == 0) ? true : false);
+		}
+//		size_type size() {
+//			return (this->size);
+//		}
 
 		// push back
 		// pop back

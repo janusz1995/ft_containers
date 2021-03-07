@@ -55,8 +55,9 @@ namespace ft {
 		}
 
 		iteratorList operator--(int) { // it--
+			iteratorList it(*this);
 			this->pointer = this->pointer->prev;
-			return (*this);
+			return (it);
 		}
 	};
 
@@ -98,6 +99,27 @@ namespace ft {
 			delete preLast;
 		}
 
+		void push_front(const value_type &val) {
+
+		}
+
+		void pop_front() {
+
+		}
+
+		void insert(iterator position, const value_type &val) {
+			node *myNode = new node(val);
+			node it = this->head;
+			while (it != position)
+				it++;
+
+			myNode->next = it.next;
+			myNode->prev = it.prev;
+			myNode->prev->next = myNode;
+			myNode->next->prev = myNode;
+			list_size++;
+		}
+
 		iterator begin()
 		{ return (iterator (this->head->next)); }
 
@@ -107,10 +129,10 @@ namespace ft {
 		size_type max_size() const
 		{ return (std::numeric_limits<size_type>::max() / sizeof(node)); }
 
-		bool empty() {
+		bool empty() const {
 			return ((this->list_size == 0) ? true : false);
 		}
-		size_type size() {
+		size_type size() const {
 			return (this->list_size);
 		}
 

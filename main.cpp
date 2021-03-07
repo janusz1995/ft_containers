@@ -6,6 +6,7 @@
 #define WHITE '\e[1;37m'
 #define BLACK '\e[0;30m'
 #define BLUE "\e[0;34m"
+//#define BLUE "\e[1;38;5;208m"
 #define LIGHT_BLUE "\e[1;34m"
 #define GREEN "\e[0;32m"
 #define LIGHT_GREEN '\e[1;32m'
@@ -95,6 +96,18 @@ int main() {
 	sizeLists(original, copy);
 	printList(original, "Pop back");
 	printList(copy, "Pop back");
+
+	printMethod("INSERT");
+
+	std::list<int>::iterator it = original.begin();
+	it++;
+	ft::list<int>::iterator myIt = copy.begin();
+	myIt++;
+	original.insert(it, 200);
+	copy.insert(myIt, 200);
+	printList(original, "Insert");
+	printList(copy, "Insert");
+
 
 
 	return (0);

@@ -26,6 +26,8 @@ namespace ft {
 	private:
 		listNode<T> *pointer;
 	public:
+		template<typename myT, typename Alloc>
+		friend class list;
 		iteratorList(listNode<T> *pointer = NULL):pointer(pointer) {}
 		bool operator==(iteratorList const &itL) {
 			return (this->pointer == itL.pointer);
@@ -80,44 +82,65 @@ namespace ft {
 			head->next = last;
 		}
 
-		// push back
+		~list() {
+			delete head;
+			delete last;
+		}
+
 		void push_back(const value_type &val) {
-			// insert(end, val)
-			node *myNode = new node(val);
-			myNode->prev = last->prev;
-			myNode->next = last;
-			last->prev->next = myNode;
-			last->prev = myNode;
-			list_size++;
+			 insert(last, val);
 		}
 
 		void pop_back() {
-			node *preLast = last->prev;
-			preLast->prev->next = last;
-			last->prev = preLast->prev;
-			list_size--;
-			delete preLast;
+			erase(last->prev);
+//			node *preLast = last->prev;
+//			preLast->prev->next = last;
+//			last->prev = preLast->prev;
+//			list_size--;
+//			delete preLast;
 		}
 
 		void push_front(const value_type &val) {
-
+			insert(this->head->next, val);
 		}
 
 		void pop_front() {
-
+			erase(head->next);
 		}
 
 		void insert(iterator position, const value_type &val) {
 			node *myNode = new node(val);
-			node it = this->head;
-			while (it != position)
-				it++;
+			node *it = position.pointer;
 
-			myNode->next = it.next;
-			myNode->prev = it.prev;
-			myNode->prev->next = myNode;
-			myNode->next->prev = myNode;
+			it->prev->next = myNode;
+			myNode->prev = it->prev;
+			myNode->next = it;
+			it->prev = myNode;
 			list_size++;
+		}
+
+		iterator erase(iterator position) {
+			node *save = position.pointer;
+			node *ret = save->next;
+
+			save->prev->next = save->next;
+			save->next->prev = save->prev;
+			delete save;
+			list_size--;
+			return (ret);
+		}
+
+		iterator erase(iterator first, iterator last) {
+			node *tmp = first.pointer;
+
+			while (tmp != last.pointer) {
+				tmp = erase(tmp).pointer;
+			}
+			return (tmp);
+		}
+
+		void clear () {
+			erase(head->next, last);
 		}
 
 		iterator begin()

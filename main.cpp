@@ -28,24 +28,30 @@ void printMethod(std::string method) {
 }
 
 template<typename T>
-void printList(std::list<T> &list, std::string method) {
+void printLists(std::list<T> &list, ft::list<T> &myList) {
 
 	std::cout << BLUE << "Original List " << NC << " --->>> ";
 	for (typename std::list<T>::iterator it = list.begin();  it != list.end() ; it++) {
 		std::cout << " | " << GREEN << *it << NC;
 	}
 	std::cout << " |\n";
-}
-
-template<typename T>
-void printList(ft::list<T> &list, std::string method) {
 
 	std::cout << YELLOW << "My List " << NC << " --------->>> ";
-	for (typename ft::list<T>::iterator it = list.begin();  it != list.end() ; it++) {
+	for (typename ft::list<T>::iterator it = myList.begin();  it != myList.end() ; it++) {
 		std::cout << " | " << GREEN << *it << NC;
 	}
 	std::cout << " |\n";
 }
+
+//template<typename T>
+//void printList(ft::list<T> &list) {
+//
+//	std::cout << YELLOW << "My List " << NC << " --------->>> ";
+//	for (typename ft::list<T>::iterator it = list.begin();  it != list.end() ; it++) {
+//		std::cout << " | " << GREEN << *it << NC;
+//	}
+//	std::cout << " |\n";
+//}
 
 void isEmpty(std::string str, bool empty, std::string color) {
 	std::cout << color << str << (!empty ? RED : GREEN) << empty << "\n" << NC;
@@ -72,21 +78,23 @@ int main() {
 	std::list<int> original;
 
 	printMethod("EMPTY");
+
 	emptyLists(original, copy);
 	sizeLists(original, copy);
 
+
 	printMethod("PUSH BACK");
-	for (int i = 0; i < 10; i += 2) {
+	for (int i = 0; i < 14; i += 2) {
 		original.push_back(i + 2);
 		copy.push_back(i + 2);
 	}
+
 	emptyLists(original, copy);
 	sizeLists(original, copy);
-	printList(original, "Push back");
-	printList(copy, "Push back");
+	printLists(original, copy);
+
 
 	printMethod("POP BACK");
-
 	original.pop_back();
 	original.pop_back();
 	copy.pop_back();
@@ -94,19 +102,56 @@ int main() {
 
 	emptyLists(original, copy);
 	sizeLists(original, copy);
-	printList(original, "Pop back");
-	printList(copy, "Pop back");
+	printLists(original, copy);
+
 
 	printMethod("INSERT");
-
 	std::list<int>::iterator it = original.begin();
 	it++;
 	ft::list<int>::iterator myIt = copy.begin();
 	myIt++;
 	original.insert(it, 200);
 	copy.insert(myIt, 200);
-	printList(original, "Insert");
-	printList(copy, "Insert");
+
+	sizeLists(original, copy);
+	printLists(original, copy);
+
+
+	printMethod("ERASE");
+	original.erase(original.begin());
+	copy.erase(copy.begin());
+	original.erase(it++);
+	copy.erase(myIt++);
+
+	sizeLists(original, copy);
+	printLists(original, copy);
+
+
+	printMethod("PUSH FRONT");
+	original.push_front(600);
+	copy.push_front(600);
+	original.push_front(700);
+	copy.push_front(700);
+
+	sizeLists(original, copy);
+	printLists(original, copy);
+
+
+	printMethod("POP FRONT");
+	original.pop_front();
+	copy.pop_front();
+
+	sizeLists(original, copy);
+	printLists(original, copy);
+
+
+	printMethod("CLEAR");
+	original.clear();
+	copy.clear();
+
+	emptyLists(original, copy);
+	sizeLists(original, copy);
+	printLists(original, copy);
 
 
 

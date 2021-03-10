@@ -73,6 +73,24 @@ void sizeLists(std::list<T> &original, ft::list<T> &copy) {
 	printSize("My List Size:       ", copy.size(), MYLIST);
 }
 
+
+
+
+
+
+// empty +
+// push back +
+// pop back +
+// insert +-
+// erase +
+// push front +
+// pop front +
+// clear +
+// operator= +
+//
+
+
+
 int main() {
 	ft::list<int> copy;
 	std::list<int> original;
@@ -110,12 +128,17 @@ int main() {
 	it++;
 	ft::list<int>::iterator myIt = copy.begin();
 	myIt++;
-	original.insert(it, 200);
-	copy.insert(myIt, 200);
+	original.insert(it++, 200);
+	copy.insert(myIt++, 200);
 
 	sizeLists(original, copy);
 	printLists(original, copy);
 
+	original.insert(it, 3, 777);
+	copy.insert(myIt, 3, 777);
+
+	sizeLists(original, copy);
+	printLists(original, copy);
 
 	printMethod("ERASE");
 	original.erase(original.begin());
@@ -153,6 +176,39 @@ int main() {
 	sizeLists(original, copy);
 	printLists(original, copy);
 
+
+	printMethod("TEST   TEST   TEST   TEST   TEST");
+//	std::list<double> first, second;
+//
+//	first.push_back (3.1);
+//	first.push_back (2.2);
+//	first.push_back (2.9);
+//
+//	second.push_back (3.7);
+//	second.push_back (7.1);
+//	second.push_back (1.4);
+//
+//	first.sort();
+//	second.sort();
+//
+//	first.merge(second);
+
+//	second.push_back (2.1);
+
+//	std::cout << "first contains:";
+//	for(std::list<double>::iterator it = first.begin(); it!=first.end(); ++it)
+//		std::cout << ' ' << *it;
+//	std::cout << '\n';
+
+	int myints[]= {17,89,7,14, 89};
+	std::list<int> mylist (myints,myints+4);
+
+	mylist.remove(89);
+
+	std::cout << "mylist contains:";
+	for (std::list<int>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
+		std::cout << ' ' << *it;
+	std::cout << '\n';
 
 
 	return (0);

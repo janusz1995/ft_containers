@@ -61,6 +61,10 @@ namespace ft {
 			this->pointer = this->pointer->prev;
 			return (it);
 		}
+		iteratorList& operator=(const iteratorList &it) {
+			this->pointer = it.pointer;
+			return (*this);
+		}
 	};
 
 	template < class T, class Alloc = std::allocator<T> > class list {
@@ -82,9 +86,27 @@ namespace ft {
 			head->next = last;
 		}
 
+		list& operator=(list const &List) {
+			if (&List != this) {
+				this->head = List.head;
+				this->last = List.last;
+				this->list_size = List.list_size;
+			}
+			return (*this);
+		}
+
 		~list() {
 			delete head;
 			delete last;
+		}
+
+		template <class InputIterator>
+		void assign (InputIterator first, InputIterator last) {
+
+		}
+
+		void assign (size_type n, const value_type& val) {
+
 		}
 
 		void push_back(const value_type &val) {
@@ -108,6 +130,14 @@ namespace ft {
 			erase(head->next);
 		}
 
+		reference back() {
+			return (this->last->prev);
+		}
+
+//		const_reference back() const {
+//
+//		}
+
 		void insert(iterator position, const value_type &val) {
 			node *myNode = new node(val);
 			node *it = position.pointer;
@@ -117,6 +147,26 @@ namespace ft {
 			myNode->next = it;
 			it->prev = myNode;
 			list_size++;
+		}
+		void insert(iterator position, size_type n, const value_type& val) {
+			for (int i = 0; i < n; ++i) {
+				insert(position, val);
+			}
+		}
+
+		template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last) {
+
+		}
+
+		void merge(list &x) {
+			this->last->prev = x.head->next;
+			this->last = x.last;
+		}
+
+		template <class Compare>
+		void merge(list& x, Compare comp) {
+
 		}
 
 		iterator erase(iterator position) {
@@ -139,15 +189,86 @@ namespace ft {
 			return (tmp);
 		}
 
-		void clear () {
+		void remove(const value_type& val) {
+			iterator it = this->begin();
+			iterator save = it;
+			while (it != this->end())
+			{
+				++it;
+				if (val == *save)
+					erase(save);
+				save = it;
+			}
+		}
+
+		template <class Predicate>
+		void remove_if(Predicate pred) {
+
+		}
+
+		void clear() {
 			erase(head->next, last);
 		}
 
 		iterator begin()
 		{ return (iterator (this->head->next)); }
 
+//		const_iterator begin() const {}
+
 		iterator end()
 		{ return (iterator (this->last)); }
+
+//		const_iterator end() const {
+//
+//		}
+
+//		reverse_iterator rbegin() {}
+//		const_reverse_iterator rbegin() const {}
+
+//		reverse_iterator rend() {}
+//		const_reverse_iterator rend() const {}
+
+		void resize(size_type n, value_type val = value_type()) {
+
+		}
+
+		void reverse() {
+
+		}
+
+		void sort() {
+
+		}
+
+		template <class Compare>
+		void sort(Compare comp) {
+
+		}
+
+		void splice(iterator position, list& x) {
+
+		}
+
+		void splice(iterator position, list& x, iterator i) {
+
+		}
+
+		void splice(iterator position, list& x, iterator first, iterator last) {
+
+		}
+
+		void swap (list& x) {
+
+		}
+
+		void unique() {
+
+		}
+
+		template <class BinaryPredicate>
+		void unique(BinaryPredicate binary_pred) {
+
+		}
 
 		size_type max_size() const
 		{ return (std::numeric_limits<size_type>::max() / sizeof(node)); }

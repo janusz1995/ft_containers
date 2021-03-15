@@ -19,11 +19,11 @@ namespace ft {
 		listNode *next;
 		listNode *prev;
 	public:
-		explicit listNode(T data = T(), listNode *next = NULL, listNode *prev = NULL):data(data),next(next), prev(prev) {}
+		explicit listNode(T data = T(), listNode *next = NULL, listNode *prev = NULL):data(data), next(next), prev(prev) {}
 	};
 
 	template <class T> class iteratorList {
-	private:
+	protected:
 		listNode<T> *pointer;
 	public:
 		template<typename myT, typename Alloc>
@@ -67,6 +67,12 @@ namespace ft {
 		}
 	};
 
+	template <class T> class constIteratorList : public iteratorList<T> {
+	public:
+		constIteratorList(): iteratorList<T>() {}
+
+	};
+
 	template < class T, class Alloc = std::allocator<T> > class list {
 	public:
 		typedef T value_type;
@@ -75,10 +81,12 @@ namespace ft {
 		typedef ptrdiff_t difference_type;
 		typedef listNode<T> node;
 		typedef iteratorList<T> iterator;
+//		typedef iterator reverse_iterator;
+//		typedef const iterator const_iterator;
 		typedef size_t size_type;
 //		typedef ptrdiff_t difference_type;
 
-		list() {
+		explicit list(const allocator_type& alloc = allocator_type()) {
 			list_size = 0;
 			head = new node();
 			last = new node();
@@ -86,27 +94,45 @@ namespace ft {
 			head->next = last;
 		}
 
+		explicit list(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) {
+			// TODO allocate memory for head and last, next step - add N elements in list
+			head = new node();
+			last = new node();
+			last->prev = head;
+			head->next = last;
+			list_size = 0;
+			for (int i = 0; i < n; ++i) {
+				this->push_back(val);
+			}
+		}
+
 		list& operator=(list const &List) {
+			// TODO allocate memory for head and last elements, next step - copy all elements (allocate memory too)
 			if (&List != this) {
-				this->head = List.head;
-				this->last = List.last;
-				this->list_size = List.list_size;
+				head = new node();
+				last = new node();
+//				this->head = List.head;
+//				this->last = List.last;
+//				this->list_size = List.list_size;
 			}
 			return (*this);
 		}
 
 		~list() {
+			this->clear();
 			delete head;
 			delete last;
 		}
 
 		template <class InputIterator>
-		void assign (InputIterator first, InputIterator last) {
-
+		void assign(InputIterator first, InputIterator last) {
+			this->clear();
+			insert(begin(), first, last);
 		}
 
-		void assign (size_type n, const value_type& val) {
-
+		void assign(size_type n, const value_type& val) {
+			clear();
+			insert(begin(), n, val);
 		}
 
 		void push_back(const value_type &val) {
@@ -130,15 +156,15 @@ namespace ft {
 			erase(head->next);
 		}
 
-		reference back() {
-			return (this->last->prev);
-		}
+//		reference back() {
+//			return (this->last->prev);
+//		}
 
 //		const_reference back() const {
 //
 //		}
 
-		void insert(iterator position, const value_type &val) {
+		iterator insert(iterator position, const value_type &val) {
 			node *myNode = new node(val);
 			node *it = position.pointer;
 
@@ -147,21 +173,24 @@ namespace ft {
 			myNode->next = it;
 			it->prev = myNode;
 			list_size++;
+			return (myNode); // TODO need check valid iterator
 		}
+
 		void insert(iterator position, size_type n, const value_type& val) {
 			for (int i = 0; i < n; ++i) {
-				insert(position, val);
+			 	position = ++insert(position, val); // TODO increase iterator
 			}
 		}
 
-		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last) {
-
-		}
+//		template <class InputIterator>
+//		void insert(iterator position, InputIterator first, InputIterator last) {
+//			 TODO
+//		}
 
 		void merge(list &x) {
 			this->last->prev = x.head->next;
 			this->last = x.last;
+			// TODO compare elements and add to new list (not allocate memory)
 		}
 
 		template <class Compare>
@@ -190,42 +219,60 @@ namespace ft {
 		}
 
 		void remove(const value_type& val) {
+//			iterator it = this->begin();
+//			iterator save = it;
+//			while (it != this->end())
+//			{
+//				++it;
+//				if (val == *save)
+//					erase(save);
+//				save = it;
+//			}
+			remove_if(&equals);
+		}
+
+		template <class Predicate>
+		void remove_if(Predicate pred) {
 			iterator it = this->begin();
 			iterator save = it;
 			while (it != this->end())
 			{
 				++it;
-				if (val == *save)
+				if (pred(*save))
 					erase(save);
 				save = it;
 			}
-		}
-
-		template <class Predicate>
-		void remove_if(Predicate pred) {
-
 		}
 
 		void clear() {
 			erase(head->next, last);
 		}
 
-		iterator begin()
-		{ return (iterator (this->head->next)); }
+		iterator begin() {
+			return (iterator (this->head->next));
+		}
 
-//		const_iterator begin() const {}
-
-		iterator end()
-		{ return (iterator (this->last)); }
-
-//		const_iterator end() const {
-//
+//		const_iterator begin() const {
+//			return (const_iterator (this->head->next));
 //		}
 
-//		reverse_iterator rbegin() {}
+		iterator end() {
+			return (iterator (this->last));
+		}
+
+//		const_iterator end() const {
+//			return (const_iterator (this->last));
+//		}
+
+//		reverse_iterator rbegin() {
+//			return (reverse_iterator (this->last->next));
+//		}
+
 //		const_reverse_iterator rbegin() const {}
 
-//		reverse_iterator rend() {}
+//		reverse_iterator rend() {
+//			return (reverse_iterator (this->head));
+//		}
 //		const_reverse_iterator rend() const {}
 
 		void resize(size_type n, value_type val = value_type()) {
@@ -257,7 +304,8 @@ namespace ft {
 
 		}
 
-		void swap (list& x) {
+
+		void swap(list& x) {
 
 		}
 
@@ -270,12 +318,14 @@ namespace ft {
 
 		}
 
-		size_type max_size() const
-		{ return (std::numeric_limits<size_type>::max() / sizeof(node)); }
+		size_type max_size() const {
+			return (std::numeric_limits<size_type>::max() / sizeof(node));
+		}
 
 		bool empty() const {
-			return ((this->list_size == 0) ? true : false);
+			return (this->list_size == 0);
 		}
+
 		size_type size() const {
 			return (this->list_size);
 		}
@@ -288,6 +338,10 @@ namespace ft {
 		listNode<T> *head;
 		listNode<T> *last;
 		size_type list_size;
+
+		bool equals(value_type const &val, value_type const &eq) {
+			return (val == eq);
+		}
 	};
 }
 

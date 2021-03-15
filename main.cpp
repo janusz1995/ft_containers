@@ -92,8 +92,8 @@ void sizeLists(std::list<T> &original, ft::list<T> &copy) {
 
 
 int main() {
-	ft::list<int> copy;
-	std::list<int> original;
+	ft::list<int> copy(5, 2);
+	std::list<int> original(5, 2);
 
 	printMethod("EMPTY");
 
@@ -102,10 +102,10 @@ int main() {
 
 
 	printMethod("PUSH BACK");
-	for (int i = 0; i < 14; i += 2) {
-		original.push_back(i + 2);
-		copy.push_back(i + 2);
-	}
+//	for (int i = 0; i < 14; i += 2) {
+	original.push_back(4);
+	copy.push_back(4);
+//	}
 
 	emptyLists(original, copy);
 	sizeLists(original, copy);
@@ -140,6 +140,7 @@ int main() {
 	sizeLists(original, copy);
 	printLists(original, copy);
 
+
 	printMethod("ERASE");
 	original.erase(original.begin());
 	copy.erase(copy.begin());
@@ -151,8 +152,8 @@ int main() {
 
 
 	printMethod("PUSH FRONT");
-	original.push_front(600);
-	copy.push_front(600);
+	original.push_front(666);
+	copy.push_front(666);
 	original.push_front(700);
 	copy.push_front(700);
 

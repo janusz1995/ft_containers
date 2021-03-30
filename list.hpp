@@ -186,7 +186,10 @@ namespace ft {
 		void insert(iterator position, InputIterator first, InputIterator last,
 			  typename std::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
 
-			 // TODO
+			for (; first != last; first++) {
+				insert(position, *first);
+			}
+			// TODO
 		}
 
 		void merge(list &x) {
@@ -221,6 +224,7 @@ namespace ft {
 		}
 
 		void remove(const value_type& val) {
+//			equals equal(val);
 //			iterator it = this->begin();
 //			iterator save = it;
 //			while (it != this->end())
@@ -230,7 +234,7 @@ namespace ft {
 //					erase(save);
 //				save = it;
 //			}
-			remove_if(&equals);
+			remove_if(equals(val));
 		}
 
 		template <class Predicate>
@@ -341,9 +345,15 @@ namespace ft {
 		listNode<T> *last;
 		size_type list_size;
 
-		bool equals(value_type const &val, value_type const &eq) {
-			return (val == eq);
-		}
+		struct equals {
+			equals(T val):tmp(val) {}
+			bool operator()(T y) const { return tmp == y;}
+		private:
+			T tmp;
+		};
+//		bool equals(value_type const &val, value_type const &eq) {
+//			return (val == eq);
+//		}
 	};
 }
 

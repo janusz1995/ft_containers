@@ -169,6 +169,15 @@ int main() {
 	printLists(original, copy);
 
 
+	printMethod("REMOVE");
+	original.remove(777);
+	copy.remove(777);
+
+	sizeLists(original, copy);
+	printLists(original, copy);
+
+
+
 	printMethod("CLEAR");
 	original.clear();
 	copy.clear();
@@ -179,6 +188,22 @@ int main() {
 
 
 	printMethod("TEST   TEST   TEST   TEST   TEST");
+
+
+	std::list<int> first(5, 300);
+	ft::list<int> myFirst(5, 300);
+
+	std::list<int>::iterator fit = first.begin();
+	ft::list<int>::iterator myFit = myFirst.begin();
+
+	fit++;
+	myFit++;
+
+
+//	myFirst++;
+
+
+//	copy.insert()
 //	std::list<double> first, second;
 //
 //	first.push_back (3.1);
@@ -201,15 +226,15 @@ int main() {
 //		std::cout << ' ' << *it;
 //	std::cout << '\n';
 
-	int myints[]= {17,89,7,14, 89};
-	std::list<int> mylist (myints,myints+4);
+//	int myints[]= {17,89,7,14, 89};
+//	std::list<int> mylist (myints,myints+4);
 
-	mylist.remove(89);
+//	mylist.remove(89);
 
-	std::cout << "mylist contains:";
-	for (std::list<int>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
+//	std::cout << "mylist contains:";
+//	for (std::list<int>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
+//		std::cout << ' ' << *it;
+//	std::cout << '\n';
 
 
 	return (0);

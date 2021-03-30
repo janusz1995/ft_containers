@@ -182,10 +182,12 @@ namespace ft {
 			}
 		}
 
-//		template <class InputIterator>
-//		void insert(iterator position, InputIterator first, InputIterator last) {
-//			 TODO
-//		}
+		template <class InputIterator>
+		void insert(iterator position, InputIterator first, InputIterator last,
+			  typename std::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
+
+			 // TODO
+		}
 
 		void merge(list &x) {
 			this->last->prev = x.head->next;

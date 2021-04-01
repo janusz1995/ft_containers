@@ -29,18 +29,23 @@ namespace ft {
 		template<typename myT, typename Alloc>
 		friend class list;
 		iteratorList(listNode<T> *pointer = NULL):pointer(pointer) {}
+
 		bool operator==(iteratorList const &itL) {
 			return (this->pointer == itL.pointer);
 		}
+
 		bool operator!=(iteratorList const &itL) {
 			return (!(*this == itL));
 		}
+
 		T& operator*() {
 			return (this->pointer->data);
 		}
+
 		T* operator->() {
 			return (&(this->pointer->data));
 		}
+
 		iteratorList& operator++() { // ++it
 			this->pointer = this->pointer->next;
 			return (*this);
@@ -224,16 +229,6 @@ namespace ft {
 		}
 
 		void remove(const value_type& val) {
-//			equals equal(val);
-//			iterator it = this->begin();
-//			iterator save = it;
-//			while (it != this->end())
-//			{
-//				++it;
-//				if (val == *save)
-//					erase(save);
-//				save = it;
-//			}
 			remove_if(equals(val));
 		}
 
@@ -283,15 +278,14 @@ namespace ft {
 
 		void resize(size_type n, value_type val = value_type()) {
 			iterator it = this->begin();
-			if (n < this->list_size)
-			{
+			if (n < this->list_size) {
 				for (int i = 0; i < n; ++i) {
 					it++;
 				}
 				erase(it, last);
 			} else if (n > this->list_size) {
-				for (int i = 0; i < n ; ++i) {
-					it++;
+				for (int i = this->list_size; i < n; ++i) {
+					push_back(val);
 				}
 			}
 		}

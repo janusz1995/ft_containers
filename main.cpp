@@ -201,6 +201,18 @@ int main() {
 	sizeLists(original, copy);
 	printLists(original, copy);
 
+	original.resize(6, 100);
+	copy.resize(6, 100);
+
+	sizeLists(original, copy);
+	printLists(original, copy);
+
+	original.resize(10);
+	copy.resize(10);
+
+	sizeLists(original, copy);
+	printLists(original, copy);
+
 	printMethod("CLEAR");
 	original.clear();
 	copy.clear();

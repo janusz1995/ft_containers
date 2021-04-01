@@ -141,6 +141,21 @@ int main() {
 	printLists(original, copy);
 
 
+	std::list<int> first(4, 300);
+	ft::list<int> myFirst(4, 300);
+
+	std::list<int>::iterator fit = first.begin();
+	ft::list<int>::iterator myFit = myFirst.begin();
+	fit++;
+	myFit++;
+
+	original.insert(it, ++fit, first.end());
+	copy.insert(myIt, ++myFit, myFirst.end());
+
+	sizeLists(original, copy);
+	printLists(original, copy);
+
+
 	printMethod("ERASE");
 	original.erase(original.begin());
 	copy.erase(copy.begin());
@@ -178,6 +193,14 @@ int main() {
 
 
 
+
+	printMethod("RESIZE");
+	original.resize(4);
+	copy.resize(4);
+
+	sizeLists(original, copy);
+	printLists(original, copy);
+
 	printMethod("CLEAR");
 	original.clear();
 	copy.clear();
@@ -190,16 +213,36 @@ int main() {
 	printMethod("TEST   TEST   TEST   TEST   TEST");
 
 
-	std::list<int> first(5, 300);
-	ft::list<int> myFirst(5, 300);
+	std::list<int> mylist;
 
-	std::list<int>::iterator fit = first.begin();
-	ft::list<int>::iterator myFit = myFirst.begin();
+	// set some initial content:
+	for (int i=1; i<10; ++i) mylist.push_back(i);
 
-	fit++;
-	myFit++;
+	mylist.resize(5);
+	mylist.resize(8,100);
+	mylist.resize(12);
 
+	std::cout << "mylist contains:";
+	for (std::list<int>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
+		std::cout << ' ' << *it;
 
+	std::cout << '\n';
+
+//	std::list<int> first(4, 300);
+//	ft::list<int> myFirst(4, 300);
+//
+//	std::list<int>::iterator fit = first.begin();
+//	ft::list<int>::iterator myFit = myFirst.begin();
+//	fit++;
+//	myFit++;
+//
+////	original.insert( 300, fit, first.end());
+//	original.insert(original.begin(), fit, first.end());
+//	copy.insert(copy.begin(), myFit, myFirst.end());
+//
+//	emptyLists(original, copy);
+//	sizeLists(original, copy);
+//	printLists(original, copy);
 //	myFirst++;
 
 

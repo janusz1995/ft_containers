@@ -131,7 +131,7 @@ namespace ft {
 		}
 
 		void assign(size_type n, const value_type& val) {
-			clear();
+			this->clear();
 			insert(begin(), n, val);
 		}
 
@@ -282,7 +282,18 @@ namespace ft {
 //		const_reverse_iterator rend() const {}
 
 		void resize(size_type n, value_type val = value_type()) {
-
+			iterator it = this->begin();
+			if (n < this->list_size)
+			{
+				for (int i = 0; i < n; ++i) {
+					it++;
+				}
+				erase(it, last);
+			} else if (n > this->list_size) {
+				for (int i = 0; i < n ; ++i) {
+					it++;
+				}
+			}
 		}
 
 		void reverse() {

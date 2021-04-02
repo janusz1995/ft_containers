@@ -194,12 +194,33 @@ namespace ft {
 			for (; first != last; first++) {
 				insert(position, *first);
 			}
-			// TODO
 		}
 
 		void merge(list &x) {
-			this->last->prev = x.head->next;
-			this->last = x.last;
+
+			node *it = this->head->next;
+			node *itX = x.head->next;
+			node *save;
+
+			while (itX != x.last) {
+				if (it->data > itX->data) {
+					save = itX->next;
+					insert(it, itX);
+					itX = save;
+				} else {
+					it = it->next;
+					if (it == this->last)
+						break;
+				}
+			}
+			while (itX != x.last) {
+				save = itX->next;
+				insert(it, itX);
+				itX = save;
+			}
+			x.head->next = x.last;
+			x.last->prev = x.head;
+
 			// TODO compare elements and add to new list (not allocate memory)
 		}
 
@@ -317,7 +338,10 @@ namespace ft {
 
 
 		void swap(list& x) {
-
+			list tmp = *this;
+			*this = x;
+			*this = tmp;
+//			tmp = x;
 		}
 
 		void unique() {
@@ -356,9 +380,28 @@ namespace ft {
 		private:
 			T tmp;
 		};
-//		bool equals(value_type const &val, value_type const &eq) {
-//			return (val == eq);
+
+//		iterator insert(iterator position, const value_type &val) {
+//			node *myNode = new node(val);
+//			node *it = position.pointer;
+//
+//			it->prev->next = myNode;
+//			myNode->prev = it->prev;
+//			myNode->next = it;
+//			it->prev = myNode;
+//			list_size++;
+//			return (myNode); // TODO need check valid iterator
 //		}
+
+		void insert(iterator position, iterator second) {
+			node *itFirst = position.pointer;
+			node *itSecond = second.pointer;
+
+			itSecond->prev = itFirst->prev;
+			itSecond->next = itFirst;
+			itFirst->prev->next = itSecond;
+			itFirst->prev = itSecond;
+		}
 	};
 }
 

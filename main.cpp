@@ -125,9 +125,10 @@ int main() {
 
 	printMethod("INSERT");
 	std::list<int>::iterator it = original.begin();
-	it++;
 	ft::list<int>::iterator myIt = copy.begin();
+	it++;
 	myIt++;
+
 	original.insert(it++, 200);
 	copy.insert(myIt++, 200);
 
@@ -137,21 +138,27 @@ int main() {
 	original.insert(it, 3, 777);
 	copy.insert(myIt, 3, 777);
 
+	emptyLists(original, copy);
 	sizeLists(original, copy);
 	printLists(original, copy);
 
+	std::list<int> first(2, 300);
+	ft::list<int> myFirst(2, 300);
 
-	std::list<int> first(4, 300);
-	ft::list<int> myFirst(4, 300);
+	for (int i = 1; i < 8; ++i) {
+		first.push_back(i * 10);
+		myFirst.push_back(i * 10);
+	}
 
 	std::list<int>::iterator fit = first.begin();
 	ft::list<int>::iterator myFit = myFirst.begin();
 	fit++;
 	myFit++;
 
-	original.insert(it, ++fit, first.end());
-	copy.insert(myIt, ++myFit, myFirst.end());
+	original.insert(--it, ++fit, first.end());
+	copy.insert(--myIt, ++myFit, myFirst.end());
 
+	emptyLists(original, copy);
 	sizeLists(original, copy);
 	printLists(original, copy);
 
@@ -162,6 +169,7 @@ int main() {
 	original.erase(it++);
 	copy.erase(myIt++);
 
+	emptyLists(original, copy);
 	sizeLists(original, copy);
 	printLists(original, copy);
 
@@ -172,6 +180,7 @@ int main() {
 	original.push_front(700);
 	copy.push_front(700);
 
+	emptyLists(original, copy);
 	sizeLists(original, copy);
 	printLists(original, copy);
 
@@ -180,6 +189,7 @@ int main() {
 	original.pop_front();
 	copy.pop_front();
 
+	emptyLists(original, copy);
 	sizeLists(original, copy);
 	printLists(original, copy);
 
@@ -188,30 +198,33 @@ int main() {
 	original.remove(777);
 	copy.remove(777);
 
+	emptyLists(original, copy);
 	sizeLists(original, copy);
 	printLists(original, copy);
-
-
 
 
 	printMethod("RESIZE");
 	original.resize(4);
 	copy.resize(4);
 
+	emptyLists(original, copy);
 	sizeLists(original, copy);
 	printLists(original, copy);
 
 	original.resize(6, 100);
 	copy.resize(6, 100);
 
+	emptyLists(original, copy);
 	sizeLists(original, copy);
 	printLists(original, copy);
 
 	original.resize(10);
 	copy.resize(10);
 
+	emptyLists(original, copy);
 	sizeLists(original, copy);
 	printLists(original, copy);
+
 
 	printMethod("CLEAR");
 	original.clear();
@@ -222,23 +235,140 @@ int main() {
 	printLists(original, copy);
 
 
+	printMethod("SWAP");
+
+//	ft::list<int> myF (10, 100);
+//	ft::list<int> myS (6, 500);
+//
+//
+//	myF.swap(myS);
+//
+//
+//	std::cout << "first contains:";
+//	for (ft::list<int>::iterator it=myF.begin(); it!=myF.end(); it++)
+//		std::cout << ' ' << *it;
+//	std::cout << '\n';
+//
+//	std::cout << "second contains:";
+//	for (ft::list<int>::iterator it=myS.begin(); it!=myS.end(); it++)
+//		std::cout << ' ' << *it;
+//	std::cout << '\n';
+
+//	emptyLists(original, copy);
+//	sizeLists(original, copy);
+//	printLists(original, copy);
+
+
 	printMethod("TEST   TEST   TEST   TEST   TEST");
 
 
-	std::list<int> mylist;
+
+	std::list<double> first1, second;
+
+	ft::list<double> my1, my2;
+	my1.push_back (3.8);
+	my1.push_back (2.2);
+	my1.push_back (2.9);
+
+	my2.push_back (3.7);
+	my2.push_back (7.1);
+	my2.push_back (1.4);
+
+
+	first1.push_back (3.8);
+	first1.push_back (2.2);
+	first1.push_back (2.9);
+
+	second.push_back (3.7);
+	second.push_back (7.1);
+	second.push_back (1.4);
+
+
+//	first1.sort();
+//	second.sort();
+
+	std::cout << "first contains:";
+	for (std::list<double>::iterator it = first1.begin();  it != first1.end() ; it++) {
+		std::cout << ' ' << *it;
+	}
+	std::cout << '\n';
+
+	std::cout << "second contains:";
+	for (std::list<double>::iterator it = second.begin();  it != second.end() ; it++) {
+		std::cout << ' ' << *it;
+	}
+	std::cout << '\n';
+
+	std::cout << "My ---- first contains:";
+	for (ft::list<double>::iterator it = my1.begin();  it != my1.end() ; it++) {
+		std::cout << ' ' << *it;
+	}
+	std::cout << '\n';
+
+	std::cout << "My ---- second contains:";
+	for (ft::list<double>::iterator it = my2.begin();  it != my2.end() ; it++) {
+		std::cout << ' ' << *it;
+	}
+	std::cout << '\n';
+
+	my1.merge(my2);
+	first1.merge(second);
+
+
+	std::cout << "first contains:";
+	for (std::list<double>::iterator it = first1.begin();  it != first1.end() ; it++) {
+		std::cout << ' ' << *it;
+	}
+	std::cout << '\n';
+
+	std::cout << "second contains:";
+	for (std::list<double>::iterator it = second.begin();  it != second.end() ; it++) {
+		std::cout << ' ' << *it;
+	}
+	std::cout << '\n';
+
+	std::cout << "My ---- first contains:";
+	for (ft::list<double>::iterator it = my1.begin();  it != my1.end() ; it++) {
+		std::cout << ' ' << *it;
+	}
+	std::cout << '\n';
+
+	std::cout << "My ---- second contains:";
+	for (ft::list<double>::iterator it = my2.begin();  it != my2.end() ; it++) {
+		std::cout << ' ' << *it;
+	}
+	std::cout << '\n';
+
+//	std::list<int> mylist;
 
 	// set some initial content:
-	for (int i=1; i<10; ++i) mylist.push_back(i);
+//	for (int i=1; i<10; ++i) mylist.push_back(i);
+//
+//	mylist.resize(5);
+//	mylist.resize(8,100);
+//	mylist.resize(12);
+//
+//	std::cout << "mylist contains:";
+//	for (std::list<int>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
+//		std::cout << ' ' << *it;
+//
+//	std::cout << '\n';
 
-	mylist.resize(5);
-	mylist.resize(8,100);
-	mylist.resize(12);
+//	std::list<int> first1 (3,100);   // three ints with a value of 100
+//	std::list<int> second (5,200);  // five ints with a value of 200
+//
+//	first1.swap(second);
+//
+//	std::cout << "first contains:";
+//	for (std::list<int>::iterator it=first1.begin(); it!=first1.end(); it++)
+//		std::cout << ' ' << *it;
+//	std::cout << '\n';
+//
+//	std::cout << "second contains:";
+//	for (std::list<int>::iterator it=second.begin(); it!=second.end(); it++)
+//		std::cout << ' ' << *it;
+//	std::cout << '\n';
 
-	std::cout << "mylist contains:";
-	for (std::list<int>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
-		std::cout << ' ' << *it;
-
-	std::cout << '\n';
 
 //	std::list<int> first(4, 300);
 //	ft::list<int> myFirst(4, 300);

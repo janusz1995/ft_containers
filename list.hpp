@@ -146,11 +146,6 @@ namespace ft {
 
 		void pop_back() {
 			erase(last->prev);
-//			node *preLast = last->prev;
-//			preLast->prev->next = last;
-//			last->prev = preLast->prev;
-//			list_size--;
-//			delete preLast;
 		}
 
 		void push_front(const value_type &val) {
@@ -206,6 +201,8 @@ namespace ft {
 				if (it->data > itX->data) {
 					save = itX->next;
 					insert(it, itX);
+					this->list_size++;
+					x.list_size--;
 					itX = save;
 				} else {
 					it = it->next;
@@ -216,12 +213,12 @@ namespace ft {
 			while (itX != x.last) {
 				save = itX->next;
 				insert(it, itX);
+				this->list_size++;
+				x.list_size--;
 				itX = save;
 			}
 			x.head->next = x.last;
 			x.last->prev = x.head;
-
-			// TODO compare elements and add to new list (not allocate memory)
 		}
 
 		template <class Compare>
@@ -313,6 +310,18 @@ namespace ft {
 
 		void reverse() {
 
+			if (this->list_size < 2) {
+				return;
+			}
+
+			last = head;
+			while(42) {
+				swap(head->prev, head->next);
+				node *prev = head->prev;
+				if (prev == nullptr)
+					break;
+				head = prev;
+			}
 		}
 
 		void sort() {
@@ -333,15 +342,26 @@ namespace ft {
 		}
 
 		void splice(iterator position, list& x, iterator first, iterator last) {
+			node *pos = position.pointer;
+//			node *savePosLast = pos->prev;
+//			node *savePosLast
 
+			node *firstNode = first.pointer;
+			node *lastNode = last.pointer;
+			node *save;
+
+			for (; firstNode != lastNode; ++firstNode) {
+				save = firstNode->next;
+				insert(pos, firstNode);
+				firstNode = save;
+			}
 		}
 
 
 		void swap(list& x) {
-			list tmp = *this;
-			*this = x;
-			*this = tmp;
-//			tmp = x;
+			swap(this->list_size, x.list_size);
+			swap(this->head, x.head);
+			swap(this->last, x.last);
 		}
 
 		void unique() {
@@ -365,10 +385,6 @@ namespace ft {
 			return (this->list_size);
 		}
 
-		// push back
-		// pop back
-		// erase
-		// insert
 	private:
 		listNode<T> *head;
 		listNode<T> *last;
@@ -381,27 +397,40 @@ namespace ft {
 			T tmp;
 		};
 
-//		iterator insert(iterator position, const value_type &val) {
-//			node *myNode = new node(val);
-//			node *it = position.pointer;
-//
-//			it->prev->next = myNode;
-//			myNode->prev = it->prev;
-//			myNode->next = it;
-//			it->prev = myNode;
-//			list_size++;
-//			return (myNode); // TODO need check valid iterator
-//		}
+
+		template <typename TMP>
+		void swap(TMP &one, TMP &two) {
+			TMP tmp = one;
+			one = two;
+			two = tmp;
+		}
 
 		void insert(iterator position, iterator second) {
-			node *itFirst = position.pointer;
+			node *itPos = position.pointer;
 			node *itSecond = second.pointer;
+			itSecond->prev->next = itSecond->next;
+			itSecond->next->prev = itSecond->prev;
 
-			itSecond->prev = itFirst->prev;
-			itSecond->next = itFirst;
-			itFirst->prev->next = itSecond;
-			itFirst->prev = itSecond;
+			itPos->prev->next = itSecond;
+			itSecond->prev = itPos->prev;
+			itSecond->next = itPos;
+			itPos->prev = itSecond;
+
+//			itSecond->prev = itPos->prev;
+//			itSecond->next = itPos;
+//			itPos->prev->next = itSecond;
+//			itPos->prev = itSecond;
 		}
+
+//		void insert(iterator position, iterator second) {
+//			node *itFirst = position.pointer;
+//			node *itSecond = second.pointer;
+//
+//			itSecond->prev = itFirst->prev;
+//			itSecond->next = itFirst;
+//			itFirst->prev->next = itSecond;
+//			itFirst->prev = itSecond;
+//		}
 	};
 }
 

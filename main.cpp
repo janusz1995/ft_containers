@@ -396,8 +396,8 @@ int main() {
 
 	printTwoLists(list1, list2, mylist1, mylist2);
 
-	list2.splice(++it1, list2, ++list1.begin(), --list1.end());
-	mylist2.splice(++myIt1, mylist2,  ++mylist1.begin(), --mylist1.end());
+	list2.splice(++it1, list1, ++list1.begin(), --list1.end());
+	mylist2.splice(++myIt1, mylist1,  ++mylist1.begin(), --mylist1.end());
 
 	printTwoLists(list1, list2, mylist1, mylist2);
 

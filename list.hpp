@@ -334,16 +334,11 @@ namespace ft {
 		}
 
 		void splice(iterator position, list& x) {
-			this->list_size += x.list_size;
-			x.list_size = 0;
 			this->splice(position, x, x.begin(), x.end());
 		}
 
 		void splice(iterator position, list& x, iterator i) {
-			this->list_size++;
-			x.list_size--;
 			this->splice(position, x, i, ++i);
-
 		}
 
 		void splice(iterator position, list& x, iterator first, iterator last) {
@@ -360,6 +355,11 @@ namespace ft {
 			firstNode->prev = pos->prev;
 			pos->prev = savePrevLastNode;
 			savePrevLastNode->next = pos;
+			while (firstNode != pos) {
+				this->list_size++;
+				x.list_size--;
+				firstNode = firstNode->next;
+			}
 		}
 
 

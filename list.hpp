@@ -334,27 +334,32 @@ namespace ft {
 		}
 
 		void splice(iterator position, list& x) {
-
+			this->list_size += x.list_size;
+			x.list_size = 0;
+			this->splice(position, x, x.begin(), x.end());
 		}
 
 		void splice(iterator position, list& x, iterator i) {
+			this->list_size++;
+			x.list_size--;
+			this->splice(position, x, i, ++i);
 
 		}
 
 		void splice(iterator position, list& x, iterator first, iterator last) {
 			node *pos = position.pointer;
-//			node *savePosLast = pos->prev;
-//			node *savePosLast
 
 			node *firstNode = first.pointer;
 			node *lastNode = last.pointer;
-			node *save;
+			node *savePrevLastNode = lastNode->prev;
 
-			for (; firstNode != lastNode; ++firstNode) {
-				save = firstNode->next;
-				insert(pos, firstNode);
-				firstNode = save;
-			}
+			firstNode->prev->next = lastNode;
+			lastNode->prev = firstNode->prev;
+
+			pos->prev->next = firstNode;
+			firstNode->prev = pos->prev;
+			pos->prev = savePrevLastNode;
+			savePrevLastNode->next = pos;
 		}
 
 
@@ -416,10 +421,6 @@ namespace ft {
 			itSecond->next = itPos;
 			itPos->prev = itSecond;
 
-//			itSecond->prev = itPos->prev;
-//			itSecond->next = itPos;
-//			itPos->prev->next = itSecond;
-//			itPos->prev = itSecond;
 		}
 
 //		void insert(iterator position, iterator second) {

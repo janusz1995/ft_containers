@@ -43,34 +43,6 @@ void printTwoLists(ft::list<T> &myList, ft::list<T> &myList2) {
 }
 
 template<typename T>
-void printTwoLists(std::list<T> &list, std::list<T> &list2, ft::list<T> &myList, ft::list<T> &myList2) {
-
-	std::cout << BLUE << "Original List 1 " << NC << " --->>> ";
-	for (typename std::list<T>::iterator it = list.begin();  it != list.end() ; it++) {
-		std::cout << " | " << GREEN << *it << NC;
-	}
-	std::cout << " |\n";
-
-	std::cout << BLUE << "Original List 2 " << NC << " --->>> ";
-	for (typename std::list<T>::iterator it = list2.begin();  it != list2.end() ; it++) {
-		std::cout << " | " << GREEN << *it << NC;
-	}
-	std::cout << " |\n";
-
-	std::cout << YELLOW << "My List 1 " << NC << " --------->>> ";
-	for (typename ft::list<T>::iterator it = myList.begin();  it != myList.end() ; it++) {
-		std::cout << " | " << GREEN << *it << NC;
-	}
-	std::cout << " |\n";
-
-	std::cout << YELLOW << "My List 2 " << NC << " --------->>> ";
-	for (typename ft::list<T>::iterator it = myList2.begin();  it != myList2.end() ; it++) {
-		std::cout << " | " << GREEN << *it << NC;
-	}
-	std::cout << " |\n";
-}
-
-template<typename T>
 void printLists(std::list<T> &list, ft::list<T> &myList) {
 
 	std::cout << BLUE << "Original List " << NC << " --->>> ";
@@ -87,14 +59,6 @@ void printLists(std::list<T> &list, ft::list<T> &myList) {
 }
 
 //template<typename T>
-//void printList(ft::list<T> &list) {
-//
-//	std::cout << YELLOW << "My List " << NC << " --------->>> ";
-//	for (typename ft::list<T>::iterator it = list.begin();  it != list.end() ; it++) {
-//		std::cout << " | " << GREEN << *it << NC;
-//	}
-//	std::cout << " |\n";
-//}
 
 void isEmpty(std::string str, bool empty, std::string color) {
 	std::cout << color << str << (!empty ? RED : GREEN) << empty << "\n" << NC;
@@ -102,6 +66,41 @@ void isEmpty(std::string str, bool empty, std::string color) {
 
 void printSize(std::string str, size_t size, std::string color) {
 	std::cout << color << str << PURPLE << size << "\n" << NC;
+}
+
+template<typename T>
+void printTwoLists(std::list<T> &list, std::list<T> &list2, ft::list<T> &myList, ft::list<T> &myList2) {
+
+	std::cout << BLUE << "Original List 1 " << NC << " --->>> ";
+	for (typename std::list<T>::iterator it = list.begin();  it != list.end() ; it++) {
+		std::cout << " | " << GREEN << *it << NC;
+	}
+	std::cout << " |\n";
+
+	std::cout << BLUE << "Original List 2 " << NC << " --->>> ";
+	for (typename std::list<T>::iterator it = list2.begin();  it != list2.end() ; it++) {
+		std::cout << " | " << GREEN << *it << NC;
+	}
+	std::cout << " |\n";
+
+	printSize("Original List 1 Size: ", list.size(), ORIGINAL);
+	printSize("Original List 2 Size: ", list2.size(), ORIGINAL);
+
+
+	std::cout << YELLOW << "My List 1 " << NC << " --------->>> ";
+	for (typename ft::list<T>::iterator it = myList.begin();  it != myList.end() ; it++) {
+		std::cout << " | " << GREEN << *it << NC;
+	}
+	std::cout << " |\n";
+
+	std::cout << YELLOW << "My List 2 " << NC << " --------->>> ";
+	for (typename ft::list<T>::iterator it = myList2.begin();  it != myList2.end() ; it++) {
+		std::cout << " | " << GREEN << *it << NC;
+	}
+	std::cout << " |\n";
+
+	printSize("My List 1 Size:       ", myList.size(), MYLIST);
+	printSize("My List 2 Size:       ", myList2.size(), MYLIST);
 }
 
 template<typename T>
@@ -341,60 +340,68 @@ int main() {
 	printLists(first1, my1);
 
 
-	printMethod("TEST TEST TEST TEST TEST TEST TEST");
+	printMethod("SPLICE");
+
+	std::list<int> list1, list2;
+	std::list<int>::iterator it1;
 
 	ft::list<int> mylist1, mylist2;
-	ft::list<int>::iterator it1;
+	ft::list<int>::iterator myIt1;
 
-	for (int i=1; i<=4; ++i)
-		mylist1.push_back(i);      // mylist1: 1 2 3 4
+	for (int i=1; i<=4; ++i) {
+		mylist1.push_back(i);
+		list1.push_back(i);
+	}
 
-	for (int i=1; i<=3; ++i)
-		mylist2.push_back(i*10);   // mylist2: 10 20 30
+	for (int i=1; i<=6; ++i) {
+		mylist2.push_back(i*10);
+		list2.push_back(i*10);
+	}
 
-	it1 = mylist1.begin();
-	it1++;
-	mylist1.splice ( mylist1.begin(), mylist1, it1, mylist1.end());
+	myIt1 = mylist1.begin();
+	++myIt1;
 
-	printTwoLists(mylist1, mylist2);
+	it1 = list1.begin();
+	++it1;
 
-//	std::list<int> mylist1, mylist2;
-//	std::list<int>::iterator it1;
-//
-//	// set some initial values:
-//	for (int i=1; i<=4; ++i)
-//		mylist1.push_back(i);      // mylist1: 1 2 3 4
-//
-//	for (int i=1; i<=3; ++i)
-//		mylist2.push_back(i*10);   // mylist2: 10 20 30
-//
-//	std::cout << "mylist1 contains:";
-//	for (it1=mylist1.begin(); it1!=mylist1.end(); ++it1)
-//		std::cout << ' ' << *it1;
-//	std::cout << '\n';
-//
-//	std::cout << "mylist2 contains:";
-//	for (it1=mylist2.begin(); it1!=mylist2.end(); ++it1)
-//		std::cout << ' ' << *it1;
-//	std::cout << '\n';
-////
-////
-//	it1 = mylist1.begin();
-//	++it1;                         // points to 2
-//
-//	mylist1.splice ( mylist1.begin(), mylist1, it1, mylist1.end());
-//	// mylist1: 30 3 4 1 10 20
-//
-//	std::cout << "mylist1 contains:";
-//	for (it1=mylist1.begin(); it1!=mylist1.end(); ++it1)
-//		std::cout << ' ' << *it1;
-//	std::cout << '\n';
-//
-//	std::cout << "mylist2 contains:";
-//	for (it1=mylist2.begin(); it1!=mylist2.end(); ++it1)
-//		std::cout << ' ' << *it1;
-//	std::cout << '\n';
+	printTwoLists(list1, list2, mylist1, mylist2);
 
+	list1.splice(++it1, list2);
+	mylist1.splice(++myIt1, mylist2);
+
+	printTwoLists(list1, list2, mylist1, mylist2);
+
+	for (int i=1; i<=4; ++i) {
+		mylist2.push_back(i*100);
+		list2.push_back(i*100);
+	}
+
+	printTwoLists(list1, list2, mylist1, mylist2);
+
+	std::list<int>::iterator it2 = list1.begin();
+	ft::list<int>::iterator myIt2 = mylist1.begin();
+
+	for (int i = 0; i < 4; ++i) {
+		it2++;
+		myIt2++;
+	}
+
+	it1 = list2.begin();
+	++it1;
+	myIt1 = mylist2.begin();
+	++myIt1;
+
+	list2.splice(it1, list1, it2);
+	mylist2.splice(myIt1, mylist1, myIt2);
+
+	printTwoLists(list1, list2, mylist1, mylist2);
+
+	list2.splice(++it1, list2, ++list1.begin(), --list1.end());
+	mylist2.splice(++myIt1, mylist2,  ++mylist1.begin(), --mylist1.end());
+
+	printTwoLists(list1, list2, mylist1, mylist2);
+
+	printMethod("TEST TEST TEST TEST TEST TEST TEST");
 
 
 

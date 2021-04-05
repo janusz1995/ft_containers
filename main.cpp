@@ -1,6 +1,7 @@
 #include <iostream>
 #include "list.hpp"
 #include <list>
+//#include <chrono>
 
 #define NC "\e[0m"
 #define WHITE '\e[1;37m'
@@ -22,6 +23,29 @@
 #define LIGHT_GRAY '\e[0;37m'
 #define ORIGINAL "\e[0;34m"
 #define MYLIST "\e[1;33m"
+
+
+//class Timer {
+//private:
+//	// Псевдонимы типов используются для удобного доступа к вложенным типам
+//	using clock_t = std::chrono::high_resolution_clock;
+//	using second_t = std::chrono::duration<double, std::ratio<1> >;
+//
+//	std::chrono::time_point<clock_t> m_beg;
+//
+//public:
+//	Timer() : m_beg(clock_t::now()) {}
+//
+//	void reset() {
+//		m_beg = clock_t::now();
+//	}
+//
+//	double elapsed() const {
+//		return std::chrono::duration_cast<second_t>(clock_t::now() - m_beg).count();
+//	}
+//};
+
+
 
 void printMethod(std::string method) {
 	std::cout << RED <<  "<-<-<-<-<-<-<-<-<-<- " <<  CYAN <<  method << RED << " ->->->->->->->->->->\n" << NC;
@@ -53,6 +77,22 @@ void printListsReverse(std::list<T> &list, ft::list<T> &myList) {
 
 	std::cout << YELLOW << "My List " << NC << " --------->>> ";
 	for (typename ft::list<T>::reverse_iterator it = myList.rbegin();  it != myList.rend() ; it++) {
+		std::cout << " | " << GREEN << *it << NC;
+	}
+	std::cout << " |\n";
+}
+
+template<typename T>
+void printListsConst(std::list<T> &list, ft::list<T> &myList) {
+
+	std::cout << BLUE << "Original List " << NC << " --->>> ";
+	for (typename std::list<T>::const_iterator it = list.begin();  it != list.end() ; it++) {
+		std::cout << " | " << GREEN << *it << NC;
+	}
+	std::cout << " |\n";
+
+	std::cout << YELLOW << "My List " << NC << " --------->>> ";
+	for (typename ft::list<T>::const_iterator it = myList.begin();  it != myList.end() ; it++) {
 		std::cout << " | " << GREEN << *it << NC;
 	}
 	std::cout << " |\n";
@@ -328,15 +368,11 @@ int main() {
 	second.push_back (7.1);
 	second.push_back (1.4);
 
-	sizeLists(first1, my1);
-	sizeLists(second, my2);
 	printTwoLists(first1, second, my1, my2);
 
 	my1.merge(my2);
 	first1.merge(second);
 
-	sizeLists(first1, my1);
-	sizeLists(second, my2);
 	printTwoLists(first1, second, my1, my2);
 
 
@@ -416,13 +452,6 @@ int main() {
 	printTwoLists(list1, list2, mylist1, mylist2);
 
 
-	printMethod("REVERSE ITERATOR");
-
-	emptyLists(list2, mylist2);
-	sizeLists(list2, mylist2);
-	printListsReverse(list2, mylist2);
-
-
 	printMethod("BACK AND FRONT");
 
 	for (int i = 0; i < 5; ++i) {
@@ -435,12 +464,63 @@ int main() {
 	printLists(list2, mylist2);
 
 
+	printMethod("REVERSE ITERATOR");
+
+	emptyLists(list2, mylist2);
+	sizeLists(list2, mylist2);
+	printListsReverse(list2, mylist2);
+
+
+	printMethod("SORT");
+
+	printLists(list2, mylist2);
+
+//	srand((unsigned)time(0));
+//	for (int i = 0; i < 100000; ++i) {
+//		int randomNum = rand() % 50;
+//		mylist2.push_back(randomNum);
+//		list2.push_back(randomNum);
+//	}
+
+//	printLists(list2, mylist2);
+
+	list2.sort();
+	mylist2.sort();
+
+	sizeLists(list2, mylist2);
+	printLists(list2, mylist2);
+
+
+	printMethod("CONST ITERATOR");
+
+	emptyLists(list2, mylist2);
+	sizeLists(list2, mylist2);
+	printListsConst(list2, mylist2);
+
+//	std::list<int>::const_iterator itConst1 = list2.begin();
+//	ft::list<int>::const_iterator myConstIt1 = mylist2.begin();
+
+//	*it = 50; // can
+//	*myIt = 50; // can
+//	*itConst1 = 50; // can`t
+//	*myConstIt1 = 50; // can`t
+
 	printMethod("TEST TEST TEST TEST TEST TEST TEST");
 
+//	while (itConst1 != list2.end()) {
+//		std::cout << *itConst1 << "\n";
+//		std::cout << *myConstIt1 << "\n";
+//		itConst1++;
+//		myConstIt1++;
+//	}
 
-
-
-
+//
+//	ft::list<int> largeList;
+//	for (int i = 1000000; i > 0; --i) {
+//		largeList.push_back(i);
+//	}
+//	largeList.sort();
+//	printLists(list2, largeList);
 
 	return (0);
 }

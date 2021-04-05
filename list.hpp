@@ -17,6 +17,10 @@ namespace ft {
 
 		template <class A>
 		friend class reverseIteratorList;
+
+		template <class A>
+		friend class constIteratorList;
+
 	private:
 		T data;
 		listNode *next;
@@ -125,12 +129,23 @@ namespace ft {
 		constIteratorList(listNode<T> *pointer) {
 			this->pointer = pointer;
 		}
-		constIteratorList(constIteratorList const &itConst){
-			*this = itConst;
+		constIteratorList(iteratorList<T> const &itConst): iteratorList<T>(itConst){
+//			*this = itConst;
 		}
-
 		~constIteratorList() {}
 
+		const T& operator*() {
+			return (this->pointer->data);
+		}
+
+		const T* operator->() {
+			return (&(this->pointer->data));
+		}
+
+		constIteratorList& operator=(const iteratorList<T> &it) {
+			this->pointer = it.pointer;
+			return (*this);
+		}
 
 	};
 
@@ -142,8 +157,8 @@ namespace ft {
 		typedef ptrdiff_t difference_type;
 		typedef listNode<T> node;
 		typedef iteratorList<T> iterator;
+		typedef constIteratorList<T> const_iterator;
 		typedef reverseIteratorList<T> reverse_iterator;
-//		typedef const iterator const_iterator;
 		typedef size_t size_type;
 //		typedef ptrdiff_t difference_type;
 
@@ -196,14 +211,15 @@ namespace ft {
 		}
 
 		template <class InputIterator>
-		void assign(InputIterator first, InputIterator last) {
+		void assign(InputIterator first, InputIterator last,
+			  typename std::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
 			this->clear();
-			insert(begin(), first, last);
+			insert(this->begin(), first, last);
 		}
 
 		void assign(size_type n, const value_type& val) {
 			this->clear();
-			insert(begin(), n, val);
+			insert(this->begin(), n, val);
 		}
 
 		void push_back(const value_type &val) {
@@ -343,17 +359,17 @@ namespace ft {
 			return (iterator (this->head->next));
 		}
 
-//		const_iterator begin() const {
-//			return (const_iterator (this->head->next));
-//		}
+		const_iterator begin() const {
+			return (const_iterator (this->head->next));
+		}
 
 		iterator end() {
 			return (iterator (this->last));
 		}
 
-//		const_iterator end() const {
-//			return (const_iterator (this->last));
-//		}
+		const_iterator end() const {
+			return (const_iterator (this->last));
+		}
 
 		reverse_iterator rbegin() {
 			return (reverse_iterator (this->last->prev));
@@ -396,7 +412,45 @@ namespace ft {
 			}
 		}
 
+
+		node* partition(node *left, node *right) {
+			node *i = left->prev;
+
+			node *start_left = left;
+			while (start_left != right) {
+				if (start_left->data <= right->data) {
+					i = (i == this->last) ? left : i->next;
+					swap(i->data, start_left->data);
+				}
+				start_left = start_left->next;
+			}
+			i = (i == this->last) ? left : i->next;
+			swap(i->data, right->data);
+			return i;
+		}
+
+		void quickSort(node *left, node *right) {
+//			std::cout << "Sort doing :)\n";
+			if (right != NULL && left != right && left != right->next)
+			{
+				node *p = partition(left, right);
+				quickSort(left, p->prev);
+				quickSort(p->next, right);
+			}
+		}
+
+//		template <class B>
 		void sort() {
+//			quickSort(head->next, );
+			node *p1 = partition(head->next, this->last->prev);
+
+			node *p2 = partition(head->next, this->last->prev);
+
+//			std::cout << " p1 = " << p1->data << "; p2 = " << p2->data << std::endl;
+			quickSort(p2->next, this->last->prev);
+			quickSort(p1->next, p2->prev);
+			quickSort(this->head->next, p1->prev);
+//			quickSort(head->next, this->last->prev);
 
 		}
 

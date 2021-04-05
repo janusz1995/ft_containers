@@ -43,6 +43,22 @@ void printTwoLists(ft::list<T> &myList, ft::list<T> &myList2) {
 }
 
 template<typename T>
+void printListsReverse(std::list<T> &list, ft::list<T> &myList) {
+
+	std::cout << BLUE << "Original List " << NC << " --->>> ";
+	for (typename std::list<T>::reverse_iterator it = list.rbegin();  it != list.rend() ; it++) {
+		std::cout << " | " << GREEN << *it << NC;
+	}
+	std::cout << " |\n";
+
+	std::cout << YELLOW << "My List " << NC << " --------->>> ";
+	for (typename ft::list<T>::reverse_iterator it = myList.rbegin();  it != myList.rend() ; it++) {
+		std::cout << " | " << GREEN << *it << NC;
+	}
+	std::cout << " |\n";
+}
+
+template<typename T>
 void printLists(std::list<T> &list, ft::list<T> &myList) {
 
 	std::cout << BLUE << "Original List " << NC << " --->>> ";
@@ -57,8 +73,6 @@ void printLists(std::list<T> &list, ft::list<T> &myList) {
 	}
 	std::cout << " |\n";
 }
-
-//template<typename T>
 
 void isEmpty(std::string str, bool empty, std::string color) {
 	std::cout << color << str << (!empty ? RED : GREEN) << empty << "\n" << NC;
@@ -401,7 +415,28 @@ int main() {
 
 	printTwoLists(list1, list2, mylist1, mylist2);
 
+
+	printMethod("REVERSE ITERATOR");
+
+	emptyLists(list2, mylist2);
+	sizeLists(list2, mylist2);
+	printListsReverse(list2, mylist2);
+
+
+	printMethod("BACK AND FRONT");
+
+	for (int i = 0; i < 5; ++i) {
+		list2.back() -= list2.front();
+		mylist2.back() -= mylist2.front();
+	}
+
+	emptyLists(list2, mylist2);
+	sizeLists(list2, mylist2);
+	printLists(list2, mylist2);
+
+
 	printMethod("TEST TEST TEST TEST TEST TEST TEST");
+
 
 
 

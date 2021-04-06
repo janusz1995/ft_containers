@@ -83,8 +83,6 @@ namespace ft {
 
 	template <class T> class reverseIteratorList : public iteratorList<T> {
 	public:
-//		template<typename myT, typename Alloc>
-//		friend class list;
 
 		reverseIteratorList() {}
 		reverseIteratorList(listNode<T> *pointer) {
@@ -129,9 +127,7 @@ namespace ft {
 		constIteratorList(listNode<T> *pointer) {
 			this->pointer = pointer;
 		}
-		constIteratorList(iteratorList<T> const &itConst): iteratorList<T>(itConst){
-//			*this = itConst;
-		}
+		constIteratorList(iteratorList<T> const &itConst): iteratorList<T>(itConst) {}
 		~constIteratorList() {}
 
 		const T& operator*() {
@@ -146,7 +142,6 @@ namespace ft {
 			this->pointer = it.pointer;
 			return (*this);
 		}
-
 	};
 
 	template < class T, class Alloc = std::allocator<T> > class list {
@@ -420,19 +415,30 @@ namespace ft {
 			while (start_left != right) {
 				if (start_left->data <= right->data) {
 					i = (i == this->last) ? left : i->next;
+//					node *tmp = start_left->next;
+//					swapNode(i, start_left);
+//					start_left = tmp->prev;
+//					swap(i, start_left);
+//					start_left = i;
 					swap(i->data, start_left->data);
+//					start_left = i;
 				}
 				start_left = start_left->next;
 			}
 			i = (i == this->last) ? left : i->next;
+
 			swap(i->data, right->data);
+//			node *tmp1 = i->next;
+//			swapNode(i, right);
+//			i = tmp1->prev;
+//			swap(i, right);
+//			i = right;
 			return i;
 		}
 
 		void quickSort(node *left, node *right) {
 //			std::cout << "Sort doing :)\n";
-			if (right != NULL && left != right && left != right->next)
-			{
+			if (right != this->last && left != right && left != right->next) {
 				node *p = partition(left, right);
 				quickSort(left, p->prev);
 				quickSort(p->next, right);
@@ -446,11 +452,15 @@ namespace ft {
 
 			node *p2 = partition(head->next, this->last->prev);
 
-//			std::cout << " p1 = " << p1->data << "; p2 = " << p2->data << std::endl;
+			for (node *it = this->head->next; it != this->last; it = it->next) {
+				std::cout << it->data << " ";
+			}
+
+			std::cout << "\n p1 = " << p1->data << "; p2 = " << p2->data << std::endl;
 			quickSort(p2->next, this->last->prev);
 			quickSort(p1->next, p2->prev);
 			quickSort(this->head->next, p1->prev);
-//			quickSort(head->next, this->last->prev);
+//			quickSort(this->head->next, this->last->prev);
 
 		}
 
@@ -528,6 +538,26 @@ namespace ft {
 			T tmp;
 		};
 
+		void swapNode(node *first, node *second) {
+
+			node *saveFirstNext = first->next;
+			node *saveFirstPrev = first->prev;
+
+			first->next = second->next;
+			second->next->prev = first;
+			first->prev = second->prev;
+			second->prev->next = first;
+
+			second->next = saveFirstNext;
+			saveFirstNext->prev = second;
+			second->prev = saveFirstPrev;
+			saveFirstPrev->next = second;
+//			swap(first->data, second->data);
+//			swap(first->next->prev, second->next->prev);
+//			swap(first->prev->next, second->prev->next);
+//			swap(first->next, second->next);
+//			swap(first->prev, second->prev);
+		}
 
 		template <typename TMP>
 		void swap(TMP &one, TMP &two) {

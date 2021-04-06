@@ -484,8 +484,10 @@ int main() {
 
 //	printLists(list2, mylist2);
 
+	std::cout << *it1 << " " << *myIt1 << std::endl;
 	list2.sort();
 	mylist2.sort();
+	std::cout << *it1 << " " << *myIt1 << std::endl;
 
 	sizeLists(list2, mylist2);
 	printLists(list2, mylist2);
@@ -504,6 +506,26 @@ int main() {
 //	*myIt = 50; // can
 //	*itConst1 = 50; // can`t
 //	*myConstIt1 = 50; // can`t
+
+
+	printMethod("ASSIGN");
+
+//	sizeLists(list1, mylist1);
+//	printLists(list1, mylist1);
+
+	printTwoLists(list1, list2, mylist1, mylist2);
+
+	list1.assign(5, 50);
+	mylist1.assign(5, 50);
+
+
+	std::cout << *it1 << " " << *myIt1 << std::endl;
+	printTwoLists(list1, list2, mylist1, mylist2);
+
+
+
+//	sizeLists(list1, mylist1);
+//	printLists(list1, mylist1);
 
 	printMethod("TEST TEST TEST TEST TEST TEST TEST");
 

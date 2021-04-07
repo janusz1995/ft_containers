@@ -512,6 +512,8 @@ int main() {
 	sizeLists(list2, mylist2);
 	printListsConst(list2, mylist2);
 
+
+	// ------------- try it -------------
 //	std::list<int>::const_iterator itConst1 = list2.begin();
 //	ft::list<int>::const_iterator myConstIt1 = mylist2.begin();
 
@@ -532,11 +534,22 @@ int main() {
 	mylist1.assign(5, 50);
 
 
-	std::cout << *it1 << " " << *myIt1 << std::endl;
+
+//	std::cout << *it1 << " " << *myIt1 << std::endl;
 	printTwoLists(list1, list2, mylist1, mylist2);
 
 
+	it1 = list2.begin();
+	myIt1 = mylist2.begin();
+	for (int i = 0; i < 3; ++i) {
+		it1++;
+		myIt1++;
+	}
 
+	list1.assign(it1, --list2.end());
+	mylist1.assign(myIt1, --mylist2.end());
+
+	printTwoLists(list1, list2, mylist1, mylist2);
 //	sizeLists(list1, mylist1);
 //	printLists(list1, mylist1);
 

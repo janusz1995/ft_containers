@@ -408,6 +408,61 @@ namespace ft {
 		}
 
 
+//		node* partition(node *left, node *right) {
+//			node *i = left->prev;
+//
+//			node *start_left = left;
+//			while (start_left != right) {
+//				if (start_left->data <= right->data) {
+//					i = (i == this->last) ? left : i->next;
+////					node *tmp = start_left->next;
+////					swapNode(i, start_left);
+////					start_left = tmp->prev;
+////					swap(i, start_left);
+////					start_left = i;
+//					swap(i->data, start_left->data);
+////					start_left = i;
+//				}
+//				start_left = start_left->next;
+//			}
+//			i = (i == this->last) ? left : i->next;
+//
+//			swap(i->data, right->data);
+////			node *tmp1 = i->next;
+////			swapNode(i, right);
+////			i = tmp1->prev;
+////			swap(i, right);
+////			i = right;
+//			return i;
+//		}
+//
+//		void quickSort(node *left, node *right) {
+////			std::cout << "Sort doing :)\n";
+//			if (right != this->last && left != right && left != right->next) {
+//				node *p = partition(left, right);
+//				quickSort(left, p->prev);
+//				quickSort(p->next, right);
+//			}
+//		}
+//
+////		template <class B>
+//		void sort() {
+//			node *p1 = partition(head->next, this->last->prev);
+//
+//			node *p2 = partition(head->next, this->last->prev);
+//
+////			for (node *it = this->head->next; it != this->last; it = it->next) {
+////				std::cout << it->data << " ";
+////			}
+//
+////			std::cout << "\n p1 = " << p1->data << "; p2 = " << p2->data << std::endl;
+//			quickSort(p2->next, this->last->prev);
+//			quickSort(p1->next, p2->prev);
+//			quickSort(this->head->next, p1->prev);
+////			quickSort(this->head->next, this->last->prev);
+//
+//		}
+
 		node* partition(node *left, node *right) {
 			node *i = left->prev;
 
@@ -416,52 +471,54 @@ namespace ft {
 				if (start_left->data <= right->data) {
 					i = (i == this->last) ? left : i->next;
 //					node *tmp = start_left->next;
-//					swapNode(i, start_left);
+//					swap_node(i, start_left);
 //					start_left = tmp->prev;
-//					swap(i, start_left);
-//					start_left = i;
 					swap(i->data, start_left->data);
-//					start_left = i;
 				}
 				start_left = start_left->next;
 			}
 			i = (i == this->last) ? left : i->next;
-
+//			node *tmp = i->next;
+//			swap_node(i, right);
+//			i = tmp->prev;
 			swap(i->data, right->data);
-//			node *tmp1 = i->next;
-//			swapNode(i, right);
-//			i = tmp1->prev;
-//			swap(i, right);
-//			i = right;
 			return i;
 		}
 
 		void quickSort(node *left, node *right) {
 //			std::cout << "Sort doing :)\n";
-			if (right != this->last && left != right && left != right->next) {
+			if (right != NULL && left != right && left != right->next)
+			{
+//				node *p1 = partition(left, );
+				// PARTITION(left, p1.prev)и PARTITION(p2.next, right
+//				int p = partition(A, l, h); /* Partitioning index */
+//				quickSort(A, l, p - 1);
+//				quickSort(A, p + 1, h);
+//				node *p1 = ;
 				node *p = partition(left, right);
 				quickSort(left, p->prev);
 				quickSort(p->next, right);
+//				node *p = partition(left, right);
+//				quickSort(left, p->prev);
+//				quickSort(p->next, right);
 			}
 		}
 
 //		template <class B>
 		void sort() {
-//			quickSort(head->next, );
-			node *p1 = partition(head->next, this->last->prev);
 
-			node *p2 = partition(head->next, this->last->prev);
 
-			for (node *it = this->head->next; it != this->last; it = it->next) {
-				std::cout << it->data << " ";
-			}
+//			node *p1 = partition(head->next, this->last->prev);
 
-			std::cout << "\n p1 = " << p1->data << "; p2 = " << p2->data << std::endl;
-			quickSort(p2->next, this->last->prev);
-			quickSort(p1->next, p2->prev);
-			quickSort(this->head->next, p1->prev);
-//			quickSort(this->head->next, this->last->prev);
+//			node *p2 = partition(head->next, this->last->prev);
 
+//			std::cout << " p1 = " << p1->data << "; p2 = " << p2->data << std::endl;
+//			quickSort(p2->next, this->last->prev);
+//			quickSort(p1->next, p2->prev);
+//			quickSort(this->head->next, p1->prev);
+//			quickSort(left, right);
+
+			quickSort(head->next, last->prev);
 		}
 
 		template <class Compare>
@@ -579,6 +636,46 @@ namespace ft {
 
 		}
 
+
+		bool are_they_neighbours(node* A,node* B) {
+			return ((A->next == B && B->prev == A) || (A->prev == B && B->next == A));
+		}
+
+		void refresh_outer_pointers(node* A) {
+			A->prev->next = A;
+			A->next->prev = A;
+		}
+
+		void swap_node(node* A, node* B) {
+			node* swapper[4];
+			node* tmp;
+
+			if (A == B) {
+				return ;
+			}
+			if (B->next == A) {
+				tmp = A;
+				A = B;
+				B = tmp;
+			}
+			swapper[0] = A->prev;
+			swapper[1] = B->prev;
+			swapper[2] = A->next;
+			swapper[3] = B->next;
+			if (are_they_neighbours(A,B)) {
+				A->prev = swapper[2];
+				B->prev = swapper[0];
+				A->next = swapper[3];
+				B->next = swapper[1];
+			} else {
+				A->prev = swapper[1];
+				B->prev = swapper[0];
+				A->next = swapper[3];
+				B->next = swapper[2];
+			}
+			refresh_outer_pointers(A);
+			refresh_outer_pointers(B);
+		}
 //		void insert(iterator position, iterator second) {
 //			node *itFirst = position.pointer;
 //			node *itSecond = second.pointer;

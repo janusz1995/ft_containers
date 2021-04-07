@@ -475,19 +475,32 @@ int main() {
 
 	printLists(list2, mylist2);
 
-//	srand((unsigned)time(0));
-//	for (int i = 0; i < 100000; ++i) {
-//		int randomNum = rand() % 50;
-//		mylist2.push_back(randomNum);
-//		list2.push_back(randomNum);
+
+//	ft::list<int> List1;
+//	std::list<int> List2;
+//	for (int i = 1000000; i > 0; --i) {
+//		List1.push_back(i);
+//		List2.push_back(i);
 //	}
+//
+//	std::clock_t start;
+//	double duration;
+//
+//	start = std::clock();
+//	List2.sort();
+//	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+//	std::cout<<"printf: "<< duration <<'\n';
+//
+//	std::clock_t start1 = std::clock();
+//	List1.sort();
+//	duration = ( std::clock() - start1 ) / (double) CLOCKS_PER_SEC;
+//	std::cout<<"printf: "<< duration <<'\n';
 
-//	printLists(list2, mylist2);
 
-	std::cout << *it1 << " " << *myIt1 << std::endl;
 	list2.sort();
 	mylist2.sort();
-	std::cout << *it1 << " " << *myIt1 << std::endl;
+//	std::cout << *it1 << " " << *myIt1 << std::endl;
+//	std::cout << *it1 << " " << *myIt1 << std::endl;
 
 	sizeLists(list2, mylist2);
 	printLists(list2, mylist2);

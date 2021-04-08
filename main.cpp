@@ -164,7 +164,13 @@ void sizeLists(std::list<T> &original, ft::list<T> &copy) {
 	printSize("My List Size:       ", copy.size(), MYLIST);
 }
 
+bool same_integral_part (double first, double second) {
+	return ( int(first) > int(second) );
+}
 
+bool mycomparison (double first, double second) {
+	return ( int(first)<int(second) );
+}
 
 
 
@@ -470,8 +476,11 @@ int main() {
 
 	printLists(list2, mylist2);
 
-	list2.sort();
-	mylist2.sort();
+
+//	list2.resize(5); // TODO    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//	list2.sort();
+//	mylist2.resize(5);
+//	mylist2.sort();
 //	std::cout << *it1 << " " << *myIt1 << std::endl;
 
 	sizeLists(list2, mylist2);
@@ -522,15 +531,13 @@ int main() {
 
 //	list1.assign(list2.rbegin(), list2.rend());
 //	mylist1.assign(mylist2.rbegin(), mylist2.rend());
-
 	printTwoLists(list1, list2, mylist1, mylist2);
 
 
 	printMethod("MAX SIZE");
 	std::cout << BLUE << "Original List " << NC << " --->>> " << LIGHT_PURPLE << list1.max_size() << "\n" << NC;
 	std::cout << YELLOW << "My List " << NC << " --------->>> " << LIGHT_PURPLE << mylist1.max_size() << "\n" << NC;
-//	std::cout <<  list1.max_size();
-//	mylist1.max_size();
+
 
 	printMethod("OPERATOR =");
 
@@ -541,7 +548,93 @@ int main() {
 
 	printTwoLists(list1, list2, mylist1, mylist2);
 
+
+	printMethod("UNIQUE");
+
+	list1.assign(5, 100);
+	mylist1.assign(5, 100);
+	list1.push_front(200);
+	mylist1.push_front(200);
+
+	sizeLists(list1, mylist1);
+	printLists(list1, mylist1);
+
+	list1.unique();
+	mylist1.unique();
+
+	sizeLists(list1, mylist1);
+	printLists(list1, mylist1);
+
+	for (int i = 0; i < 3; ++i) {
+		list1.push_front(300);
+		mylist1.push_front(300);
+	}
+
+	sizeLists(list1, mylist1);
+	printLists(list1, mylist1);
+
+	list1.unique(same_integral_part);
+	mylist1.unique(same_integral_part);
+
+	sizeLists(list1, mylist1);
+	printLists(list1, mylist1);
+
 	printMethod("TEST TEST TEST TEST TEST TEST TEST");
+
+//	ft::list<double> first3, second3;
+//	std::list<double> first2, second2;
+//
+//	first3.push_back (3.1);
+//	first3.push_back (2.2);
+//	first3.push_back (2.9);
+//
+//	second3.push_back (3.7);
+//	second3.push_back (7.1);
+//	second3.push_back (1.4);
+//
+//	first2.push_back (3.1);
+//	first2.push_back (2.2);
+//	first2.push_back (2.9);
+//
+//	second2.push_back (3.7);
+//	second2.push_back (7.1);
+//	second2.push_back (1.4);
+////
+//	first2.sort();
+//	second2.sort();
+//	first3.sort();
+//	second3.sort();
+//
+//	first2.merge(second2);
+//	first3.merge(second3);
+//
+//
+//	std::cout << "first contains:";
+//	for (std::list<double>::iterator it=first2.begin(); it!=first2.end(); ++it)
+//		std::cout << ' ' << *it;
+//	std::cout << '\n';
+//
+//	std::cout << "my first contains:";
+//	for (ft::list<double>::iterator it=first3.begin(); it!=first3.end(); ++it)
+//		std::cout << ' ' << *it;
+//	std::cout << '\n';
+//	// (second is now empty)
+//
+//	second2.push_back (2.1);
+//	second3.push_back (2.1);
+//
+//	first2.merge(second2, mycomparison);
+//	first3.merge(second3, mycomparison);
+//
+//	std::cout << "first contains:";
+//	for (std::list<double>::iterator it=first2.begin(); it!=first2.end(); ++it)
+//		std::cout << ' ' << *it;
+//	std::cout << '\n';
+//
+//	std::cout << "my first contains:";
+//	for (ft::list<double>::iterator it=first3.begin(); it!=first3.end(); ++it)
+//		std::cout << ' ' << *it;
+//	std::cout << '\n';
 
 //	while (itConst1 != list2.end()) {
 //		std::cout << *itConst1 << "\n";

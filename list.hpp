@@ -298,7 +298,7 @@ namespace ft {
 			myNode->next = it;
 			it->prev = myNode;
 			list_size++;
-			return (myNode); // TODO need check valid iterator
+			return (myNode);
 		}
 
 		void insert(iterator position, size_type n, const value_type& val) {
@@ -318,37 +318,47 @@ namespace ft {
 
 		void merge(list &x) {
 
-			node *it = this->head->next;
-			node *itX = x.head->next;
-			node *save;
+			if (&x == this) { return; }
+			iterator a = this->begin();
+			iterator b = x.begin();
+			iterator next;
 
-			while (itX != x.last) {
-				if (it->data > itX->data) {
-					save = itX->next;
-					insert(it, itX);
-					this->list_size++;
-					x.list_size--;
-					itX = save;
-				} else {
-					it = it->next;
-					if (it == this->last)
-						break;
+			while (b != x.end()) {
+				if (*a > *b) {
+					next = ++b;
+					this->splice(a, x, --b);
+					b = next;
 				}
+				else if (++a == this->last) { break; }
 			}
-			while (itX != x.last) {
-				save = itX->next;
-				insert(it, itX);
-				this->list_size++;
-				x.list_size--;
-				itX = save;
+			while (b != x.end()) {
+				next = ++b;
+				splice(a, x, --b);
+				b = next;
 			}
-			x.head->next = x.last;
-			x.last->prev = x.head;
 		}
 
 		template <class Compare>
 		void merge(list& x, Compare comp) {
 
+			if (&x == this) { return; }
+			iterator a = this->begin();
+			iterator b = x.begin();
+			iterator next;
+
+			while (b != x.end()) {
+				if (comp(*b, *a)) {
+					next = ++b;
+					this->splice(a, x, --b);
+					b = next;
+				}
+				else if (++a == this->last) { break; }
+			}
+			while (b != x.end()) {
+				next = ++b;
+				splice(a, x, --b);
+				b = next;
+			}
 		}
 
 		iterator erase(iterator position) {
@@ -517,18 +527,21 @@ namespace ft {
 			while (start_left != right) {
 				if (start_left->data <= right->data) {
 					i = (i == this->last) ? left : i->next;
-//					node *tmp = start_left->next;
-//					swap_node(i, start_left);
-//					start_left = tmp->prev;
-					swap(i->data, start_left->data);
+//					iterator a = begin();
+//					a.pointer.
+					node *tmp = start_left->next;
+					swapNode(i, start_left);
+					start_left = tmp->prev;
+
+//					swap(i->data, start_left->data);
 				}
 				start_left = start_left->next;
 			}
 			i = (i == this->last) ? left : i->next;
-//			node *tmp = i->next;
-//			swap_node(i, right);
-//			i = tmp->prev;
-			swap(i->data, right->data);
+			node *tmp = i->next;
+			swapNode(i, right);
+			i = tmp->prev;
+//			swap(i->data, right->data);
 			return i;
 		}
 
@@ -555,17 +568,17 @@ namespace ft {
 		void sort() {
 
 
-//			node *p1 = partition(head->next, this->last->prev);
+			node *p1 = partition(head->next, this->last->prev);
 
-//			node *p2 = partition(head->next, this->last->prev);
+			node *p2 = partition(head->next, this->last->prev);
 
 //			std::cout << " p1 = " << p1->data << "; p2 = " << p2->data << std::endl;
-//			quickSort(p2->next, this->last->prev);
-//			quickSort(p1->next, p2->prev);
-//			quickSort(this->head->next, p1->prev);
+			quickSort(p2->next, this->last->prev);
+			quickSort(p1->next, p2->prev);
+			quickSort(this->head->next, p1->prev);
 //			quickSort(left, right);
 
-			quickSort(head->next, last->prev);
+//			quickSort(head->next, last->prev);
 		}
 
 		template <class Compare>
@@ -610,7 +623,20 @@ namespace ft {
 		}
 
 		void unique() {
+			if (this->list_size < 2) {
+				return;
+			}
 
+			iterator first = begin();
+			iterator nextFirst = ++begin();
+			while (nextFirst != last) {
+				if (*first == *nextFirst) {
+					nextFirst = erase(nextFirst);
+				} else {
+					first++;
+					nextFirst++;
+				}
+			}
 		}
 
 		template <class BinaryPredicate>
@@ -620,14 +646,16 @@ namespace ft {
 				return;
 			}
 
-			node *first = head->next;
-			node *nextFirst = first->next;
+			iterator first = begin();
+			iterator nextFirst = ++begin();
+//			node *first = head->next;
+//			node *nextFirst = first->next;
 			while (nextFirst != last) {
-				if (binary_pred(first, nextFirst)) {
-					 nextFirst = erase(nextFirst);
+				if (binary_pred(*first, *nextFirst)) {
+					nextFirst = erase(nextFirst);
 				} else {
-					first = first->next;
-					nextFirst = first->next;
+					first++;
+					nextFirst++;
 				}
 			}
 		}

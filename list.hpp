@@ -21,6 +21,9 @@ namespace ft {
 		template <class A>
 		friend class constIteratorList;
 
+		template <class A>
+		friend class constReverseIteratorList;
+
 	private:
 		T data;
 		listNode *next;
@@ -81,6 +84,29 @@ namespace ft {
 	};
 
 
+	template <class T> class constIteratorList : public iteratorList<T> {
+	public:
+		constIteratorList() {}
+		constIteratorList(listNode<T> *pointer) {
+			this->pointer = pointer;
+		}
+		constIteratorList(iteratorList<T> const &itConst): iteratorList<T>(itConst) {}
+		~constIteratorList() {}
+
+		const T& operator*() {
+			return (this->pointer->data);
+		}
+
+		const T* operator->() {
+			return (&(this->pointer->data));
+		}
+
+		constIteratorList& operator=(const iteratorList<T> &it) {
+			this->pointer = it.pointer;
+			return (*this);
+		}
+	};
+
 	template <class T> class reverseIteratorList : public iteratorList<T> {
 	public:
 
@@ -119,16 +145,17 @@ namespace ft {
 		}
 	};
 
-
-
-	template <class T> class constIteratorList : public iteratorList<T> {
+	template <class T> class constReverseIteratorList : public reverseIteratorList<T> {
 	public:
-		constIteratorList() {}
-		constIteratorList(listNode<T> *pointer) {
+
+		constReverseIteratorList() {}
+		constReverseIteratorList(listNode<T> *pointer) {
 			this->pointer = pointer;
 		}
-		constIteratorList(iteratorList<T> const &itConst): iteratorList<T>(itConst) {}
-		~constIteratorList() {}
+		constReverseIteratorList(reverseIteratorList<T> const &itConst): reverseIteratorList<T>(itConst) {
+//			this->pointer = itConst.pointer;
+		}
+		~constReverseIteratorList() {}
 
 		const T& operator*() {
 			return (this->pointer->data);
@@ -138,7 +165,7 @@ namespace ft {
 			return (&(this->pointer->data));
 		}
 
-		constIteratorList& operator=(const iteratorList<T> &it) {
+		constReverseIteratorList& operator=(const reverseIteratorList<T> &it) {
 			this->pointer = it.pointer;
 			return (*this);
 		}
@@ -154,6 +181,7 @@ namespace ft {
 		typedef iteratorList<T> iterator;
 		typedef constIteratorList<T> const_iterator;
 		typedef reverseIteratorList<T> reverse_iterator;
+		typedef constReverseIteratorList<T> const_reverse_iterator;
 		typedef size_t size_type;
 //		typedef ptrdiff_t difference_type;
 
@@ -167,34 +195,46 @@ namespace ft {
 
 
 		explicit list(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) {
-			// TODO allocate memory for head and last, next step - add N elements in list
 			head = new node();
 			last = new node();
 			last->prev = head;
 			head->next = last;
 			list_size = 0;
 			for (int i = 0; i < n; ++i) {
-				this->push_back(val);
+				push_back(val);
 			}
 		}
 
-//		explicit list(const list& x) {
-//
-//		}
+		explicit list(const list& x) {
+			list_size = 0;
+			head = new node();
+			last = new node();
+			last->prev = head;
+			head->next = last;
+			assign(x.begin(), x.end());
+		}
 
-//		template <class InputIterator>
-//		list(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) {
-//
-//		}
+		template <class InputIterator>
+		list(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
+				typename std::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
+			list_size = 0;
+			head = new node();
+			this->last = new node();
+			this->last->prev = head;
+			head->next = this->last;
+			assign(first, last);
+		}
 
-		list& operator=(list const &List) {
-			// TODO allocate memory for head and last elements, next step - copy all elements (allocate memory too)
-			if (&List != this) {
+		list& operator=(list const &x) {
+			if (&x != this) {
+				clear();
+				delete head;
+				delete last;
 				head = new node();
 				last = new node();
-//				this->head = List.head;
-//				this->last = List.last;
-//				this->list_size = List.list_size;
+				last->prev = head;
+				head->next = last;
+				assign(x.begin(), x.end());
 			}
 			return (*this);
 		}
@@ -233,19 +273,21 @@ namespace ft {
 			erase(head->next);
 		}
 
-		T& front() {
+		value_type& front() {
 			return (this->head->next->data);
 		}
 
-//		const_reference front() const;
+		const value_type& front() const {
+			return (this->head->next->data);
+		}
 
-		T& back() {
+		value_type& back() {
 			return (this->last->prev->data);
 		}
 
-//		const_reference back() const {
-//
-//		}
+		const value_type& back() const {
+			return (this->last->prev->data);
+		}
 
 		iterator insert(iterator position, const value_type &val) {
 			node *myNode = new node(val);
@@ -261,7 +303,7 @@ namespace ft {
 
 		void insert(iterator position, size_type n, const value_type& val) {
 			for (int i = 0; i < n; ++i) {
-			 	position = ++insert(position, val); // TODO increase iterator
+			 	position = ++insert(position, val);
 			}
 		}
 
@@ -370,12 +412,17 @@ namespace ft {
 			return (reverse_iterator (this->last->prev));
 		}
 
-//		const_reverse_iterator rbegin() const {}
+		const_reverse_iterator rbegin() const {
+			return (const_reverse_iterator (this->last->prev));
+		}
 
 		reverse_iterator rend() {
 			return (reverse_iterator (this->head));
 		}
-//		const_reverse_iterator rend() const {}
+
+		const_reverse_iterator rend() const {
+			return (const_reverse_iterator (this->head));
+		}
 
 		void resize(size_type n, value_type val = value_type()) {
 			iterator it = this->begin();
@@ -569,7 +616,23 @@ namespace ft {
 		template <class BinaryPredicate>
 		void unique(BinaryPredicate binary_pred) {
 
+			if (this->list_size < 2) {
+				return;
+			}
+
+			node *first = head->next;
+			node *nextFirst = first->next;
+			while (nextFirst != last) {
+				if (binary_pred(first, nextFirst)) {
+					 nextFirst = erase(nextFirst);
+				} else {
+					first = first->next;
+					nextFirst = first->next;
+				}
+			}
 		}
+
+		// |a|b|c|d|e|f|f|
 
 		size_type max_size() const {
 			return (std::numeric_limits<size_type>::max() / sizeof(node));

@@ -16,34 +16,13 @@
 #define RED "\e[0;31m"
 #define LIGHT_RED '\e[1;31m'
 #define PURPLE "\e[0;35m"
-#define LIGHT_PURPLE '\e[1;35m'
+#define LIGHT_PURPLE "\e[1;35m"
 #define BROWN '\e[0;33m'
 #define YELLOW "\e[1;33m"
 #define GRAY '\e[0;30m'
 #define LIGHT_GRAY '\e[0;37m'
 #define ORIGINAL "\e[0;34m"
 #define MYLIST "\e[1;33m"
-
-
-//class Timer {
-//private:
-//	// Псевдонимы типов используются для удобного доступа к вложенным типам
-//	using clock_t = std::chrono::high_resolution_clock;
-//	using second_t = std::chrono::duration<double, std::ratio<1> >;
-//
-//	std::chrono::time_point<clock_t> m_beg;
-//
-//public:
-//	Timer() : m_beg(clock_t::now()) {}
-//
-//	void reset() {
-//		m_beg = clock_t::now();
-//	}
-//
-//	double elapsed() const {
-//		return std::chrono::duration_cast<second_t>(clock_t::now() - m_beg).count();
-//	}
-//};
 
 
 
@@ -77,6 +56,22 @@ void printListsReverse(std::list<T> &list, ft::list<T> &myList) {
 
 	std::cout << YELLOW << "My List " << NC << " --------->>> ";
 	for (typename ft::list<T>::reverse_iterator it = myList.rbegin();  it != myList.rend() ; it++) {
+		std::cout << " | " << GREEN << *it << NC;
+	}
+	std::cout << " |\n";
+}
+
+template<typename T>
+void printListsConstReverse(std::list<T> &list, ft::list<T> &myList) {
+
+	std::cout << BLUE << "Original List " << NC << " --->>> ";
+	for (typename std::list<T>::const_reverse_iterator it = list.rbegin();  it != list.rend() ; it++) {
+		std::cout << " | " << GREEN << *it << NC;
+	}
+	std::cout << " |\n";
+
+	std::cout << YELLOW << "My List " << NC << " --------->>> ";
+	for (typename ft::list<T>::const_reverse_iterator it = myList.rbegin();  it != myList.rend() ; it++) {
 		std::cout << " | " << GREEN << *it << NC;
 	}
 	std::cout << " |\n";
@@ -475,31 +470,8 @@ int main() {
 
 	printLists(list2, mylist2);
 
-
-//	ft::list<int> List1;
-//	std::list<int> List2;
-//	for (int i = 1000000; i > 0; --i) {
-//		List1.push_back(i);
-//		List2.push_back(i);
-//	}
-//
-//	std::clock_t start;
-//	double duration;
-//
-//	start = std::clock();
-//	List2.sort();
-//	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
-//	std::cout<<"printf: "<< duration <<'\n';
-//
-//	std::clock_t start1 = std::clock();
-//	List1.sort();
-//	duration = ( std::clock() - start1 ) / (double) CLOCKS_PER_SEC;
-//	std::cout<<"printf: "<< duration <<'\n';
-
-
 	list2.sort();
 	mylist2.sort();
-//	std::cout << *it1 << " " << *myIt1 << std::endl;
 //	std::cout << *it1 << " " << *myIt1 << std::endl;
 
 	sizeLists(list2, mylist2);
@@ -513,6 +485,12 @@ int main() {
 	printListsConst(list2, mylist2);
 
 
+	printMethod("CONST REVERSE ITERATOR");
+
+	emptyLists(list2, mylist2);
+	sizeLists(list2, mylist2);
+	printListsConstReverse(list2, mylist2);
+
 	// ------------- try it -------------
 //	std::list<int>::const_iterator itConst1 = list2.begin();
 //	ft::list<int>::const_iterator myConstIt1 = mylist2.begin();
@@ -525,19 +503,12 @@ int main() {
 
 	printMethod("ASSIGN");
 
-//	sizeLists(list1, mylist1);
-//	printLists(list1, mylist1);
-
 	printTwoLists(list1, list2, mylist1, mylist2);
 
 	list1.assign(5, 50);
 	mylist1.assign(5, 50);
 
-
-
-//	std::cout << *it1 << " " << *myIt1 << std::endl;
 	printTwoLists(list1, list2, mylist1, mylist2);
-
 
 	it1 = list2.begin();
 	myIt1 = mylist2.begin();
@@ -549,9 +520,26 @@ int main() {
 	list1.assign(it1, --list2.end());
 	mylist1.assign(myIt1, --mylist2.end());
 
+//	list1.assign(list2.rbegin(), list2.rend());
+//	mylist1.assign(mylist2.rbegin(), mylist2.rend());
+
 	printTwoLists(list1, list2, mylist1, mylist2);
-//	sizeLists(list1, mylist1);
-//	printLists(list1, mylist1);
+
+
+	printMethod("MAX SIZE");
+	std::cout << BLUE << "Original List " << NC << " --->>> " << LIGHT_PURPLE << list1.max_size() << "\n" << NC;
+	std::cout << YELLOW << "My List " << NC << " --------->>> " << LIGHT_PURPLE << mylist1.max_size() << "\n" << NC;
+//	std::cout <<  list1.max_size();
+//	mylist1.max_size();
+
+	printMethod("OPERATOR =");
+
+	printTwoLists(list1, list2, mylist1, mylist2);
+
+	list1 = list2;
+	mylist1 = mylist2;
+
+	printTwoLists(list1, list2, mylist1, mylist2);
 
 	printMethod("TEST TEST TEST TEST TEST TEST TEST");
 

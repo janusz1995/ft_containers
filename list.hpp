@@ -777,6 +777,68 @@ namespace ft {
 //			itFirst->prev = itSecond;
 //		}
 	};
+
+	template <class T, class Alloc>
+	bool operator==(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs) {
+		iteratorList<T> itList1 = lhs.begin();
+		iteratorList<T> itList2 = rhs.begin();
+		if (lhs.size() == rhs.size()) {
+			while (itList1 != lhs.end()) {
+				if (*itList1 != *itList2) {
+					return (false);
+				}
+				++itList1;
+				++itList2;
+			}
+			return (true);
+		}
+		return (false);
+	}
+
+	template <class T, class Alloc>
+	bool operator!=(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs) {
+		return (!(lhs == rhs));
+	}
+
+	template <class T, class Alloc>
+	bool operator<(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs) {
+		iteratorList<T> itList1 = lhs.begin();
+		iteratorList<T> itList2 = rhs.begin();
+		while (itList1 != lhs.end()) {
+			if (*itList1 < *itList2) {
+				return (true);
+			}
+			else if (*itList1 == *itList2) {
+				++itList1;
+				++itList2;
+			} else {
+				return (false);
+			}
+		}
+		if (itList2 != rhs.end())
+			return (true);
+		else
+			return (false);
+	}
+
+	template <class T, class Alloc>
+	bool operator<=(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs) {
+		return (!(rhs < lhs));
+//		!(b<a)
+	}
+
+	template <class T, class Alloc>
+	bool operator>(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs) {
+		return (rhs < lhs);
+	}
+
+	template <class T, class Alloc>
+	bool operator>=(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs) {
+		return (!(lhs < rhs));
+//		!(a<b)
+	}
+
 }
+
 
 #endif

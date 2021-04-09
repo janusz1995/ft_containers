@@ -1,7 +1,6 @@
 #include <iostream>
 #include "list.hpp"
 #include <list>
-//#include <chrono>
 
 #define NC "\e[0m"
 #define WHITE '\e[1;37m'
@@ -579,8 +578,29 @@ int main() {
 	sizeLists(list1, mylist1);
 	printLists(list1, mylist1);
 
+
 	printMethod("TEST TEST TEST TEST TEST TEST TEST");
 
+	mylist2 = mylist1;
+	list2 = list1;
+
+	printTwoLists(mylist1, mylist2);
+	if (mylist2 != mylist1) {
+		std::cout << "Lists NOT EQUAL\n";
+	} else {
+		std::cout << "Lists EQUAL\n";
+	}
+	mylist2.pop_front();
+
+	printTwoLists(mylist1, mylist2);
+
+	if (mylist2 < mylist1) {
+		std::cout << "List 2 less then List 1\n";
+	} else {
+		std::cout << "List 1 less then List 2\n";
+	}
+
+	printTwoLists(mylist1, mylist2);
 //	ft::list<double> first3, second3;
 //	std::list<double> first2, second2;
 //

@@ -579,97 +579,55 @@ int main() {
 	printLists(list1, mylist1);
 
 
-	printMethod("TEST TEST TEST TEST TEST TEST TEST");
+	printMethod("RELATIONAL OPERATORS");
 
 	mylist2 = mylist1;
 	list2 = list1;
 
 	printTwoLists(mylist1, mylist2);
-	if (mylist2 != mylist1) {
-		std::cout << "Lists NOT EQUAL\n";
-	} else {
-		std::cout << "Lists EQUAL\n";
-	}
-	mylist2.pop_front();
 
-	printTwoLists(mylist1, mylist2);
+    std::cout << RED << "*****" << CYAN << " Operator == " << RED << "*****\n";
+    if (mylist2 == mylist1)
+        std::cout << PURPLE << "Lists EQUALS\n";
 
-	if (mylist2 < mylist1) {
-		std::cout << "List 2 less then List 1\n";
-	} else {
-		std::cout << "List 1 less then List 2\n";
-	}
+    std::cout << RED << "*****" << CYAN << " Operator <= " << RED << "*****\n";
+    if (mylist2 <= mylist1)
+        std::cout << PURPLE << "List 1 more or EQUAL List 2\n";
 
-	printTwoLists(mylist1, mylist2);
-//	ft::list<double> first3, second3;
-//	std::list<double> first2, second2;
-//
-//	first3.push_back (3.1);
-//	first3.push_back (2.2);
-//	first3.push_back (2.9);
-//
-//	second3.push_back (3.7);
-//	second3.push_back (7.1);
-//	second3.push_back (1.4);
-//
-//	first2.push_back (3.1);
-//	first2.push_back (2.2);
-//	first2.push_back (2.9);
-//
-//	second2.push_back (3.7);
-//	second2.push_back (7.1);
-//	second2.push_back (1.4);
-////
-//	first2.sort();
-//	second2.sort();
-//	first3.sort();
-//	second3.sort();
-//
-//	first2.merge(second2);
-//	first3.merge(second3);
-//
-//
-//	std::cout << "first contains:";
-//	for (std::list<double>::iterator it=first2.begin(); it!=first2.end(); ++it)
-//		std::cout << ' ' << *it;
-//	std::cout << '\n';
-//
-//	std::cout << "my first contains:";
-//	for (ft::list<double>::iterator it=first3.begin(); it!=first3.end(); ++it)
-//		std::cout << ' ' << *it;
-//	std::cout << '\n';
-//	// (second is now empty)
-//
-//	second2.push_back (2.1);
-//	second3.push_back (2.1);
-//
-//	first2.merge(second2, mycomparison);
-//	first3.merge(second3, mycomparison);
-//
-//	std::cout << "first contains:";
-//	for (std::list<double>::iterator it=first2.begin(); it!=first2.end(); ++it)
-//		std::cout << ' ' << *it;
-//	std::cout << '\n';
-//
-//	std::cout << "my first contains:";
-//	for (ft::list<double>::iterator it=first3.begin(); it!=first3.end(); ++it)
-//		std::cout << ' ' << *it;
-//	std::cout << '\n';
+    std::cout << RED << "*****" << CYAN << " Operator >= " << RED << "*****\n";
+    if (mylist2 >= mylist1)
+        std::cout << PURPLE << "List 2 more or EQUAL List 1\n";
 
-//	while (itConst1 != list2.end()) {
-//		std::cout << *itConst1 << "\n";
-//		std::cout << *myConstIt1 << "\n";
-//		itConst1++;
-//		myConstIt1++;
-//	}
+    mylist2.pop_front();
+    printTwoLists(mylist1, mylist2);
 
-//
-//	ft::list<int> largeList;
-//	for (int i = 1000000; i > 0; --i) {
-//		largeList.push_back(i);
-//	}
-//	largeList.sort();
-//	printLists(list2, largeList);
+    std::cout << RED << "*****" << CYAN << " Operator != " << RED << "*****\n";
+    if (mylist2 != mylist1)
+        std::cout << PURPLE << "Lists NOT EQUALS\n";
+
+    std::cout << RED << "*****" << CYAN << " Operator < " << RED << "*****\n";
+    if (mylist2 < mylist1)
+        std::cout << PURPLE << "List 1 more than List 2\n";
+
+    mylist1.pop_front();
+    mylist1.pop_front();
+    printTwoLists(mylist1, mylist2);
+
+    std::cout << RED << "*****" << CYAN << " Operator > " << RED << "*****\n";
+    if (mylist2 > mylist1)
+        std::cout << PURPLE << "List 2 more than List 1\n";
+
+
+    printMethod("TEST TEST TEST TEST TEST TEST TEST");
+
+
+
+
+
+
+
+
+
 
 	return (0);
 }

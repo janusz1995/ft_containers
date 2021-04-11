@@ -171,7 +171,7 @@ namespace ft {
 		}
 	};
 
-	template < class T, class Alloc = std::allocator<T> > class list {
+		template < class T, class Alloc = std::allocator<T> > class list {
 	public:
 		typedef T value_type;
 		typedef Alloc allocator_type;
@@ -824,7 +824,6 @@ namespace ft {
 	template <class T, class Alloc>
 	bool operator<=(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs) {
 		return (!(rhs < lhs));
-//		!(b<a)
 	}
 
 	template <class T, class Alloc>
@@ -835,7 +834,11 @@ namespace ft {
 	template <class T, class Alloc>
 	bool operator>=(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs) {
 		return (!(lhs < rhs));
-//		!(a<b)
+	}
+
+	template <class T, class Alloc>
+	void swap(list<T,Alloc>& x, list<T,Alloc>& y) {
+		x.swap(y);
 	}
 
 }

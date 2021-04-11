@@ -618,14 +618,16 @@ int main() {
         std::cout << PURPLE << "List 2 more than List 1\n";
 
 
-    printMethod("TEST TEST TEST TEST TEST TEST TEST");
+    printMethod("SWAP (list 1, list 2)");
 
+	list1.pop_front();
+	list1.pop_front();
+	list2.pop_front();
 
-
-
-
-
-
+	printTwoLists(list1, list2, mylist1, mylist2);
+	std::swap(list1, list2);
+	ft::swap(mylist1, mylist2);
+	printTwoLists(list1, list2, mylist1, mylist2);
 
 
 

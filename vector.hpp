@@ -23,9 +23,9 @@ namespace ft {
 		explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) {
 			capacity = n;
 			size_vector = n;
-			data = alloc.allocate(n, val);
+			data = alloc.allocate(n);
 			for (int i = 0; i < n; ++i) {
-				alloc.construct(data + i, data[i]);
+				alloc.construct(data + i, val);
 			}
 		}
 
@@ -35,6 +35,10 @@ namespace ft {
 		}
 
 		vector(const vector& x) {
+
+		}
+
+		~vector() {
 
 		}
 

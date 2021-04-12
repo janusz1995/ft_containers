@@ -4,6 +4,64 @@
 
 namespace ft {
 
+	template <class T> class iteratorVector {
+	protected:
+		T *pointer;
+	public:
+//		template<typename myT, typename Alloc>
+//		friend class list;
+
+		iteratorVector(T *pointer = NULL):pointer(pointer) {}
+
+		bool operator==(iteratorVector const &itV) {
+			return (this->pointer == itV.pointer);
+		}
+
+		bool operator!=(iteratorVector const &itV) {
+			return (!(*this == itV));
+		}
+
+		T& operator*() {
+			return (this->pointer);
+
+
+		}
+
+		T* operator->() {
+			return (&(this->pointer));
+		}
+
+		iteratorVector& operator++() { // ++it
+			this->pointer++;
+//			this->pointer = this->pointer->next;
+			return (*this);
+		}
+
+		iteratorVector operator++(int) { // it++
+			iteratorVector it(*this);
+			this->pointer++;
+//			++it;
+
+//			this->pointer = this->pointer->next;
+			return (it);
+		}
+		iteratorVector& operator--() { // --it
+			this->pointer = this->pointer->prev;
+			return (*this);
+		}
+
+		iteratorVector operator--(int) { // it--
+			iteratorList it(*this);
+			this->pointer = this->pointer->prev;
+			return (it);
+		}
+		iteratorVector& operator=(const iteratorVector &it) {
+			this->pointer = it.pointer;
+			return (*this);
+		}
+	};
+
+
 
 
 	template < class T, class Alloc = std::allocator<T> > class vector {
@@ -15,7 +73,7 @@ namespace ft {
 		typedef	allocator_type::const_reference const_reference;
 		typedef	allocator_type::pointer pointer;
 		typedef allocator_type::const_pointer const_pointer;
-//		typedef class<value_type> iterator;
+		typedef IteratorVector<T> iterator;
 
 
 		explicit vector(const allocator_type& alloc = allocator_type()):data(NULL), alloc(alloc), size_vector(0), capacity(0) {}

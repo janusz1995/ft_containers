@@ -39,7 +39,7 @@ namespace ft {
 		template<typename myT, typename Alloc>
 		friend class list;
 
-		iteratorList(listNode<T> *pointer = NULL):pointer(pointer) {}
+		iteratorList(listNode<T> *pointer = NULL): pointer(pointer) {}
 
 		bool operator==(iteratorList const &itL) {
 			return (this->pointer == itL.pointer);

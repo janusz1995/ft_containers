@@ -23,10 +23,18 @@
 # define GRAY '\e[0;30m'
 # define LIGHT_GRAY '\e[0;37m'
 # define ORIGINAL "\e[0;34m"
-# define MYLIST "\e[1;33m"
+# define MYCOLOR "\e[1;33m"
 
 void printMethod(std::string method) {
     std::cout << RED <<  "<-<-<-<-<-<-<-<-<-<- " <<  CYAN <<  method << RED << " ->->->->->->->->->->\n" << NC;
+}
+
+void isEmpty(std::string str, bool empty, std::string color) {
+    std::cout << color << str << (!empty ? RED : GREEN) << empty << "\n" << NC;
+}
+
+void printSize(std::string str, size_t size, std::string color) {
+    std::cout << color << str << PURPLE << size << "\n" << NC;
 }
 
 

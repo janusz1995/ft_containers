@@ -82,13 +82,13 @@ void printLists(std::list<T> &list, ft::list<T> &myList) {
     std::cout << " |\n";
 }
 
-void isEmpty(std::string str, bool empty, std::string color) {
-    std::cout << color << str << (!empty ? RED : GREEN) << empty << "\n" << NC;
-}
-
-void printSize(std::string str, size_t size, std::string color) {
-    std::cout << color << str << PURPLE << size << "\n" << NC;
-}
+//void isEmpty(std::string str, bool empty, std::string color) {
+//    std::cout << color << str << (!empty ? RED : GREEN) << empty << "\n" << NC;
+//}
+//
+//void printSize(std::string str, size_t size, std::string color) {
+//    std::cout << color << str << PURPLE << size << "\n" << NC;
+//}
 
 template<typename T>
 void printTwoLists(std::list<T> &list, std::list<T> &list2, ft::list<T> &myList, ft::list<T> &myList2) {
@@ -121,20 +121,20 @@ void printTwoLists(std::list<T> &list, std::list<T> &list2, ft::list<T> &myList,
     }
     std::cout << " |\n";
 
-    printSize("My List 1 Size:       ", myList.size(), MYLIST);
-    printSize("My List 2 Size:       ", myList2.size(), MYLIST);
+    printSize("My List 1 Size:       ", myList.size(), MYCOLOR);
+    printSize("My List 2 Size:       ", myList2.size(), MYCOLOR);
 }
 
 template<typename T>
 void emptyLists(std::list<T> &original, ft::list<T> &copy) {
     isEmpty("Original List is Empty: ", original.empty(), ORIGINAL);
-    isEmpty("My List is Empty:       ", copy.empty(), MYLIST);
+    isEmpty("My List is Empty:       ", copy.empty(), MYCOLOR);
 }
 
 template<typename T>
 void sizeLists(std::list<T> &original, ft::list<T> &copy) {
     printSize("Original List Size: ", original.size(), ORIGINAL);
-    printSize("My List Size:       ", copy.size(), MYLIST);
+    printSize("My List Size:       ", copy.size(), MYCOLOR);
 }
 
 #endif //FT_CONTAINERS_UTILSLIST_HPP

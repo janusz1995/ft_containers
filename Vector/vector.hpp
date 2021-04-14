@@ -1,6 +1,8 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 #include <iostream>
+#include "../utils/utils.hpp"
+//#include "../utils/utilsVector.hpp"
 
 namespace ft {
 
@@ -84,11 +86,11 @@ namespace ft {
 		typedef const iterator const_iterator;
 
 
-		explicit vector(const allocator_type& alloc = allocator_type()):data(NULL), alloc(alloc), size_vector(0), capacity(0) {}
+		explicit vector(const allocator_type& alloc = allocator_type()): data(NULL), alloc(alloc), vector_size(0), vector_capacity() {}
 
 		explicit vector(size_type n, const value_type& val = value_type(), const allocator_type &alloc = allocator_type()) {
-			capacity = n;
-			size_vector = n;
+			this->vector_capacity = n;
+            vector_size = n;
 			data = this->alloc.allocate(n);
 			for (int i = 0; i < n; ++i) {
 				this->alloc.construct(data + i, val);
@@ -105,8 +107,26 @@ namespace ft {
 		}
 
 		~vector() {
-
+            this->clear();
+            this->alloc.deallocate(this->data, this->vector_capacity);
 		}
+
+//        template <class InputIterator>
+//        void assign (InputIterator first, InputIterator last) {
+//
+//		}
+
+        void assign(size_type n, const value_type& val) {
+            this->clear();
+            if (this->vector_capacity < n) {
+                getAllocate(n);
+            }
+            for (int i = 0; i < n; ++i) {
+                this->alloc.construct(this->data + i, val);
+            }
+            this->vector_size = n;
+        }
+
 
         iterator begin() {
             return (this->data);
@@ -114,47 +134,166 @@ namespace ft {
 
 //        const_iterator begin() const {
 //
-//		}
+//        }
+
+        reference at(size_type n) {
+
+		}
+
+//        const_reference at (size_type n) const {}
+
+//        reference back();
+
+//        const_reference back() const;
+
+//        reference front();
+
+//        const_reference front() const;
 
         iterator end() {
-//		    return (this->data[this->size_vector - 1]);
-            return (this->data + this->size_vector);
+            return (this->data + this->vector_size);
 		}
 
 //        const_iterator end() const {
 //
 //		}
 
+        size_type max_size() const {
+            return (std::numeric_limits<size_type>::max() / sizeof(value_type));
+		}
+
         bool empty() const {
-		    return (this->size_vector == 0);
+		    return (this->vector_size == 0);
 		}
 
         size_type size() const {
-            return (this->size_vector);
+            return (this->vector_size);
 		}
 
-        reference operator[] (size_type n) {
+        size_type capacity() const {
+            return (this->vector_capacity);
+        }
+
+        reference operator[](size_type n) {
             return (this->data[n]);
 		}
 
-        void resize(size_type n, value_type val = value_type()) {
+//       const_reference operator[](size_type n) const {
+//           return (this->data[n]);
+//		}
 
-		    if (capacity < n) {
+        iterator insert(iterator position, const value_type& val) {
+		    
+		}
 
-		    }
-//            capacity = n;
-            size_vector = n;
-            data = this->alloc.allocate(n);
-            for (int i = 0; i < n; ++i) {
-                this->alloc.construct(data + i, val);
+        void insert(iterator position, size_type n, const value_type& val) {
+
+        }
+
+//        template <class InputIterator>
+//        void insert (iterator position, InputIterator first, InputIterator last) {
+//
+//		}
+
+//        iterator erase (iterator position) {
+//
+//		}
+
+//        iterator erase (iterator first, iterator last) {}
+
+        void pop_back() {
+            if (this->vector_size == 0) {
+                return ;
             }
+            this->alloc.destroy(this->data + this->vector_size - 1);
+            this->vector_size--;
+		}
+
+
+        void push_back(const value_type& val) {
+            if (this->vector_capacity < this->vector_size + 1) {
+                reserve(this->vector_capacity * 2 == 0 ? 1 : this->vector_capacity * 2);
+            }
+            this->alloc.construct(this->data + this->vector_size, val);
+            this->vector_size++;
+		}
+
+        void resize(size_type n, value_type val = value_type()) {
+            if (this->vector_size == n) {
+                return ;
+            }
+
+		    if (this->vector_size > n) {
+                while (this->vector_size != n) {
+                    this->pop_back();
+                }
+		    } else {
+                if (this->vector_capacity < n) {
+                    reserve(max(n, this->vector_capacity * 2));
+                }
+                while (this->vector_size != n) {
+                    this->push_back(val);
+                }
+		    }
+        }
+
+        void swap(vector& x) {
+            swap(this->data, x.data);
+            swap(this->vector_size, x.vector_size);
+            swap(this->vector_capacity, x.vector_capacity);
+            swap(this->alloc, x.alloc);
+		}
+
+        void reserve(size_type n) {
+		    if (this->vector_capacity >= n)
+                return ;
+		    value_type *newData = this->alloc.allocate(n);
+            for (int i = 0; i < this->vector_size; ++i) {
+                this->alloc.construct(newData + i, this->data[i]);
+            }
+            for (int i = 0; i < this->vector_size; ++i) {
+                this->alloc.destroy(this->data + i);
+            }
+            if (this->vector_capacity != 0) {
+                this->alloc.deallocate(this->data, this->vector_capacity);
+            }
+            this->vector_capacity = n;
+            this->data = newData;
+		}
+
+        void clear() {
+            for (int i = 0; i < this->vector_size; ++i) {
+                this->alloc.destroy(this->data + i);
+            }
+            this->vector_size = 0;
 		}
 
 	private:
 		value_type *data;
-		size_type capacity;
+		size_type vector_capacity;
 		allocator_type alloc;
-		size_type size_vector;
+		size_type vector_size;
+
+
+		size_type max(size_type x, size_type y) {
+            return ((x > y) ? x : y);
+		}
+
+        template<typename A>
+		void swap(A &x, A &y) {
+            A tmp = x;
+            x = y;
+            y = tmp;
+		}
+
+		void getAllocate(size_type n) {
+		    if (this->vector_capacity > 0) {
+                this->alloc.deallocate(this->data, this->vector_capacity);
+		    }
+            this->data = this->alloc.allocate(n);
+		    this->vector_capacity = n;
+		}
+
 	};
 }
 #endif //VECTOR_HPP

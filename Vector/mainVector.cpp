@@ -1,27 +1,101 @@
 #include "vector.hpp"
 #include <vector>
+#include "../utils/utilsVector.hpp"
+
 
 int main() {
 
     std::vector<int> vec;
-//    ft::vector<int> myvec();
+    ft::vector<int> myvec;
 //    std::vector<int> vec1(5, 100);
-    ft::vector<int> myvec(5, 100);
-    for (int i = 0; i < 5; ++i) {
-        vec.push_back(i + 1);
-    }
+//    ft::vector<int> myvec(5, 100);
+//    for (int i = 0; i < 5; ++i) {
+//        myvec.push_back(i + 1);
+//        vec.push_back(i + 1);
+//    }
 //    std::cout << myvec[1];
 //    std::vector<int>::iterator it = vec1.begin();
 
-    ft::vector<int>::iterator myit = myvec.begin();
-    for (ft::vector<int>::iterator myit = myvec.begin(); myit != myvec.end() ; ++myit) {
-        std::cout << *myit << " ";
+//    for (ft::vector<int>::iterator myit = myvec.begin(); myit != myvec.end() ; ++myit) {
+//        std::cout << *myit << " ";
+//    }
+//    std::cout << std::endl;
+//
+//    for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it) {
+//        std::cout << *it << " ";
+//    }
+//    std::cout << std::endl;
+
+
+    printMethod("EMPTY");
+
+    emptyVectors(vec, myvec);
+    sizeVectors(vec, myvec);
+    printVectors(vec, myvec);
+
+
+    printMethod("MAX SIZE");
+
+    std::cout << BLUE << "Original Vector " << NC << " --->>> " << LIGHT_PURPLE << vec.max_size() << "\n" << NC;
+    std::cout << YELLOW << "My Vector " << NC << " --------->>> " << LIGHT_PURPLE << myvec.max_size() << "\n" << NC;
+
+
+    printMethod("PUSH BACK");
+
+    for (int i = 0; i < 5; ++i) {
+        myvec.push_back(i + 1);
+        vec.push_back(i + 1);
     }
 
-    for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it) {
-        std::cout << *it << " ";
+    emptyVectors(vec, myvec);
+    sizeVectors(vec, myvec);
+    printVectors(vec, myvec);
+
+
+    printMethod("POP BACK");
+
+    for (int i = 0; i < 3; ++i) {
+        vec.pop_back();
+        myvec.pop_back();
     }
-    std::cout << std::endl;
+
+    emptyVectors(vec, myvec);
+    sizeVectors(vec, myvec);
+    capacityVectors(vec, myvec);
+    printVectors(vec, myvec);
+
+
+    printMethod("RESIZE");
+
+    vec.resize(10, 200);
+    myvec.resize(10, 200);
+
+    emptyVectors(vec, myvec);
+    sizeVectors(vec, myvec);
+    capacityVectors(vec, myvec);
+    printVectors(vec, myvec);
+
+
+    vec.resize(5);
+    myvec.resize(5);
+
+    emptyVectors(vec, myvec);
+    sizeVectors(vec, myvec);
+    capacityVectors(vec, myvec);
+    printVectors(vec, myvec);
+
+
+    printMethod("ASSIGN");
+
+    vec.assign(8, 300);
+    myvec.assign(8, 300);
+
+    emptyVectors(vec, myvec);
+    sizeVectors(vec, myvec);
+    capacityVectors(vec, myvec);
+    printVectors(vec, myvec);
+
+    printMethod("TEST TEST TEST TEST TEST TEST TEST");
 
     return (0);
 }

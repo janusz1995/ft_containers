@@ -122,7 +122,7 @@ int main() {
     (--myit)--;
     (--it)--;
 
-    std::cout << "std it: " << *it << " | ft it: " << *myit << std::endl;
+//    std::cout << "std it: " << *it << " | ft it: " << *myit << std::endl;
     emptyVectors(vec, myvec);
     sizeVectors(vec, myvec);
     capacityVectors(vec, myvec);
@@ -131,7 +131,7 @@ int main() {
     it = vec.erase(it, it + 3);
     myit = myvec.erase(myit, myit + 3);
 
-    std::cout << "std it: " << *it << " | ft it: " << *myit << std::endl;
+//    std::cout << "std it: " << *it << " | ft it: " << *myit << std::endl;
     emptyVectors(vec, myvec);
     sizeVectors(vec, myvec);
     capacityVectors(vec, myvec);
@@ -140,6 +140,21 @@ int main() {
 
 
     printMethod("TEST TEST TEST TEST TEST TEST TEST");
+
+
+    vec.insert(it, 100);
+    myvec.insert(myit, 100);
+
+//    std::cout << "std it: " << *it << " | ft it: " << *myit << std::endl;
+//    std::cout << "std it: " << vec[5] << " | ft it: " << myvec[5]<< std::endl;
+//    std::cout << "std it: " << vec[6] << " | ft it: " << myvec[6]<< std::endl;
+//    std::cout << "std it: " << vec[7] << " | ft it: " << myvec[7]<< std::endl;
+//    std::cout << "std it: " << vec[8] << " | ft it: " << myvec[8]<< std::endl;
+    emptyVectors(vec, myvec);
+    sizeVectors(vec, myvec);
+    capacityVectors(vec, myvec);
+    printVectors(vec, myvec);
+
 
     return (0);
 }

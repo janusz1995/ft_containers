@@ -184,10 +184,37 @@ namespace ft {
 //		}
 
         iterator insert(iterator position, const value_type& val) {
-		    
-		}
+            iterator end = this->end();
+
+            if (this->vector_capacity == this->vector_size) {
+                reserve(this->vector_capacity == 0 ? 1 : this->vector_capacity * 2);
+            }
+
+            while (--end != position) {
+
+                this->alloc.construct(&(*end) + 1, *end);
+                this->alloc.destroy(&(*end));
+            }
+            this->alloc.construct(&(*end) + 1, *end);
+            this->alloc.destroy(&(*position));
+            this->alloc.construct(&(*position), val);
+            this->vector_size++;
+            return position;
+        }
 
         void insert(iterator position, size_type n, const value_type& val) {
+
+            // TODO - reserve if vector_size + 1 > vector_capacity
+//            iterator end = this->end();
+////            iterator save_pos = position;
+//            value_type tmp = *position;
+//
+//
+//            while ((position + 1) != end) {
+//                this->alloc.construct(&(*position), *(position + 1));
+//                this->alloc.destroy(&(*position) + 1);
+//                position++;
+//            }
 
         }
 
@@ -216,19 +243,16 @@ namespace ft {
             size_type len = 0;
 
             while (first != last) {
+                this->alloc.destroy(&(*first));
                 len++;
                 first++;
             }
 
-            first = save_first;
-            this->alloc.destroy(&(*first));
-
-            while ((first + len) != end) {
-                this->alloc.construct(&(*first), *(first + len));
-                this->alloc.destroy(&(*first) + len);
+            while (first != end) {
+                this->alloc.construct(&(*first) - len, *first);
+                this->alloc.destroy(&(*first));
                 first++;
             }
-
             this->vector_size -= len;
             return (save_first);
 		}
@@ -241,10 +265,9 @@ namespace ft {
             this->vector_size--;
 		}
 
-
         void push_back(const value_type& val) {
-            if (this->vector_capacity < this->vector_size + 1) {
-                reserve(this->vector_capacity * 2 == 0 ? 1 : this->vector_capacity * 2);
+            if (this->vector_capacity == this->vector_size) {
+                reserve(this->vector_capacity == 0 ? 1 : this->vector_capacity * 2);
             }
             this->alloc.construct(this->data + this->vector_size, val);
             this->vector_size++;
@@ -273,7 +296,6 @@ namespace ft {
             swap(this->data, x.data);
             swap(this->vector_size, x.vector_size);
             swap(this->vector_capacity, x.vector_capacity);
-            swap(this->alloc, x.alloc);
 		}
 
         void reserve(size_type n) {

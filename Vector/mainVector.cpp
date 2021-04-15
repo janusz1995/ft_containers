@@ -87,9 +87,45 @@ int main() {
 
     printMethod("ASSIGN");
 
-    vec.assign(8, 300);
-    myvec.assign(8, 300);
+    vec.assign(3, 300);
+    myvec.assign(3, 300);
 
+    emptyVectors(vec, myvec);
+    sizeVectors(vec, myvec);
+    capacityVectors(vec, myvec);
+    printVectors(vec, myvec);
+
+
+    printMethod("ERASE");
+
+    for (int i = 0; i < 5; ++i) {
+        vec.push_back(10 * (i + 1));
+        myvec.push_back(10 * (i + 1));
+    }
+
+    std::vector<int>::iterator it = vec.begin();
+    ft::vector<int>::iterator myit = myvec.begin();
+
+    for (int i = 0; i < 4; ++i) {
+        it++;
+        myit++;
+    }
+    it = vec.erase(it);
+    myit = myvec.erase(myit);
+    (--myit)--;
+    (--it)--;
+
+//    std::cout << "std it: " << *it << " | ft it: " << *myit << std::endl;
+    emptyVectors(vec, myvec);
+    sizeVectors(vec, myvec);
+    capacityVectors(vec, myvec);
+    printVectors(vec, myvec);
+
+    it = vec.erase(it, it + 3);
+    myit = myvec.erase(myit, myit + 3);
+
+
+    std::cout << "std it: " << *it << " | ft it: " << *myit << std::endl;
     emptyVectors(vec, myvec);
     sizeVectors(vec, myvec);
     capacityVectors(vec, myvec);

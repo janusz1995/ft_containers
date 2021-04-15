@@ -64,13 +64,14 @@ namespace ft {
 			return (*this);
 		}
 
-        reference operator[] (size_type n) {
+        iteratorVector operator+(size_type n) const {
+            return (iteratorVector(this->pointer + n));
+		}
+
+        reference operator[](size_type n) {
             return (*(this->pointer + n));
         }
-
     };
-
-
 
 
 	template < class T, class Alloc = std::allocator<T> > class vector {
@@ -195,11 +196,37 @@ namespace ft {
 //
 //		}
 
-//        iterator erase (iterator position) {
-//
-//		}
+        iterator erase(iterator position) {
+            iterator start_pos = position;
+            iterator end = this->end();
 
-//        iterator erase (iterator first, iterator last) {}
+            while ((position + 1) != end) {
+                *position = *(position + 1);
+                position++;
+            }
+            this->vector_size--;
+            return (start_pos);
+		}
+
+        iterator erase(iterator first, iterator last) {
+            iterator save_first = first;
+            iterator end = this->end();
+            size_type len = 0;
+
+            while (first != last) {
+                len++;
+                first++;
+            }
+            first = save_first;
+
+            while ((first + len) != end) {
+                *first = *(first + len);
+                first++;
+            }
+            this->vector_size -= len;
+            return (save_first);
+
+		}
 
         void pop_back() {
             if (this->vector_size == 0) {

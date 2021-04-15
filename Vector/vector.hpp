@@ -197,11 +197,13 @@ namespace ft {
 //		}
 
         iterator erase(iterator position) {
-            iterator start_pos = position;
             iterator end = this->end();
+            iterator start_pos = position;
 
+            this->alloc.destroy(&(*position));
             while ((position + 1) != end) {
-                *position = *(position + 1);
+                this->alloc.construct(&(*position), *(position + 1));
+                this->alloc.destroy(&(*position) + 1);
                 position++;
             }
             this->vector_size--;
@@ -217,15 +219,18 @@ namespace ft {
                 len++;
                 first++;
             }
+
             first = save_first;
+            this->alloc.destroy(&(*first));
 
             while ((first + len) != end) {
-                *first = *(first + len);
+                this->alloc.construct(&(*first), *(first + len));
+                this->alloc.destroy(&(*first) + len);
                 first++;
             }
+
             this->vector_size -= len;
             return (save_first);
-
 		}
 
         void pop_back() {

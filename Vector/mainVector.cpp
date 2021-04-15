@@ -27,6 +27,7 @@ int main() {
 //    std::cout << std::endl;
 
 
+
     printMethod("EMPTY");
 
     emptyVectors(vec, myvec);
@@ -34,10 +35,12 @@ int main() {
     printVectors(vec, myvec);
 
 
+
     printMethod("MAX SIZE");
 
     std::cout << BLUE << "Original Vector " << NC << " --->>> " << LIGHT_PURPLE << vec.max_size() << "\n" << NC;
     std::cout << YELLOW << "My Vector " << NC << " --------->>> " << LIGHT_PURPLE << myvec.max_size() << "\n" << NC;
+
 
 
     printMethod("PUSH BACK");
@@ -52,6 +55,7 @@ int main() {
     printVectors(vec, myvec);
 
 
+
     printMethod("POP BACK");
 
     for (int i = 0; i < 3; ++i) {
@@ -63,6 +67,7 @@ int main() {
     sizeVectors(vec, myvec);
     capacityVectors(vec, myvec);
     printVectors(vec, myvec);
+
 
 
     printMethod("RESIZE");
@@ -85,6 +90,7 @@ int main() {
     printVectors(vec, myvec);
 
 
+
     printMethod("ASSIGN");
 
     vec.assign(3, 300);
@@ -94,6 +100,7 @@ int main() {
     sizeVectors(vec, myvec);
     capacityVectors(vec, myvec);
     printVectors(vec, myvec);
+
 
 
     printMethod("ERASE");
@@ -115,7 +122,7 @@ int main() {
     (--myit)--;
     (--it)--;
 
-//    std::cout << "std it: " << *it << " | ft it: " << *myit << std::endl;
+    std::cout << "std it: " << *it << " | ft it: " << *myit << std::endl;
     emptyVectors(vec, myvec);
     sizeVectors(vec, myvec);
     capacityVectors(vec, myvec);
@@ -124,12 +131,13 @@ int main() {
     it = vec.erase(it, it + 3);
     myit = myvec.erase(myit, myit + 3);
 
-
     std::cout << "std it: " << *it << " | ft it: " << *myit << std::endl;
     emptyVectors(vec, myvec);
     sizeVectors(vec, myvec);
     capacityVectors(vec, myvec);
     printVectors(vec, myvec);
+
+
 
     printMethod("TEST TEST TEST TEST TEST TEST TEST");
 

@@ -2,20 +2,17 @@
 #define VECTOR_HPP
 #include <iostream>
 #include "../utils/utils.hpp"
-//#include "../utils/utilsVector.hpp"
 
 namespace ft {
 
 	template <class T> class iteratorVector {
 
-//        template <class A>
-//        friend class iteratorConstReverseVector;
-
 	protected:
 		T *pointer;
 	public:
-        typedef size_t size_type;
         typedef T& reference;
+        typedef size_t size_type;
+        typedef ptrdiff_t difference_type;
 
 		iteratorVector(T *pointer = NULL):pointer(pointer) {}
 
@@ -27,7 +24,23 @@ namespace ft {
 			return (!(*this == itV));
 		}
 
-		T& operator*() {
+        bool operator<(const iteratorVector &itV) {
+            return (this->pointer < itV.pointer);
+		}
+
+        bool operator>(const iteratorVector &itV) {
+            return (this->pointer > itV.pointer);
+        }
+
+        bool operator<=(const iteratorVector &itV) {
+            return (this->pointer <= itV.pointer);
+        }
+
+        bool operator>=(const iteratorVector &itV) {
+            return (this->pointer >= itV.pointer);
+        }
+
+        T& operator*() {
 			return (*this->pointer);
 		}
 
@@ -37,28 +50,22 @@ namespace ft {
 
 		iteratorVector& operator++() { // ++it
 			this->pointer++;
-//			this->pointer = this->pointer->next;
 			return (*this);
 		}
 
 		iteratorVector operator++(int) { // it++
 			iteratorVector it(*this);
 			this->pointer++;
-
-//			this->pointer = this->pointer->next;
 			return (it);
 		}
 		iteratorVector& operator--() { // --it
             this->pointer--;
-//			this->pointer = this->pointer->prev;
 			return (*this);
 		}
 
 		iteratorVector operator--(int) { // it--
             iteratorVector it(*this);
             this->pointer--;
-
-//			this->pointer = this->pointer->prev;
 			return (it);
 		}
 
@@ -67,12 +74,30 @@ namespace ft {
 			return (*this);
 		}
 
-        iteratorVector operator+(size_type n) const {
+        iteratorVector operator+(difference_type n) const {
             return (iteratorVector(this->pointer + n));
 		}
 
-        iteratorVector operator-(size_type n) const {
+        iteratorVector operator-(difference_type n) const {
             return (iteratorVector(this->pointer - n));
+        }
+
+        iteratorVector& operator+=(difference_type n) {
+            this->pointer += n;
+            return (*this);
+		}
+
+        iteratorVector& operator-=(difference_type n) {
+            this->pointer -= n;
+            return (*this);
+        }
+
+        difference_type operator-(const iteratorVector &y) {
+            return (this->pointer - y.pointer);
+        }
+
+        friend iteratorVector operator+(difference_type n, const iteratorVector &x) {
+            return (x + n);
         }
 
         reference operator[](size_type n) {
@@ -87,9 +112,7 @@ namespace ft {
         iteratorConstVector(T *pointer) {
             this->pointer = pointer;
         }
-        iteratorConstVector(iteratorVector<T> const &itConst):iteratorVector<T>(itConst) {
-//            *this = itReverse;
-        }
+        iteratorConstVector(iteratorVector<T> const &itConst):iteratorVector<T>(itConst) {}
         ~iteratorConstVector() {}
 
         const T& operator*() {
@@ -172,8 +195,9 @@ namespace ft {
 	template < class T, class Alloc = std::allocator<T> > class vector {
 	public:
 		typedef T value_type;
-		typedef size_t size_type;
-		typedef Alloc allocator_type;
+        typedef size_t size_type;
+        typedef Alloc allocator_type;
+        typedef ptrdiff_t difference_type;
 //		typedef value_type& reference;
 //		typedef	const value_type& const_reference;
 //		typedef	allocator_type::pointer pointer;
@@ -354,10 +378,9 @@ namespace ft {
 
         void insert(iterator position, size_type n, const value_type& val) {
 
-            // TODO -  check if vector_size + n > capacity * 2
             if (this->vector_capacity < this->vector_size + n) {
                 size_type len = indexPos(position, --this->end());
-                reserve(this->vector_capacity == 0 ? 1 : this->vector_capacity * 2);
+                reserve(this->vector_capacity * 2 < this->vector_size + n ? vector_size + n : this->vector_capacity * 2);
                 position = --this->end() - len;
             }
 
@@ -381,10 +404,9 @@ namespace ft {
 
 		    size_type len = indexPos(first, last);
 
-		    // TODO -  check if vector_size + n > capacity * 2
             if (this->vector_capacity < this->vector_size + len) {
                 size_type len_pos = indexPos(position, --this->end());
-                reserve(this->vector_capacity == 0 ? 1 : this->vector_capacity * 2);
+                reserve(this->vector_capacity * 2 < this->vector_size + len ? vector_size + len : this->vector_capacity * 2);
                 position = --this->end() - len_pos;
             }
 

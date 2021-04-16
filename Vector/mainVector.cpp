@@ -11,22 +11,6 @@ int main() {
     ft::vector<int> myvec1(3, 66);
     std::vector<int> vec2(1, 66);
     ft::vector<int> myvec2(1, 66);
-//    for (int i = 0; i < 5; ++i) {
-//        myvec.push_back(i + 1);
-//        vec.push_back(i + 1);
-//    }
-//    std::cout << myvec[1];
-//    std::vector<int>::iterator it = vec1.begin();
-
-//    for (ft::vector<int>::iterator myit = myvec.begin(); myit != myvec.end() ; ++myit) {
-//        std::cout << *myit << " ";
-//    }
-//    std::cout << std::endl;
-//
-//    for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it) {
-//        std::cout << *it << " ";
-//    }
-//    std::cout << std::endl;
 
 
 
@@ -204,6 +188,7 @@ int main() {
     printVectors(vec, myvec);
 
 
+
     printMethod("CONSTRUCTORS AND OPERATOR=");
 
     std::vector<int> vec3(vec.begin(), vec.end());
@@ -329,12 +314,31 @@ int main() {
 
     printVectorsReverse(vec4, myvec4);
 
+
+
     printMethod("CONST REVERSE ITERATOR AND CONST ITERATOR");
 
     printVectorsConstReverse(vec4, myvec4);
     printVectorsConst(vec4, myvec4);
 
-//    printMethod("TEST TEST TEST TEST TEST TEST TEST");
+
+
+    printMethod("ARITHMETIC OPERATORS");
+
+    myit = myvec4.begin();
+    it = vec4.begin();
+
+    emptyVectors(vec4, myvec4);
+    sizeVectors(vec4, myvec4);
+    capacityVectors(vec4, myvec4);
+    printVectors(vec4, myvec4);
+
+    std::cout << ORIGINAL << "std iterator: " << PURPLE << *(4 + it) << NC << " | " << MYCOLOR << "ft iterator: " << PURPLE << *(4 + myit) << std::endl;
+    std::cout << ORIGINAL << "std iterator: " << PURPLE << *(it += 7) << NC << " | " << MYCOLOR << "ft iterator: " << PURPLE << *(myit += 7) << std::endl;
+    std::cout << ORIGINAL << "std iterator: " << PURPLE << *(vec4.end() -= 3) << NC << " | " << MYCOLOR << "ft iterator: " << PURPLE << *(myvec4.end() -= 3) << std::endl;
+    std::cout << ORIGINAL << "std len: " << PURPLE <<  vec4.end() - it << NC <<  " | " << MYCOLOR << "ft len: " << PURPLE << myvec4.end() - myit << std::endl;
+
+
 
     return (0);
 }

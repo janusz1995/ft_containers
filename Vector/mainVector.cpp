@@ -268,6 +268,12 @@ int main() {
 
 
 
+    printMethod("AT");
+
+    printVectorsAt(vec3, myvec3);
+
+
+
     printMethod("CLEAR");
 
     vec3.clear();
@@ -323,9 +329,12 @@ int main() {
 
     printVectorsReverse(vec4, myvec4);
 
+    printMethod("CONST REVERSE ITERATOR AND CONST ITERATOR");
 
+    printVectorsConstReverse(vec4, myvec4);
+    printVectorsConst(vec4, myvec4);
 
-    printMethod("TEST TEST TEST TEST TEST TEST TEST");
+//    printMethod("TEST TEST TEST TEST TEST TEST TEST");
 
     return (0);
 }

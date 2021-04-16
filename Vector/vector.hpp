@@ -7,13 +7,15 @@
 namespace ft {
 
 	template <class T> class iteratorVector {
+
+//        template <class A>
+//        friend class iteratorConstReverseVector;
+
 	protected:
 		T *pointer;
 	public:
         typedef size_t size_type;
         typedef T& reference;
-//		template<typename myT, typename Alloc>
-//		friend class list;
 
 		iteratorVector(T *pointer = NULL):pointer(pointer) {}
 
@@ -78,49 +80,93 @@ namespace ft {
         }
     };
 
+    template <class T> class iteratorConstVector : public iteratorVector<T> {
+    public:
+
+        iteratorConstVector() {}
+        iteratorConstVector(T *pointer) {
+            this->pointer = pointer;
+        }
+        iteratorConstVector(iteratorVector<T> const &itConst):iteratorVector<T>(itConst) {
+//            *this = itReverse;
+        }
+        ~iteratorConstVector() {}
+
+        const T& operator*() {
+            return (*this->pointer);
+        }
+
+        const T* operator->() {
+            return (&(this->pointer));
+        }
+
+        iteratorConstVector& operator=(const iteratorVector<T> &it) {
+            this->pointer = it.pointer;
+            return (*this);
+        }
+    };
+
     template <class T> class iteratorReverseVector : public iteratorVector<T> {
     public:
-        iteratorReverseVector();
 
+        iteratorReverseVector() {}
         iteratorReverseVector(T *pointer) {
             this->pointer = pointer;
         }
         iteratorReverseVector(iteratorReverseVector const &itReverse) {
             *this = itReverse;
         }
-        ~iteratorReverseVector();
+        ~iteratorReverseVector() {}
 
         iteratorReverseVector& operator++() { // ++it
             this->pointer--;
-//			this->pointer = this->pointer->next;
             return (*this);
         }
 
         iteratorReverseVector operator++(int) { // it++
             iteratorReverseVector it(*this);
             this->pointer--;
-
-//			this->pointer = this->pointer->next;
             return (it);
         }
         iteratorReverseVector& operator--() { // --it
             this->pointer++;
-//			this->pointer = this->pointer->prev;
             return (*this);
         }
 
         iteratorReverseVector operator--(int) { // it--
             iteratorReverseVector it(*this);
             this->pointer++;
-
-//			this->pointer = this->pointer->prev;
             return (it);
         }
 
-//        iteratorReverseVector& operator=(const iteratorVector<T> &it) {
-//            this->pointer = it.pointer;
-//            return (*this);
-//        }
+        iteratorReverseVector& operator=(const iteratorVector<T> &it) {
+            this->pointer = it.pointer;
+            return (*this);
+        }
+    };
+
+    template <class T> class iteratorConstReverseVector : public iteratorReverseVector<T> {
+    public:
+
+        iteratorConstReverseVector() {}
+        iteratorConstReverseVector(T *pointer) {
+            this->pointer = pointer;
+        }
+        iteratorConstReverseVector(iteratorReverseVector<T> const &itReverse):iteratorReverseVector<T>(itReverse) {}
+        ~iteratorConstReverseVector() {}
+
+        const T& operator*() {
+            return (*this->pointer);
+        }
+
+        const T* operator->() {
+            return (&(this->pointer));
+        }
+
+        iteratorConstReverseVector& operator=(const iteratorReverseVector<T> &it) {
+            this->pointer = it.pointer;
+            return (*this);
+        }
     };
 
 	template < class T, class Alloc = std::allocator<T> > class vector {
@@ -128,14 +174,16 @@ namespace ft {
 		typedef T value_type;
 		typedef size_t size_type;
 		typedef Alloc allocator_type;
-		typedef value_type& reference;
-		typedef	const value_type& const_reference;
-        typedef iteratorVector<T> iterator;
-        typedef const iterator const_iterator;
-        typedef iteratorReverseVector<T> reverse_iterator;
-
+//		typedef value_type& reference;
+//		typedef	const value_type& const_reference;
 //		typedef	allocator_type::pointer pointer;
 //		typedef allocator_type::const_pointer const_pointer;
+        typedef	typename allocator_type::reference reference;
+        typedef	typename allocator_type::const_reference const_reference;
+        typedef iteratorVector<T> iterator;
+        typedef iteratorConstVector<T> const_iterator;
+        typedef iteratorReverseVector<T> reverse_iterator;
+        typedef iteratorConstReverseVector<T> const_reverse_iterator;
 
 
 		explicit vector(const allocator_type& alloc = allocator_type()): data(NULL), alloc(alloc), vector_size(0), vector_capacity() {}
@@ -153,7 +201,6 @@ namespace ft {
 		vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
                typename std::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0):data(NULL), alloc(alloc), vector_size(0), vector_capacity(0) {
             assign(first, last);
-
 		}
 
 		vector(const vector& x): data(NULL), alloc(x.alloc), vector_size(0), vector_capacity(0) {
@@ -197,7 +244,6 @@ namespace ft {
             this->vector_size = n;
         }
 
-
         iterator begin() {
             return (this->data);
 		}
@@ -222,7 +268,6 @@ namespace ft {
 
         reference back() {
             return (this->data[this->vector_size - 1]);
-
 		}
 
         const_reference back() const {
@@ -248,12 +293,18 @@ namespace ft {
         reverse_iterator rbegin() {
             return (this->data + this->vector_size - 1);
 		}
-//        const_reverse_iterator rbegin() const;
+
+        const_reverse_iterator rbegin() const {
+            return (this->data + this->vector_size - 1);
+		}
 
         reverse_iterator rend() {
             return (this->data - 1);
 		}
-//        const_reverse_iterator rend() const;
+
+        const_reverse_iterator rend() const {
+            return (this->data - 1);
+        }
 
         size_type max_size() const {
             return (std::numeric_limits<size_type>::max() / sizeof(value_type));

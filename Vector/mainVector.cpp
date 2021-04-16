@@ -252,10 +252,76 @@ int main() {
 
 
 
+    printMethod("SWAP");
+
+    printTwoVectors(vec1, vec3, myvec1, myvec3);
+
+    vec1.swap(vec3);
+    myvec1.swap(myvec3);
+
+    printTwoVectors(vec1, vec3, myvec1, myvec3);
+
+    std::swap(vec1, vec3);
+    ft::swap(myvec1, myvec3);
+
+    printTwoVectors(vec1, vec3, myvec1, myvec3);
 
 
 
+    printMethod("CLEAR");
 
+    vec3.clear();
+    myvec3.clear();
+
+    emptyVectors(vec3, myvec3);
+    sizeVectors(vec3, myvec3);
+    capacityVectors(vec3, myvec3);
+    printVectors(vec3, myvec3);
+
+
+
+    printMethod("RELATIONAL OPERATORS");
+
+    myvec3.assign(3, 66);
+    printTwoVectors(myvec1, myvec3);
+
+    std::cout << RED << "*****" << CYAN << " Operator == " << RED << "*****\n";
+    if (myvec3 == myvec1)
+        std::cout << PURPLE << "Vectors EQUALS\n";
+
+
+    std::cout << RED << "*****" << CYAN << " Operator <= " << RED << "*****\n";
+    if (myvec3 <= myvec1)
+        std::cout << PURPLE << "Vector 1 more or EQUAL Vector 2\n";
+
+    std::cout << RED << "*****" << CYAN << " Operator >= " << RED << "*****\n";
+    if (myvec3 >= myvec1)
+        std::cout << PURPLE << "Vector 2 more or EQUAL Vector 1\n";
+
+    myvec3.pop_back();
+    printTwoVectors(myvec1, myvec3);
+
+    std::cout << RED << "*****" << CYAN << " Operator != " << RED << "*****\n";
+    if (myvec3 != myvec1)
+        std::cout << PURPLE << "Vectors NOT EQUALS\n";
+
+    std::cout << RED << "*****" << CYAN << " Operator < " << RED << "*****\n";
+    if (myvec3 < myvec1)
+        std::cout << PURPLE << "Vector 1 more than Vector 2\n";
+
+    myvec1.pop_back();
+    myvec1.pop_back();
+    printTwoVectors(myvec1, myvec3);
+
+    std::cout << RED << "*****" << CYAN << " Operator > " << RED << "*****\n";
+    if (myvec3 > myvec1)
+        std::cout << PURPLE << "Vector 2 more than Vector 1\n";
+
+
+
+    printMethod("REVERSE ITERATOR");
+
+    printVectorsReverse(vec4, myvec4);
 
 
 
@@ -263,4 +329,3 @@ int main() {
 
     return (0);
 }
-

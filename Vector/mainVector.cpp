@@ -7,8 +7,10 @@ int main() {
 
     std::vector<int> vec;
     ft::vector<int> myvec;
-//    std::vector<int> vec1(5, 100);
-//    ft::vector<int> myvec(5, 100);
+    std::vector<int> vec1(3, 66);
+    ft::vector<int> myvec1(3, 66);
+    std::vector<int> vec2(1, 66);
+    ft::vector<int> myvec2(1, 66);
 //    for (int i = 0; i < 5; ++i) {
 //        myvec.push_back(i + 1);
 //        vec.push_back(i + 1);
@@ -102,6 +104,15 @@ int main() {
     printVectors(vec, myvec);
 
 
+    vec2.assign(++vec.begin(), vec.end());
+    myvec2.assign(++myvec.begin(), myvec.end());
+
+    emptyVectors(vec2, myvec2);
+    sizeVectors(vec2, myvec2);
+    capacityVectors(vec2, myvec2);
+    printVectors(vec2, myvec2);
+
+
 
     printMethod("ERASE");
 
@@ -139,8 +150,7 @@ int main() {
 
 
 
-    printMethod("TEST TEST TEST TEST TEST TEST TEST");
-
+    printMethod("INSERT");
 
     vec.insert(it, 100);
     myvec.insert(myit, 100);
@@ -155,6 +165,101 @@ int main() {
     capacityVectors(vec, myvec);
     printVectors(vec, myvec);
 
+
+//    vec.insert(vec.end(), 3, 777);
+//    myvec.insert(myvec.end(), 3, 777);
+    vec.insert(it, 3, 777);
+    myvec.insert(myit, 3, 777);
+
+//    std::cout << "std it: " << *it << " | ft it: " << *myit << std::endl;
+//    std::cout << "std it: " << vec[5] << " | ft it: " << myvec[5]<< std::endl;
+//    std::cout << "std it: " << vec[6] << " | ft it: " << myvec[6]<< std::endl;
+//    std::cout << "std it: " << vec[7] << " | ft it: " << myvec[7]<< std::endl;
+//    std::cout << "std it: " << vec[8] << " | ft it: " << myvec[8]<< std::endl;
+
+
+    emptyVectors(vec, myvec);
+    sizeVectors(vec, myvec);
+    capacityVectors(vec, myvec);
+    printVectors(vec, myvec);
+
+
+    vec.insert(++it, vec1.begin(), vec1.end());
+    myvec.insert(++myit, myvec1.begin(), myvec1.end());
+
+    emptyVectors(vec, myvec);
+    sizeVectors(vec, myvec);
+    capacityVectors(vec, myvec);
+    printVectors(vec, myvec);
+
+
+    vec.insert(it, ++it, vec.end());
+    myvec.insert(myit, ++myit, myvec.end());
+
+
+//    std::cout << "std it: " << *it << " | ft it: " << *myit << std::endl;
+    emptyVectors(vec, myvec);
+    sizeVectors(vec, myvec);
+    capacityVectors(vec, myvec);
+    printVectors(vec, myvec);
+
+
+    printMethod("CONSTRUCTORS AND OPERATOR=");
+
+    std::vector<int> vec3(vec.begin(), vec.end());
+    ft::vector<int> myvec3(myvec.begin(), myvec.end());
+
+    emptyVectors(vec3, myvec3);
+    sizeVectors(vec3, myvec3);
+    capacityVectors(vec3, myvec3);
+    printVectors(vec3, myvec3);
+
+
+    myit = myvec.begin();
+    it = vec.begin();
+    for (int i = 0; i < 7; ++i) {
+        it++;
+        myit++;
+    }
+
+    std::vector<int> vec4(it, vec.end());
+    ft::vector<int> myvec4(myit, myvec.end());
+
+    emptyVectors(vec4, myvec4);
+    sizeVectors(vec4, myvec4);
+    capacityVectors(vec4, myvec4);
+    printVectors(vec4, myvec4);
+
+    vec3 = vec4;
+    myvec3 = myvec4;
+
+    emptyVectors(vec3, myvec3);
+    sizeVectors(vec3, myvec3);
+    capacityVectors(vec3, myvec3);
+    printVectors(vec3, myvec3);
+
+
+
+    printMethod("FRONT AND BACK");
+
+    vec3.front() -= vec3.back();
+    myvec3.front() -= myvec3.back();
+
+    emptyVectors(vec3, myvec3);
+    sizeVectors(vec3, myvec3);
+    capacityVectors(vec3, myvec3);
+    printVectors(vec3, myvec3);
+
+
+
+
+
+
+
+
+
+
+    printMethod("TEST TEST TEST TEST TEST TEST TEST");
 
     return (0);
 }

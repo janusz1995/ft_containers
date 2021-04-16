@@ -68,6 +68,10 @@ namespace ft {
             return (iteratorVector(this->pointer + n));
 		}
 
+        iteratorVector operator-(size_type n) const {
+            return (iteratorVector(this->pointer - n));
+        }
+
         reference operator[](size_type n) {
             return (*(this->pointer + n));
         }
@@ -80,7 +84,7 @@ namespace ft {
 		typedef size_t size_type;
 		typedef Alloc allocator_type;
 		typedef value_type& reference;
-//		typedef	const reference const_reference;
+		typedef	const value_type& const_reference;
 //		typedef	allocator_type::pointer pointer;
 //		typedef allocator_type::const_pointer const_pointer;
 		typedef iteratorVector<T> iterator;
@@ -98,13 +102,15 @@ namespace ft {
 			}
 		}
 
-//		template <class InputIterator>
-//		vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) {
-//
-//		}
+		template <class InputIterator>
+		vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
+               typename std::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0):data(NULL), alloc(alloc), vector_size(0), vector_capacity(0) {
+            assign(first, last);
 
-		vector(const vector& x) {
+		}
 
+		vector(const vector& x): data(NULL), alloc(x.alloc), vector_size(0), vector_capacity(0) {
+            assign(x.begin(), x.end());
 		}
 
 		~vector() {
@@ -112,10 +118,26 @@ namespace ft {
             this->alloc.deallocate(this->data, this->vector_capacity);
 		}
 
-//        template <class InputIterator>
-//        void assign (InputIterator first, InputIterator last) {
-//
-//		}
+        vector &operator=(vector const &x) {
+            this->assign(x.begin(), x.end());
+            return (*this);
+        }
+
+        template <class InputIterator>
+        void assign(InputIterator first, InputIterator last,
+                    typename std::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
+            this->clear();
+            size_type len = indexPos(first, last);
+
+            if (this->vector_capacity < len) {
+                getAllocate(len);
+            }
+            for (int i = 0; i < len; ++i) {
+                this->alloc.construct(this->data + i, *first);
+                first++;
+            }
+            this->vector_size = len;
+		}
 
         void assign(size_type n, const value_type& val) {
             this->clear();
@@ -133,31 +155,48 @@ namespace ft {
             return (this->data);
 		}
 
-//        const_iterator begin() const {
-//
-//        }
+        const_iterator begin() const {
+            return (this->data);
+        }
 
         reference at(size_type n) {
+            if (n >= this->vector_size)  {
+                throw std::out_of_range("out of range");
+            }
+            return (this->data[n]);
+		}
+
+        const_reference at(size_type n) const {
+            if (n >= this->vector_size)  {
+                throw std::out_of_range("out of range");
+            }
+            return (this->data[n]);
+        }
+
+        reference back() {
+            return (this->data[this->vector_size - 1]);
 
 		}
 
-//        const_reference at (size_type n) const {}
+        const_reference back() const {
+            return (this->data[this->vector_size - 1]);
+		}
 
-//        reference back();
+        reference front() {
+            return (this->data[0]);
+		}
 
-//        const_reference back() const;
-
-//        reference front();
-
-//        const_reference front() const;
+        const_reference front() const {
+            return (this->data[0]);
+		}
 
         iterator end() {
             return (this->data + this->vector_size);
 		}
 
-//        const_iterator end() const {
-//
-//		}
+        const_iterator end() const {
+            return (this->data + this->vector_size);
+		}
 
         size_type max_size() const {
             return (std::numeric_limits<size_type>::max() / sizeof(value_type));
@@ -184,17 +223,20 @@ namespace ft {
 //		}
 
         iterator insert(iterator position, const value_type& val) {
-            iterator end = this->end();
 
-            if (this->vector_capacity == this->vector_size) {
+            if (this->vector_capacity < this->vector_size + 1) {
+                size_type len = indexPos(position, --this->end());
                 reserve(this->vector_capacity == 0 ? 1 : this->vector_capacity * 2);
+                position = this->end() - len - 1;
             }
 
-            while (--end != position) {
+            iterator end = this->end();
 
+            while (--end != position) {
                 this->alloc.construct(&(*end) + 1, *end);
                 this->alloc.destroy(&(*end));
             }
+
             this->alloc.construct(&(*end) + 1, *end);
             this->alloc.destroy(&(*position));
             this->alloc.construct(&(*position), val);
@@ -204,24 +246,53 @@ namespace ft {
 
         void insert(iterator position, size_type n, const value_type& val) {
 
-            // TODO - reserve if vector_size + 1 > vector_capacity
-//            iterator end = this->end();
-////            iterator save_pos = position;
-//            value_type tmp = *position;
-//
-//
-//            while ((position + 1) != end) {
-//                this->alloc.construct(&(*position), *(position + 1));
-//                this->alloc.destroy(&(*position) + 1);
-//                position++;
-//            }
+            // TODO -  check if vector_size + n > capacity * 2
+            if (this->vector_capacity < this->vector_size + n) {
+                size_type len = indexPos(position, --this->end());
+                reserve(this->vector_capacity == 0 ? 1 : this->vector_capacity * 2);
+                position = --this->end() - len;
+            }
 
+            iterator end = this->end();
+
+            while (--end != position - 1) {
+                this->alloc.construct(&(*end) + n, *end);
+                this->alloc.destroy(&(*end));
+            }
+
+            while (++end != position + n) {
+                this->alloc.destroy(&(*end));
+                this->alloc.construct(&(*end), val);
+            }
+            this->vector_size += n;
         }
 
-//        template <class InputIterator>
-//        void insert (iterator position, InputIterator first, InputIterator last) {
-//
-//		}
+        template <class InputIterator>
+        void insert(iterator position, InputIterator first, InputIterator last,
+                    typename std::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
+
+		    size_type len = indexPos(first, last);
+
+		    // TODO -  check if vector_size + n > capacity * 2
+            if (this->vector_capacity < this->vector_size + len) {
+                size_type len_pos = indexPos(position, --this->end());
+                reserve(this->vector_capacity == 0 ? 1 : this->vector_capacity * 2);
+                position = --this->end() - len_pos;
+            }
+
+            iterator end = this->end();
+            while (--end != position - 1) {
+                this->alloc.construct(&(*end) + len, *end);
+                this->alloc.destroy(&(*end));
+            }
+
+            while (++end != position + len) {
+                this->alloc.destroy(&(*end));
+                this->alloc.construct(&(*end), *first);
+                first++;
+            }
+            this->vector_size += len;
+		}
 
         iterator erase(iterator position) {
             iterator end = this->end();
@@ -266,7 +337,7 @@ namespace ft {
 		}
 
         void push_back(const value_type& val) {
-            if (this->vector_capacity == this->vector_size) {
+            if (this->vector_capacity < this->vector_size + 1) {
                 reserve(this->vector_capacity == 0 ? 1 : this->vector_capacity * 2);
             }
             this->alloc.construct(this->data + this->vector_size, val);
@@ -346,6 +417,15 @@ namespace ft {
 		    }
             this->data = this->alloc.allocate(n);
 		    this->vector_capacity = n;
+		}
+
+		size_type indexPos(iterator start, iterator end) {
+		    size_type len = 0;
+
+		    while (end-- != start) {
+		        len++;
+		    }
+            return (len);
 		}
 
 	};

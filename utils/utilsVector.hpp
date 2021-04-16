@@ -34,37 +34,37 @@ void printVectorsReverse(std::vector<T> &list, ft::vector<T> &myList) {
     std::cout << " |\n";
 }
 
-//template<typename T>
-//void printListsConstReverse(std::list<T> &list, ft::list<T> &myList) {
-//
-//    std::cout << BLUE << "Original List " << NC << " --->>> ";
-//    for (typename std::list<T>::const_reverse_iterator it = list.rbegin();  it != list.rend() ; it++) {
-//        std::cout << " | " << GREEN << *it << NC;
-//    }
-//    std::cout << " |\n";
-//
-//    std::cout << YELLOW << "My List " << NC << " --------->>> ";
-//    for (typename ft::list<T>::const_reverse_iterator it = myList.rbegin();  it != myList.rend() ; it++) {
-//        std::cout << " | " << GREEN << *it << NC;
-//    }
-//    std::cout << " |\n";
-//}
-//
-//template<typename T>
-//void printListsConst(std::list<T> &list, ft::list<T> &myList) {
-//
-//    std::cout << BLUE << "Original List " << NC << " --->>> ";
-//    for (typename std::list<T>::const_iterator it = list.begin();  it != list.end() ; it++) {
-//        std::cout << " | " << GREEN << *it << NC;
-//    }
-//    std::cout << " |\n";
-//
-//    std::cout << YELLOW << "My List " << NC << " --------->>> ";
-//    for (typename ft::list<T>::const_iterator it = myList.begin();  it != myList.end() ; it++) {
-//        std::cout << " | " << GREEN << *it << NC;
-//    }
-//    std::cout << " |\n";
-//}
+template<typename T>
+void printVectorsConstReverse(std::vector<T> &list, ft::vector<T> &myList) {
+
+    std::cout << BLUE << "Original Vector " << NC << " --->>> ";
+    for (typename std::vector<T>::const_reverse_iterator it = list.rbegin();  it != list.rend() ; it++) {
+        std::cout << " | " << GREEN << *it << NC;
+    }
+    std::cout << " |\n";
+
+    std::cout << YELLOW << "My Vector " << NC << " --------->>> ";
+    for (typename ft::vector<T>::const_reverse_iterator it = myList.rbegin();  it != myList.rend() ; it++) {
+        std::cout << " | " << GREEN << *it << NC;
+    }
+    std::cout << " |\n";
+}
+
+template<typename T>
+void printVectorsConst(std::vector<T> &list, ft::vector<T> &myList) {
+
+    std::cout << BLUE << "Original Vector " << NC << " --->>> ";
+    for (typename std::vector<T>::const_iterator it = list.begin();  it != list.end() ; it++) {
+        std::cout << " | " << GREEN << *it << NC;
+    }
+    std::cout << " |\n";
+
+    std::cout << YELLOW << "My Vector " << NC << " --------->>> ";
+    for (typename ft::vector<T>::const_iterator it = myList.begin();  it != myList.end() ; it++) {
+        std::cout << " | " << GREEN << *it << NC;
+    }
+    std::cout << " |\n";
+}
 
 template<typename T>
 void printVectors(std::vector<T> &original, ft::vector<T> &my) {
@@ -78,6 +78,22 @@ void printVectors(std::vector<T> &original, ft::vector<T> &my) {
     std::cout << YELLOW << "My Vector " << NC << " --------->>> ";
     for (typename ft::vector<T>::iterator it = my.begin();  it != my.end() ; it++) {
         std::cout << " | " << GREEN << *it << NC;
+    }
+    std::cout << " |\n";
+}
+
+template<typename T>
+void printVectorsAt(std::vector<T> &original, ft::vector<T> &my) {
+
+    std::cout << BLUE << "Original Vector " << NC << " --->>> ";
+    for (int i = 0;  i < original.size(); i++) {
+        std::cout << " | " << GREEN << original.at(i) << NC;
+    }
+    std::cout << " |\n";
+
+    std::cout << YELLOW << "My Vector " << NC << " --------->>> ";
+    for (int i = 0;  i < my.size(); i++) {
+        std::cout << " | " << GREEN << my.at(i) << NC;
     }
     std::cout << " |\n";
 }

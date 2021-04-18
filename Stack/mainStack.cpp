@@ -1,6 +1,6 @@
 #include "Stack.hpp"
 #include <stack>
-#include "../utils/utilsStack.cuh"
+#include "../utils/utilsStack.hpp"
 
 int main() {
 

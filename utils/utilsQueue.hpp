@@ -16,5 +16,4 @@ void sizeQueue(std::queue<T> &original, ft::queue<T> &copy) {
     printSize("My Queue Size:       ", copy.size(), MYCOLOR);
 }
 
-
 #endif

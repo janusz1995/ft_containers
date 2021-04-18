@@ -5,7 +5,6 @@
 #include <queue>
 #include "Queue.hpp"
 
-
 int main() {
 
 	std::queue<int> q;
@@ -105,7 +104,6 @@ int main() {
     if (myq1 < myq) {
         std::cout << PURPLE << "Queue 1 more than Queue 2\n";
     }
-
 
 
 	return (0);

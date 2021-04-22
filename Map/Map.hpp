@@ -16,13 +16,13 @@ namespace ft {
 			bool isBlack;
 			mapNode *left;
 			mapNode *right;
+			mapNode *parent;
 			value_type data;
 
 		public:
-			mapNode():isBlack(false), left(NULL), right(NULL), parent(NULL), data(value_type()) {}
+			mapNode(value_type &vt = value_type()):isBlack(false), left(NULL), right(NULL), parent(NULL), data(vt) {}
 
 
-		mapNode *parent;
 	};
 
 	template <class T> class iteratorMap {
@@ -95,7 +95,7 @@ template < class Key, class T, class Compare = std::less<Key>, class Alloc = std
 
 	explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {
 		map_size = 0;
-		init_nodes();
+		initNodes();
 	}
 
 //	template <class InputIterator>
@@ -136,11 +136,38 @@ template < class Key, class T, class Compare = std::less<Key>, class Alloc = std
 	}
 
 	size_type max_size() const {
-
+		return (std::numeric_limits<size_type>::max() / sizeof(value_type));
 	}
 
 	std::pair<iterator,bool> insert(const value_type& val) {
 
+		// TODO - if found val - return false
+
+		node *tmp = new node(val);
+		fillNode(tmp);
+		tmp->left = leaf;
+		tmp->right = leaf;
+
+		if (root->left == NULL) {
+			root->left = tmp;
+			return ;
+		}
+
+		node *current = this->root;
+		while (current != tmp) {
+
+
+
+
+
+
+		}
+
+
+
+
+		this->map_size++;
+//		return std::pair<iterator, >
 	}
 
 	iterator insert(iterator position, const value_type& val) {
@@ -181,6 +208,18 @@ template < class Key, class T, class Compare = std::less<Key>, class Alloc = std
 
 	iterator find(const key_type& k) {
 
+		if (this->map_size == 0) {
+			return NULL; 	// TODO: Return end()
+		}
+
+
+
+//		while (cur != leaf) {
+//
+//		}
+
+
+		return (0); // TODO: Return iterator
 	}
 
 //	const_iterator find(const key_type& k) const {}
@@ -208,7 +247,7 @@ template < class Key, class T, class Compare = std::less<Key>, class Alloc = std
 		node *max;
 		node *min;
 
-		void init_nodes() {
+		void initNodes() {
 			root = new node();
 			fill_node(root);
 			leaf = new node();

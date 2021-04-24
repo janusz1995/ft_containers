@@ -154,20 +154,26 @@ template < class Key, class T, class Compare = std::less<Key>, class Alloc = std
 		}
 
 		node *current = this->root;
-		while (current != tmp) {
-
-
-
-
-
-
+		while (current != this->leaf) {
+            if (key_comp(current->data, val)) {
+                current = current->left;
+            } else if (key_comp(val, current->data)) {
+                current = current->right;
+            } else {
+                break;
+            }
 		}
 
+        if (key_comp(current->parent->data, val)) {
+            current->parent->left = tmp;
+        } else {
+            current->parent->right = tmp;
+        }
 
-
-
+        tmp->parent = current->parent;
 		this->map_size++;
-//		return std::pair<iterator, >
+
+		return std::pair<iterator(tmp.pointer), true>;
 	}
 
 	iterator insert(iterator position, const value_type& val) {
@@ -267,6 +273,37 @@ template < class Key, class T, class Compare = std::less<Key>, class Alloc = std
 			n->left = NULL;
 			n->right = NULL;
 		}
+
+		void findMin() {
+
+		    if (this->map_size == 0) {
+		        return;
+		    }
+
+		    node *current = this->root->left;
+
+		    while (current->left != this->leaf) {
+		        current = current->left;
+		    }
+
+		    this->min = current;
+		}
+
+        void findMax() {
+
+            if (this->map_size == 0) {
+                return;
+            }
+
+            node *current = this->root->left;
+
+            while (current->right != this->leaf) {
+                current = current->right;
+            }
+
+            this->max = current;
+        }
+
 };
 
 	// map::key_type map::mapped_type map::key_compare map::allocator_type

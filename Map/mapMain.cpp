@@ -3,8 +3,8 @@
 
 int main() {
 
-	std::map<int,std::string> original;
-	ft::map<int,std::string> copy;
+	std::map<int, std::string> original;
+	ft::map<int, std::string> copy;
 
 
 

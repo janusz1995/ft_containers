@@ -10,6 +10,9 @@ namespace ft {
 
 		template <class A, class B, class C, class D>
 		friend class map;
+
+		template <class A>
+		friend class iteratorMap;
 		private:
 //			typedef std::pair<const Key, T> value_type;
 			typedef T value_type;
@@ -21,7 +24,6 @@ namespace ft {
 
 		public:
 			mapNode(const value_type &vt = value_type()):isBlack(false), left(NULL), right(NULL), parent(NULL), data(vt) {}
-
 
 	};
 
@@ -73,6 +75,7 @@ namespace ft {
                 this->pointer = this->pointer->prev;
                 return (it);
             }
+
             iteratorMap& operator=(const iteratorMap &it) {
                 this->pointer = it.pointer;
                 return (*this);
@@ -136,7 +139,9 @@ namespace ft {
             this->clear();
         }
 
-        iterator begin() {}
+        iterator begin() {
+        	return (iterator(this->_end->left));
+        }
     //	const_iterator begin() const {}
 
         iterator end() {}
@@ -162,42 +167,42 @@ namespace ft {
 
         std::pair<iterator,bool> insert(const value_type& val) {
 
-            if (this->root->left == NULL) {
+            if (this->root == this->leaf) {
                 node *tmp = new node(val);
-                fillNode(tmp);
-                tmp->left = this->leaf;
-                tmp->right = this->leaf;
-                this->root->left = tmp;
+                fillNode(tmp, this->leaf);
+                this->root = tmp;
                 this->map_size++;
                 return (std::pair<iterator,bool>(iterator(tmp), true));
             }
 
             node *current = this->root;
-            while (current->right != this->leaf) {
+            while (current != this->leaf) {
                 if (current->data.first == val.first) {
-                    break;
+                	  return (std::pair<iterator,bool>(iterator(current), false));
                 }
 
-                if (this->comp(current->data.first, val.first) && current->left != this->leaf) {
+                if (this->comp(val.first, current->data.first)) {
+					if (current->left == this->leaf) {
+						break;
+					}
                     current = current->left;
-                } else if (current->right != this->leaf) {
+                } else {
+                	if (current->right == this->leaf) {
+						break;
+                	}
                     current = current->right;
                 }
             }
 
-            if (current->data.first == val.first) {
-                return (std::pair<iterator,bool>(iterator(current), false));
-            }
-
             node *tmp = new node(val);
-            fillNode(tmp);
-            tmp->left = this->leaf;
-            tmp->right = this->leaf;
+            fillNode(tmp, this->leaf);
 
             if (this->comp(current->data.first, val.first)) {
-                current->left = tmp;
-            } else {
                 current->right = tmp;
+				findMinOrMax(false);
+            } else {
+                current->left = tmp;
+				findMinOrMax(true);
             }
 
             tmp->parent = current;
@@ -236,6 +241,14 @@ namespace ft {
 
         }
 
+		iterator getMax() {
+			return (iterator(this->_end->right));
+        }
+
+		iterator getMin() {
+			return (iterator(this->_end->left));
+		}
+
         key_compare key_comp() const {
             return (key_compare());
         }
@@ -248,10 +261,10 @@ namespace ft {
                 return NULL; 	// TODO: Return end() - max node
             }
 
-            node *cur = this->root->left;
+            node *cur = this->root;
 
             while (cur != this->leaf && cur->data.first != k) {
-                if (key_comp()(cur->data.first, k)) {
+                if (this->comp(cur->data.first, k)) {
                     cur = cur->left;
                 } else {
                     cur = cur->right;
@@ -286,60 +299,78 @@ namespace ft {
             size_type map_size;
             node *root;
             node *leaf;
+            node *_end;
             node *max;
             node *min;
             key_compare comp;
 
             void initNodes() {
-                root = new node();
-                fillNode(root);
+
                 leaf = new node();
-                fillNode(leaf);
+                fillNode(leaf, NULL);
                 max = new node();
-                fillNode(max);
+                fillNode(max, NULL);
                 min = new node();
-                fillNode(min);
+                fillNode(min, NULL);
+                _end = new node();
+                fillNode(_end, NULL);
+                this->root = this->leaf;
     //			root->parent = NULL;
     //			root->left = NULL;
     //			root->right = NULL;
 
             }
 
-            void fillNode(node *n) {
-                n->parent = NULL;
-                n->left = NULL;
-                n->right = NULL;
+            void fillNode(node *n, node *leaf) {
+                n->parent = leaf;
+                n->left = leaf;
+                n->right = leaf;
             }
 
-            void findMin() {
+			void findMinOrMax(bool isMin) {
 
-                if (this->map_size == 0) {
-                    return;
-                }
+				if (this->map_size == 0) {
+					return;
+				}
 
-                node *current = this->root->left;
+				node *current = this->root;
 
-                while (current->left != this->leaf) {
-                    current = current->left;
-                }
+				while ((isMin ? current->left : current->right) != this->leaf) {
+					current = isMin ? current->left : current->right;
+				}
 
-                this->min = current;
-            }
+				(isMin ? _end->left : _end->right) = current;
+			}
 
-            void findMax() {
+//            void findMin() {
+//
+//                if (this->map_size == 0) {
+//                    return;
+//                }
+//
+//                node *current = this->root;
+//
+//                while (current->left != this->leaf) {
+//                    current = current->left;
+//                }
+//
+//                this->_end->left = current;
+//            }
 
-                if (this->map_size == 0) {
-                    return;
-                }
-
-                node *current = this->root->left;
-
-                while (current->right != this->leaf) {
-                    current = current->right;
-                }
-
-                this->max = current;
-            }
+//            void findMax() {
+//
+//                if (this->map_size == 0) {
+//                    return;
+//                }
+//
+//                node *current = this->root;
+//
+//                while (current->right != this->leaf) {
+//                    current = current->right;
+//                }
+//
+//                this->_end->right = current;
+//            }
 
     };
 

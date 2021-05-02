@@ -78,6 +78,7 @@ namespace ft {
 
             iteratorMap& operator=(const iteratorMap &it) {
                 this->pointer = it.pointer;
+                this->leaf = it.leaf;
                 return (*this);
             }
 
@@ -140,11 +141,13 @@ namespace ft {
         }
 
         iterator begin() {
-        	return (iterator(this->_end->left));
+        	return (iterator(this->leaf->left, this->leaf));
         }
     //	const_iterator begin() const {}
 
-        iterator end() {}
+        iterator end() {
+			return (iterator(this->leaf));
+        }
     //	const_iterator end() const {}
 
     //	reverse_iterator rbegin() {}
@@ -242,18 +245,18 @@ namespace ft {
         }
 
 		iterator getMax() {
-			return (iterator(this->_end->right));
+			return (iterator(this->leaf->right));
         }
 
 		iterator getMin() {
-			return (iterator(this->_end->left));
+			return (iterator(this->leaf->left));
 		}
 
         key_compare key_comp() const {
             return (key_compare());
         }
 
-    //	value_compare value_comp() const {}
+//    	value_compare value_comp() const {}
 
         iterator find(const key_type& k) {
 
@@ -339,7 +342,7 @@ namespace ft {
 					current = isMin ? current->left : current->right;
 				}
 
-				(isMin ? _end->left : _end->right) = current;
+				(isMin ? this->leaf->left : this->leaf->right) = current;
 			}
 
 //            void findMin() {

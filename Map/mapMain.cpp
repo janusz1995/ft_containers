@@ -21,11 +21,24 @@ int main() {
 
     std::cout << "Original size = " << original.size() << "; Copy size = " << copy.size() << std::endl;
 
-	ft::map<int, std::string>::iterator min = copy.getMin();
-	ft::map<int, std::string>::iterator max = copy.getMax();
+
+	std::map<int, std::string>::iterator min = original.begin();
+	std::map<int, std::string>::iterator max = --original.end();
 
 	std::cout << "Min first = " << min->first << "; Min second = " << min->second << std::endl;
 	std::cout << "Max first = " << max->first << "; Max second = " << max->second << std::endl;
 
+
+	ft::map<int, std::string>::iterator myMin = copy.getMin();
+	ft::map<int, std::string>::iterator myMax = copy.getMax();
+
+	std::cout << " My Min first = " << myMin->first << "; My Min second = " << myMin->second << std::endl;
+	std::cout << "My Max first = " << myMax->first << "; My Max second = " << myMax->second << std::endl;
+
+	myMin = copy.begin();
+	++myMin;
+
+
+	std::cout << myMin->first << std::endl;
 	return (0);
 }

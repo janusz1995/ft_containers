@@ -38,7 +38,11 @@ int main() {
 	myMin = copy.begin();
 	++myMin;
 
-
 	std::cout << myMin->first << std::endl;
+
+
+//	copy.clear();
+
+//	std::cout << "Copy Size" << copy.size() << std::endl;
 	return (0);
 }

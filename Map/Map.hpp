@@ -138,6 +138,7 @@ namespace ft {
 
         ~map() {
             this->clear();
+            //  TODO - detele root, leaf
         }
 
         iterator begin() {
@@ -175,6 +176,7 @@ namespace ft {
                 fillNode(tmp, this->leaf);
                 this->root = tmp;
                 this->map_size++;
+                // TODO find max and min
                 return (std::pair<iterator,bool>(iterator(tmp), true));
             }
 
@@ -237,10 +239,21 @@ namespace ft {
         }
 
         void swap(map& x) {
-
+			swap(this->root, x.root);
+			swap(this->leaf, x.leaf);
+			swap(this->map_size, x.map_size);
         }
 
         void clear() {
+//        	iterator it = begin();
+//			iterator save = it;
+//
+//			while (it != this->leaf) {
+//				++it;
+//				delete save;
+//				this->map_size--;
+//				save = it;
+//			}
 
         }
 
@@ -261,7 +274,7 @@ namespace ft {
         iterator find(const key_type& k) {
 
             if (this->map_size == 0) {
-                return NULL; 	// TODO: Return end() - max node
+                return (this->leaf); 	// TODO: Return end()
             }
 
             node *cur = this->root;
@@ -273,8 +286,9 @@ namespace ft {
                     cur = cur->right;
                 }
             }
+
             if (cur == this->leaf) {
-                return (0); // TODO - end
+                return (this->leaf); // TODO - end
             }
 
             return (iterator(cur)); // TODO: Return iterator
@@ -343,6 +357,13 @@ namespace ft {
 				}
 
 				(isMin ? this->leaf->left : this->leaf->right) = current;
+			}
+
+			template <typename TMP>
+			void swap(TMP &one, TMP &two) {
+				TMP tmp = one;
+				one = two;
+				two = tmp;
 			}
 
 //            void findMin() {

@@ -1,5 +1,6 @@
 #include "Map.hpp"
 #include <map>
+#include "../utils/utilsMap.hpp"
 
 int main() {
 
@@ -39,6 +40,22 @@ int main() {
 	++myMin;
 
 	std::cout << myMin->first << std::endl;
+
+
+	printMethod("EMPTY");
+
+	emptyMaps(original, copy);
+	sizeMaps(original, copy);
+
+
+
+	printMethod("SIZE");
+
+	sizeMaps(original, copy);
+	printMaps(original, copy);
+
+	printMethod("INSERT");
+
 
 
 //	copy.clear();

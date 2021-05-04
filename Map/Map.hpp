@@ -62,7 +62,7 @@ namespace ft {
 
             iteratorMap operator++(int) { // it++
                 iteratorMap it(*this);
-                this->pointer = this->pointer->next;
+				this->pointer = tree_successor(this->pointer);
                 return (it);
             }
             iteratorMap& operator--() { // --it
@@ -176,7 +176,8 @@ namespace ft {
                 fillNode(tmp, this->leaf);
                 this->root = tmp;
                 this->map_size++;
-                // TODO find max and min
+				findMinOrMax(false);
+				findMinOrMax(true);
                 return (std::pair<iterator,bool>(iterator(tmp), true));
             }
 
@@ -227,6 +228,11 @@ namespace ft {
 
 
         void erase(iterator position) {
+			if (this->map_size == 0) {
+				return ;
+			}
+
+
 
         }
 
@@ -245,16 +251,33 @@ namespace ft {
         }
 
         void clear() {
-//        	iterator it = begin();
-//			iterator save = it;
-//
-//			while (it != this->leaf) {
-//				++it;
-//				delete save;
-//				this->map_size--;
-//				save = it;
-//			}
 
+        	if (this->map_size == 0) {
+				return ;
+        	}
+
+        	node *cur_delete;
+
+			while (this->root->left != this->leaf || this->root->right != this->leaf) { // TODO Change condition !
+//				if (this->root->left != this->leaf) {
+				cur_delete = findDeleteElement();
+//				} else {
+//					cur_delete = findRight();
+//				}
+
+				(cur_delete->parent->left == cur_delete ? cur_delete->parent->left : cur_delete->parent->right) = this->leaf;
+//				if (cur_delete->parent->left == cur_delete) {
+//					cur_delete->parent->left = this->leaf;
+//				} else {
+//					cur_delete->parent->r = this->leaf;
+//				}
+				delete cur_delete;
+				this->map_size--;
+			}
+
+			delete this->root;
+			this->root = this->leaf;
+			this->map_size--;
         }
 
 		iterator getMax() {
@@ -317,18 +340,18 @@ namespace ft {
             node *root;
             node *leaf;
             node *_end;
-            node *max;
-            node *min;
+//            node *max;
+//            node *min;
             key_compare comp;
 
             void initNodes() {
 
                 leaf = new node();
                 fillNode(leaf, NULL);
-                max = new node();
-                fillNode(max, NULL);
-                min = new node();
-                fillNode(min, NULL);
+//                max = new node();
+//                fillNode(max, NULL);
+//                min = new node();
+//                fillNode(min, NULL);
                 _end = new node();
                 fillNode(_end, NULL);
                 this->root = this->leaf;
@@ -359,42 +382,34 @@ namespace ft {
 				(isMin ? this->leaf->left : this->leaf->right) = current;
 			}
 
+			node *findDeleteElement() {
+            	node *current = this->root;
+
+            	while (current->left != this->leaf || current->right != this->leaf) {
+            		if (current->right != this->leaf) {
+						current = current->left;
+            		} else if (current->right != this->leaf) {
+						current = current->right;
+            		}
+            	}
+            	return (current);
+            }
+
+        	node *findRight() {
+				node *current = this->root;
+
+//				while ()
+
+				return (current);
+            }
+
+
 			template <typename TMP>
 			void swap(TMP &one, TMP &two) {
 				TMP tmp = one;
 				one = two;
 				two = tmp;
 			}
-
-//            void findMin() {
-//
-//                if (this->map_size == 0) {
-//                    return;
-//                }
-//
-//                node *current = this->root;
-//
-//                while (current->left != this->leaf) {
-//                    current = current->left;
-//                }
-//
-//                this->_end->left = current;
-//            }
-
-//            void findMax() {
-//
-//                if (this->map_size == 0) {
-//                    return;
-//                }
-//
-//                node *current = this->root;
-//
-//                while (current->right != this->leaf) {
-//                    current = current->right;
-//                }
-//
-//                this->_end->right = current;
-//            }
 
     };
 

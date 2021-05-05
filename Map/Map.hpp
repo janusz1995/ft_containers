@@ -2,7 +2,6 @@
 #define MAP_HPP
 #include <iostream>
 
-
 namespace ft {
 
 
@@ -120,7 +119,10 @@ namespace ft {
 
         explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {
             map_size = 0;
-            initNodes();
+			leaf = new node();
+			fillNode(leaf, NULL);
+			this->leaf->isBlack = true;
+			this->root = this->leaf;
         }
 
     //	template <class InputIterator>
@@ -138,7 +140,8 @@ namespace ft {
 
         ~map() {
             this->clear();
-            //  TODO - detele root, leaf
+            delete leaf;
+            //  TODO - delete root, leaf
         }
 
         iterator begin() {
@@ -213,6 +216,7 @@ namespace ft {
 
             tmp->parent = current;
             this->map_size++;
+			// insertFix(tmp); // TODO CHECK WORKING
 
             return (std::pair<iterator,bool>(iterator(tmp), true));
         }
@@ -251,26 +255,17 @@ namespace ft {
         }
 
         void clear() {
+        	node *cur_delete;
 
         	if (this->map_size == 0) {
 				return ;
         	}
 
-        	node *cur_delete;
-
-			while (this->root->left != this->leaf || this->root->right != this->leaf) { // TODO Change condition !
-//				if (this->root->left != this->leaf) {
+			while (this->root->left != this->leaf || this->root->right != this->leaf) {
 				cur_delete = findDeleteElement();
-//				} else {
-//					cur_delete = findRight();
-//				}
 
 				(cur_delete->parent->left == cur_delete ? cur_delete->parent->left : cur_delete->parent->right) = this->leaf;
-//				if (cur_delete->parent->left == cur_delete) {
-//					cur_delete->parent->left = this->leaf;
-//				} else {
-//					cur_delete->parent->r = this->leaf;
-//				}
+
 				delete cur_delete;
 				this->map_size--;
 			}
@@ -334,32 +329,11 @@ namespace ft {
     //	pair<iterator,iterator> equal_range(const key_type& k) {}
 
 
-
         private:
             size_type map_size;
             node *root;
             node *leaf;
-            node *_end;
-//            node *max;
-//            node *min;
             key_compare comp;
-
-            void initNodes() {
-
-                leaf = new node();
-                fillNode(leaf, NULL);
-//                max = new node();
-//                fillNode(max, NULL);
-//                min = new node();
-//                fillNode(min, NULL);
-                _end = new node();
-                fillNode(_end, NULL);
-                this->root = this->leaf;
-    //			root->parent = NULL;
-    //			root->left = NULL;
-    //			root->right = NULL;
-
-            }
 
             void fillNode(node *n, node *leaf) {
                 n->parent = leaf;
@@ -386,23 +360,96 @@ namespace ft {
             	node *current = this->root;
 
             	while (current->left != this->leaf || current->right != this->leaf) {
-            		if (current->right != this->leaf) {
+            		if (current->left != this->leaf) {
 						current = current->left;
-            		} else if (current->right != this->leaf) {
+            		} else {
 						current = current->right;
             		}
             	}
             	return (current);
             }
 
-        	node *findRight() {
-				node *current = this->root;
+        	void insertFix(node *z) {
 
-//				while ()
+				node *y;
 
-				return (current);
+            	while (z->parent->isBlack == false) {
+
+            		if (z->parent == z->parent->parent->left) {
+						y = z->parent->parent->right;
+
+						if (y->isBlack == false) {
+							z->parent->isBlack = true;
+							y->isBlack = true;
+							z->parent->parent->isBlack = false;
+							z = z->parent->parent;
+						}
+						else {
+							if (z == z->parent->right) {
+								z = z->parent;
+								leftRotate(z);
+							}
+							z->parent->isBlack = true;
+							z->parent->parent->isBlack = false;
+							rightRotate(z->parent->parent);
+						}
+            		}
+            		else {
+						y = z->parent->parent->left;
+
+						if (y->isBlack == false) {
+							z->parent->isBlack = true;
+							y->isBlack = true;
+							z->parent->parent->isBlack = false;
+							z = z->parent->parent;
+						}
+						else {
+							if (z == z->parent->left) {
+								z = z->parent;
+								rightRotate(z);
+							}
+							z->parent->isBlack = true;
+							z->parent->parent->isBlack = false;
+							leftRotate(z->parent->parent);
+						}
+            		}
+            	}
+            	this->root->isBlack = true;
             }
 
+			void leftRotate(node *x) {
+				node *y = x->right;
+
+				x->right = y->left;
+				if (y->left != this->leaf)
+					y->left->parent = x;
+				y->parent = x->parent;
+				if (x->parent == this->leaf)
+					this->root = y;
+				else if (x == x->parent->left)
+					x->parent->left = y;
+				else
+					x->parent->right = y;
+				y->left = x;
+				x->parent = y;
+            }
+
+			void rightRotate(node *x) {
+				node *y = x->left;
+
+				x->left = y->right;
+				if (y->right != this->leaf)
+					y->right->parent = x;
+				y->parent = x->parent;
+				if (x->parent == this->leaf)
+					this->root = y;
+				else if (x == x->parent->right)
+					x->parent->right = y;
+				else
+					x->parent->left = y;
+				y->right = x;
+				x->parent = y;
+            }
 
 			template <typename TMP>
 			void swap(TMP &one, TMP &two) {

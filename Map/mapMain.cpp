@@ -57,8 +57,10 @@ int main() {
 	printMethod("INSERT");
 
 
+	original.clear();
+	copy.clear();
 
-//	copy.clear();
+	sizeMaps(original, copy);
 
 //	std::cout << "Copy Size" << copy.size() << std::endl;
 	return (0);

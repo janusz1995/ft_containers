@@ -236,6 +236,11 @@ namespace ft {
 				return ;
 			}
 
+			iterator cur = begin();
+
+			while (cur != position) {
+				++cur;
+			}
 
 
         }
@@ -291,9 +296,9 @@ namespace ft {
 
         iterator find(const key_type& k) {
 
-            if (this->map_size == 0) {
-                return (this->leaf); 	// TODO: Return end()
-            }
+//            if (this->map_size == 0) {
+//                return (this->leaf); 	// TODO: Return end()
+//            }
 
             node *cur = this->root;
 
@@ -449,6 +454,116 @@ namespace ft {
 					x->parent->left = y;
 				y->right = x;
 				x->parent = y;
+            }
+
+			node *minimun(node *cur) {
+            	while (cur->left != this->leaf)
+            		cur = cur->left;
+				return cur;
+            }
+
+        	void deleteElem(node *z) {
+				node *y = z;
+				node *x;
+				bool y_original_color = y->isBlack;
+
+				if (z->left == this->leaf) {
+					x = z->right;
+					transplant(z, z->right);
+				} else if (z->right == this->leaf) {
+					x = z->left;
+					transplant(z, z->left);
+				}
+				else {
+					y = minimum(z->right);
+					y_original_color = y->isBlack;
+					x = y->right;
+					if (y->parent == z) {
+						x->parent = y;
+					} else {
+						transplant(y, y->right);
+						y->right = z->right;
+						y->right->parent = y;
+					}
+					transplant(z, y);
+					y->left = z->left;
+					y->left->parent = y;
+					y->isBlack = z->isBlack;
+				}
+
+				if (y_original_color == true)
+					 deleteFix(x);
+			}
+
+			void transplant(node *u, node *v) {
+				if (u->parent == this->leaf)
+					this->root = v;
+				else if (u == u->parent->left)
+					u->parent->left = v;
+				else
+					u->parent->right = v;
+
+				v->parent = u->parent;
+            }
+
+            void deleteFix(node *x) {
+				node *w;
+
+            	while (x != this->root && x->isBlack == true) {
+
+            		if (x == x->parent->left) {
+            			w = x->parent->right;
+            			if (w->isBlack == false) {
+							w->isBlack = true;
+							x->parent->isBlack = false;
+							leftRotate(x->parent);
+							w = x->parent->right;
+            			}
+            			if (w->left->isBlack == true && w->right->isBlack == true) {
+							w->isBlack = false;
+							x = x->parent;
+            			}
+            			else {
+							if (w->right->isBlack == true) {
+								w->left->isBlack = true;
+								rightRotate(w);
+								w->isBlack = false;
+							}
+							w->isBlack = x->parent->isBlack;
+							x->parent->isBlack = true;
+							w->right->isBlack = true;
+							leftRotate(x->parent);
+							x = this->root;
+            			}
+            		} else {
+
+						w = x->parent->left;
+						if (w->isBlack == false) {
+							w->isBlack = true;
+							w->parent->isBlack = false;
+							rightRotate(x->parent);
+							w = x->parent->left;
+						}
+						if (w->right->isBlack == true && w->left->isBlack == true) {
+							w->isBlack = false;
+							x = x->parent;
+						}
+						else {
+							if (w->left->isBlack == true) {
+								w->right->isBlack = true;
+								w->isBlack = false;
+								leftRotate(w);
+								w = x->parent->left;
+							}
+							w->isBlack = x->parent->isBlack;
+							x->parent->isBlack = true;
+							w->left->isBlack = true;
+							rightRotate(x->parent);
+							x = this->root;
+						}
+            		}
+            	}
+				x->isBlack = true;
             }
 
 			template <typename TMP>

@@ -27,6 +27,8 @@ namespace ft {
 	};
 
 	template <class T> class iteratorMap {
+        template <class A, class B, class C, class D>
+        friend class map;
         protected:
             typedef T value_type;
             typedef mapNode<T> node;
@@ -177,8 +179,10 @@ namespace ft {
             if (this->root == this->leaf) {
                 node *tmp = new node(val);
                 fillNode(tmp, this->leaf);
+                tmp->isBlack = false;
                 this->root = tmp;
                 this->map_size++;
+                insertFix(tmp);
 				findMinOrMax(false);
 				findMinOrMax(true);
                 return (std::pair<iterator,bool>(iterator(tmp), true));
@@ -215,8 +219,9 @@ namespace ft {
             }
 
             tmp->parent = current;
+            tmp->isBlack = false;
             this->map_size++;
-			// insertFix(tmp); // TODO CHECK WORKING
+			insertFix(tmp);  // TODO CHECK WORKING
 
             return (std::pair<iterator,bool>(iterator(tmp), true));
         }
@@ -242,7 +247,12 @@ namespace ft {
 				++cur;
 			}
 
-
+			node *node_delete = cur.pointer;
+            deleteElem(node_delete);
+			delete node_delete;
+			this->map_size--;
+            findMinOrMax(false);
+            findMinOrMax(true);
         }
 
         size_type erase(const key_type& k) {
@@ -456,7 +466,7 @@ namespace ft {
 				x->parent = y;
             }
 
-			node *minimun(node *cur) {
+			node *minimum(node *cur) {
             	while (cur->left != this->leaf)
             		cur = cur->left;
 				return cur;

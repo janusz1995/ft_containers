@@ -54,13 +54,24 @@ int main() {
 	sizeMaps(original, copy);
 	printMaps(original, copy);
 
+
+
+    printMethod("ERASE");
+
+    original.erase(original.begin());
+    copy.erase(copy.begin());
+    sizeMaps(original, copy);
+    printMaps(original, copy);
+
+
+
 	printMethod("INSERT");
 
-
-	original.clear();
-	copy.clear();
-
-	sizeMaps(original, copy);
+    printMaps(original, copy);
+//	original.clear();
+//	copy.clear();
+//
+//	sizeMaps(original, copy);
 
 //	std::cout << "Copy Size" << copy.size() << std::endl;
 	return (0);

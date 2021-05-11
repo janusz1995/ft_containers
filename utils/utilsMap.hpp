@@ -4,9 +4,6 @@
 #include "../Map/Map.hpp"
 #include <map>
 
-
-
-
 template<class Key, class Value>
 void printMaps(std::map<Key, Value> &original, ft::map<Key, Value> &my) {
 

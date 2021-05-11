@@ -24,6 +24,12 @@ namespace ft {
 		public:
 			mapNode(const value_type &vt = value_type()):isBlack(false), left(NULL), right(NULL), parent(NULL), data(vt) {}
 
+
+        // TODO - When will be working map, delete this getter
+            bool getIsBlack() {
+                return (this->isBlack);
+            }
+
 	};
 
 	template <class T> class iteratorMap {
@@ -37,6 +43,10 @@ namespace ft {
         public:
     //		template<typename myT, typename Alloc>
     //		friend class list;
+            // TODO - When will be working map, delete this getter
+            bool getColor() {
+                return (this->pointer->getIsBlack());
+            }
 
             iteratorMap(node *pointer = NULL, node *leaf = NULL): pointer(pointer), leaf(leaf) {}
 
@@ -185,13 +195,13 @@ namespace ft {
                 insertFix(tmp);
 				findMinOrMax(false);
 				findMinOrMax(true);
-                return (std::pair<iterator,bool>(iterator(tmp), true));
+                return (std::pair<iterator,bool>(iterator(tmp, this->leaf), true));
             }
 
             node *current = this->root;
             while (current != this->leaf) {
                 if (current->data.first == val.first) {
-                	  return (std::pair<iterator,bool>(iterator(current), false));
+                	  return (std::pair<iterator,bool>(iterator(current, this->leaf), false));
                 }
 
                 if (this->comp(val.first, current->data.first)) {
@@ -221,9 +231,9 @@ namespace ft {
             tmp->parent = current;
             tmp->isBlack = false;
             this->map_size++;
-			insertFix(tmp);  // TODO CHECK WORKING
+			insertFix(tmp);
 
-            return (std::pair<iterator,bool>(iterator(tmp), true));
+            return (std::pair<iterator,bool>(iterator(tmp, this->leaf), true));
         }
 
 //        iterator insert(iterator position, const value_type& val) {
@@ -235,6 +245,20 @@ namespace ft {
 //
 //        }
 
+        size_type erase(const key_type& k) {
+
+            size_type count = 0;
+
+            iterator *it = this->find(k);
+
+            while (it != this->end()) {
+                erase(it);
+                count++;
+                it = this->find(k);
+            }
+
+            return (count);
+        }
 
         void erase(iterator position) {
 			if (this->map_size == 0) {
@@ -255,12 +279,22 @@ namespace ft {
             findMinOrMax(true);
         }
 
-        size_type erase(const key_type& k) {
-
-        }
-
         void erase(iterator first, iterator last) {
+            iterator it = this->begin();
 
+            while (it != first) {
+                it++;
+            }
+
+            iterator nextIt = it;
+            if (it == this->end())
+                return ;
+
+            while (it != last) {
+                ++nextIt;
+                this->erase(it);
+                it = nextIt;
+            }
         }
 
         void swap(map& x) {
@@ -290,10 +324,12 @@ namespace ft {
 			this->map_size--;
         }
 
+        // TODO - delete this getter when working map
 		iterator getMax() {
 			return (iterator(this->leaf->right));
         }
 
+        // TODO - delete this getter when working map
 		iterator getMin() {
 			return (iterator(this->leaf->left));
 		}
@@ -306,25 +342,17 @@ namespace ft {
 
         iterator find(const key_type& k) {
 
-//            if (this->map_size == 0) {
-//                return (this->leaf); 	// TODO: Return end()
-//            }
-
             node *cur = this->root;
 
             while (cur != this->leaf && cur->data.first != k) {
                 if (this->comp(cur->data.first, k)) {
-                    cur = cur->left;
-                } else {
                     cur = cur->right;
+                } else {
+                    cur = cur->left;
                 }
             }
 
-            if (cur == this->leaf) {
-                return (this->leaf); // TODO - end
-            }
-
-            return (iterator(cur)); // TODO: Return iterator
+            return (iterator(cur, this->leaf));
         }
 
     //	const_iterator find(const key_type& k) const {}
@@ -501,7 +529,7 @@ namespace ft {
 					y->isBlack = z->isBlack;
 				}
 
-				if (y_original_color == true)
+				if (y_original_color)
 					 deleteFix(x);
 			}
 

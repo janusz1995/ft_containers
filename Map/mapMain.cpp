@@ -158,14 +158,50 @@ int main() {
 
 
 
-    printMethod("TEST TEST TEST TEST TEST TEST TEST ");
-    original.insert(original.begin(), std::make_pair(10, 10 + 97));
+    printMethod("LOWER BOUND");
+//    original.insert(++original.begin(), std::make_pair(10, 10 + 97));
 
+	it1 = original.lower_bound(5);
+	myIt1 = copy.lower_bound(5);
 
+	std::cout << " | " << GREEN << it1->first << NC << " : " << GREEN << it1->second << NC << "\n";
+	std::cout << " | " << GREEN << myIt1->first << NC << " : " << GREEN << myIt1->second << NC << "\n";
     sizeMaps(original, copy);
     printMaps(original, copy);
 
 
+
+	printMethod("UPPER BOUND");
+
+	it1 = original.upper_bound(2);
+	myIt1 = copy.upper_bound(2);
+
+	std::cout << " | " << GREEN << it1->first << NC << " : " << GREEN << it1->second << NC << "\n";
+	std::cout << " | " << GREEN << myIt1->first << NC << " : " << GREEN << myIt1->second << NC << "\n";
+	sizeMaps(original, copy);
+	printMaps(original, copy);
+
+
+
+	printMethod("EQUAL RANGE");
+
+	std::pair<std::map<int, char>::iterator,std::map<int, char>::iterator> pair = original.equal_range(3);
+	std::pair<ft::map<int, char>::iterator, ft::map<int, char>::iterator> myPair = copy.equal_range(3);
+
+	std::cout << "Original lower bound points to: ";
+	std::cout << pair.first->first << " => " << pair.first->second << '\n';
+
+	std::cout << "Original upper bound points to: ";
+	std::cout << pair.second->first << " => " << pair.second->second << '\n';
+
+
+	std::cout << "My lower bound points to: ";
+	std::cout << myPair.first->first << " => " << myPair.first->second << '\n';
+
+	std::cout << "My upper bound points to: ";
+	std::cout << myPair.second->first << " => " << myPair.second->second << '\n';
+
+	printMethod("TEST TEST TEST TEST TEST TEST TEST");
 //    printMethod("CLEAR");
 //	original.clear();
 //	copy.clear();

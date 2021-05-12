@@ -205,14 +205,12 @@ namespace ft {
                 }
 
                 if (this->comp(val.first, current->data.first)) {
-					if (current->left == this->leaf) {
+					if (current->left == this->leaf)
 						break;
-					}
                     current = current->left;
                 } else {
-                	if (current->right == this->leaf) {
+                	if (current->right == this->leaf)
 						break;
-                	}
                     current = current->right;
                 }
             }
@@ -236,14 +234,22 @@ namespace ft {
             return (std::pair<iterator,bool>(iterator(tmp, this->leaf), true));
         }
 
-//        iterator insert(iterator position, const value_type& val) {
-//
-//        }
+        iterator insert(iterator position, const value_type& val) {
+        	static_cast<void>(position);
+			insert(val);
+        }
 
-//        template <class InputIterator>
-//        void insert(InputIterator first, InputIterator last) {
-//
-//        }
+        template <class InputIterator>
+        void insert(InputIterator first, InputIterator last,
+				typename std::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
+
+			iterator it = first;
+
+			while (it != last) {
+				insert(it.pointer->data);
+				++it;
+			}
+        }
 
         size_type erase(const key_type& k) {
 
@@ -282,7 +288,9 @@ namespace ft {
         void erase(iterator first, iterator last) {
             iterator it = this->begin();
 
-            while (it != first) {
+            while (it != this->end()) { // TODO - it != end()
+            	if (it == first)
+					break;
                 it++;
             }
 
@@ -361,16 +369,46 @@ namespace ft {
             return 0;
         }
 
-    //	iterator lower_bound(const key_type& k) {}
+    	iterator lower_bound(const key_type& k) {
+        	iterator it = this->begin();
+
+        	while (it != this->end()) {
+        		if (!comp(it.pointer->data.first, k))
+					break;
+        		++it;
+        	}
+        	return (it);
+        }
+
     //	const_iterator lower_bound(const key_type& k) const {}
 
-    //	iterator upper_bound(const key_type& k) {}
+    	iterator upper_bound(const key_type& k) {
+			iterator it = this->begin();
+
+			while (it != this->end()) {
+				if (!comp(it.pointer->data.first, k))
+					break;
+				++it;
+			}
+			return (++it);
+        }
+
     //	const_iterator upper_bound(const key_type& k) const {}
 
 
     //	pair<const_iterator,const_iterator> equal_range(const key_type& k) const {}
-    //	pair<iterator,iterator> equal_range(const key_type& k) {}
 
+    	std::pair<iterator,iterator> equal_range(const key_type& k) {
+
+        	iterator lower = lower_bound(k);
+        	iterator upper = upper_bound(k);
+
+        	return (std::pair<iterator, iterator>(lower, upper));
+        }
+
+//		mapped_type& operator[] (const key_type& k) {
+//
+//        }
 
         private:
             size_type map_size;

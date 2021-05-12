@@ -22,14 +22,14 @@ void printMaps(std::map<Key, Value> &original, ft::map<Key, Value> &my) {
 
 template<class Key, class Value>
 void emptyMaps(std::map<Key, Value> &original, ft::map<Key, Value> &copy) {
-	isEmpty("Original Vector is Empty: ", original.empty(), ORIGINAL);
-	isEmpty("My Vector is Empty:       ", copy.empty(), MYCOLOR);
+	isEmpty("Original Map is Empty: ", original.empty(), ORIGINAL);
+	isEmpty("My Map is Empty:       ", copy.empty(), MYCOLOR);
 }
 
 template<class Key, class Value>
 void sizeMaps(std::map<Key, Value> &original, ft::map<Key, Value> &copy) {
-	printSize("Original Vector Size: ", original.size(), ORIGINAL);
-	printSize("My Vector Size:       ", copy.size(), MYCOLOR);
+	printSize("Original Map Size: ", original.size(), ORIGINAL);
+	printSize("My Map Size:       ", copy.size(), MYCOLOR);
 }
 
 #endif

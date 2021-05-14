@@ -121,6 +121,7 @@ namespace ft {
             typedef Alloc allocator_type;
             typedef size_t size_type;
             typedef Compare key_compare;
+//          typedef value_compare
             typedef std::pair<const key_type, mapped_type> value_type;
             typedef mapNode<value_type> node;
             typedef iteratorMap<value_type> iterator;
@@ -137,23 +138,50 @@ namespace ft {
 			this->root = this->leaf;
         }
 
-    //	template <class InputIterator>
-    //	map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {
-    //
-    //	}
+    	template <class InputIterator>
+    	map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(),
+            typename std::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
+            map_size = 0;
+            leaf = new node();
+            fillNode(leaf, NULL);
+            this->leaf->isBlack = true;
+            this->root = this->leaf;
+
+            insert(first, last);
+    	}
 
         map(const map& x) {
+            map_size = 0;
+            leaf = new node();
+            fillNode(leaf, NULL);
+            this->leaf->isBlack = true;
+            this->root = this->leaf;
 
+            insert(x.begin(), x.end());
         }
 
         map& operator=(const map& x) {
+            clear();
 
+            insert(x.begin(), x.end());
+        }
+
+
+        mapped_type& operator[](const key_type& k) {
+
+            iterator it = find(k);
+            if (it != end()) {
+                return (it.pointer->data.second);
+            }
+            else {
+                it = insert(begin(), std::make_pair(k, NULL));
+                return (it.pointer->data.second);
+            }
         }
 
         ~map() {
             this->clear();
             delete leaf;
-            //  TODO - delete root, leaf
         }
 
         iterator begin() {
@@ -164,6 +192,7 @@ namespace ft {
         iterator end() {
 			return (iterator(this->leaf));
         }
+
     //	const_iterator end() const {}
 
     //	reverse_iterator rbegin() {}
@@ -193,8 +222,7 @@ namespace ft {
                 this->root = tmp;
                 this->map_size++;
                 insertFix(tmp);
-				findMinOrMax(false);
-				findMinOrMax(true);
+                findBeginAndEnd();
                 return (std::pair<iterator,bool>(iterator(tmp, this->leaf), true));
             }
 
@@ -236,7 +264,8 @@ namespace ft {
 
         iterator insert(iterator position, const value_type& val) {
         	static_cast<void>(position);
-			insert(val);
+        	std::pair<iterator,bool> it = insert(val);
+        	return (it.first);
         }
 
         template <class InputIterator>
@@ -255,7 +284,7 @@ namespace ft {
 
             size_type count = 0;
 
-            iterator *it = this->find(k);
+            iterator it = this->find(k);
 
             while (it != this->end()) {
                 erase(it);
@@ -281,14 +310,13 @@ namespace ft {
             deleteElem(node_delete);
 			delete node_delete;
 			this->map_size--;
-            findMinOrMax(false);
-            findMinOrMax(true);
+			findBeginAndEnd();
         }
 
         void erase(iterator first, iterator last) {
             iterator it = this->begin();
 
-            while (it != this->end()) { // TODO - it != end()
+            while (it != this->end()) {
             	if (it == first)
 					break;
                 it++;
@@ -314,7 +342,7 @@ namespace ft {
         void clear() {
         	node *cur_delete;
 
-        	if (this->map_size == 0) {
+        	if (this->map_size == 0) { // Maybe delete this check
 				return ;
         	}
 
@@ -330,6 +358,7 @@ namespace ft {
 			delete this->root;
 			this->root = this->leaf;
 			this->map_size--;
+			findBeginAndEnd();
         }
 
         // TODO - delete this getter when working map
@@ -366,7 +395,17 @@ namespace ft {
     //	const_iterator find(const key_type& k) const {}
 
         size_type count(const key_type& k) const {
-            return 0;
+
+            node *cur = this->root;
+
+            while (cur != this->leaf && cur->data.first != k) {
+                if (this->comp(cur->data.first, k)) {
+                    cur = cur->right;
+                } else {
+                    cur = cur->left;
+                }
+            }
+            return (cur == this->leaf ? 0 : 1);
         }
 
     	iterator lower_bound(const key_type& k) {
@@ -425,6 +464,8 @@ namespace ft {
 			void findMinOrMax(bool isMin) {
 
 				if (this->map_size == 0) {
+				    this->leaf->left = this->root;
+				    this->leaf->right = this->root;
 					return;
 				}
 
@@ -640,6 +681,11 @@ namespace ft {
             		}
             	}
 				x->isBlack = true;
+            }
+
+            void findBeginAndEnd() {
+                findMinOrMax(false);
+                findMinOrMax(true);
             }
 
 			template <typename TMP>

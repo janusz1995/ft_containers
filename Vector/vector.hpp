@@ -210,20 +210,21 @@ namespace ft {
         typedef iteratorConstReverseVector<T> const_reverse_iterator;
 
 
-		explicit vector(const allocator_type& alloc = allocator_type()): data(NULL), alloc(alloc), vector_size(0), vector_capacity() {}
+		explicit vector(const allocator_type& alloc = allocator_type()): data(NULL), vector_capacity(0), alloc(alloc), vector_size(0) {}
 
 		explicit vector(size_type n, const value_type& val = value_type(), const allocator_type &alloc = allocator_type()) {
 			this->vector_capacity = n;
             vector_size = n;
+            this->alloc = alloc;
 			data = this->alloc.allocate(n);
-			for (int i = 0; i < n; ++i) {
+			for (size_type i = 0; i < n; ++i) {
 				this->alloc.construct(data + i, val);
 			}
 		}
 
 		template <class InputIterator>
 		vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
-               typename std::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0):data(NULL), alloc(alloc), vector_size(0), vector_capacity(0) {
+               typename std::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0):data(NULL),vector_capacity(0), alloc(alloc), vector_size(0) {
             assign(first, last);
 		}
 
@@ -250,7 +251,7 @@ namespace ft {
             if (this->vector_capacity < len) {
                 getAllocate(len);
             }
-            for (int i = 0; i < len; ++i) {
+            for (size_type i = 0; i < len; ++i) {
                 this->alloc.construct(this->data + i, *first);
                 first++;
             }
@@ -262,7 +263,7 @@ namespace ft {
             if (this->vector_capacity < n) {
                 getAllocate(n);
             }
-            for (int i = 0; i < n; ++i) {
+            for (size_type i = 0; i < n; ++i) {
                 this->alloc.construct(this->data + i, val);
             }
             this->vector_size = n;
@@ -503,10 +504,10 @@ namespace ft {
 		    if (this->vector_capacity >= n)
                 return ;
 		    value_type *newData = this->alloc.allocate(n);
-            for (int i = 0; i < this->vector_size; ++i) {
+            for (size_type i = 0; i < this->vector_size; ++i) {
                 this->alloc.construct(newData + i, this->data[i]);
             }
-            for (int i = 0; i < this->vector_size; ++i) {
+            for (size_type i = 0; i < this->vector_size; ++i) {
                 this->alloc.destroy(this->data + i);
             }
             if (this->vector_capacity != 0) {
@@ -517,7 +518,7 @@ namespace ft {
 		}
 
         void clear() {
-            for (int i = 0; i < this->vector_size; ++i) {
+            for (size_type i = 0; i < this->vector_size; ++i) {
                 this->alloc.destroy(this->data + i);
             }
             this->vector_size = 0;
@@ -567,7 +568,7 @@ namespace ft {
             return (false);
         }
 
-        for (int i = 0; i < lhs.size(); ++i) {
+        for (size_t i = 0; i < lhs.size(); ++i) {
             if (lhs[i] != rhs[i]) {
                 return (false);
             }

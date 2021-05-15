@@ -86,13 +86,13 @@ template<typename T>
 void printVectorsAt(std::vector<T> &original, ft::vector<T> &my) {
 
     std::cout << BLUE << "Original Vector " << NC << " --->>> ";
-    for (int i = 0;  i < original.size(); i++) {
+    for (size_t i = 0;  i < original.size(); i++) {
         std::cout << " | " << GREEN << original.at(i) << NC;
     }
     std::cout << " |\n";
 
     std::cout << YELLOW << "My Vector " << NC << " --------->>> ";
-    for (int i = 0;  i < my.size(); i++) {
+    for (size_t i = 0;  i < my.size(); i++) {
         std::cout << " | " << GREEN << my.at(i) << NC;
     }
     std::cout << " |\n";

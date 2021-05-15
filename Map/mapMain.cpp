@@ -34,54 +34,7 @@ int main() {
     emptyMaps(original, copy);
     sizeMaps(original1, copy1);
     printMaps(original1, copy1);
-//    original.insert(std::make_pair(2, "sstring"));
-//    copy.insert(std::make_pair(2, "sstring"));
-//
-//    original.insert(std::make_pair(3, "ssstring"));
-//    copy.insert(std::make_pair(3, "ssstring"));
-//
-//    original.insert(std::make_pair(0, "tring"));
-//    copy.insert(std::make_pair(0, "tring"));
 
-
-//    std::map<int, std::string> original;
-//    ft::map<int, std::string> copy;
-//
-//    original.insert(std::make_pair(1, "string"));
-//    copy.insert(std::make_pair(1, "string"));
-//
-//
-//    original.insert(std::make_pair(2, "sstring"));
-//    copy.insert(std::make_pair(2, "sstring"));
-//
-//	original.insert(std::make_pair(3, "ssstring"));
-//	copy.insert(std::make_pair(3, "ssstring"));
-//
-//	original.insert(std::make_pair(0, "tring"));
-//	copy.insert(std::make_pair(0, "tring"));
-
-//    std::cout << "Original size = " << original.size() << "; Copy size = " << copy.size() << std::endl;
-
-//    std::map<int, char>::iterator min = original.begin();
-//    std::map<int, char>::iterator max = --original.end();
-//	std::map<int, std::string>::iterator min = original.begin();
-//	std::map<int, std::string>::iterator max = --original.end();
-
-//	std::cout << "Min first = " << min->first << "; Min second = " << min->second << std::endl;
-//	std::cout << "Max first = " << max->first << "; Max second = " << max->second << std::endl;
-
-//    ft::map<int, char>::iterator myMin = copy.getMin();
-//    ft::map<int, char>::iterator myMax = copy.getMax();
-//	ft::map<int, std::string>::iterator myMin = copy.getMin();
-//	ft::map<int, std::string>::iterator myMax = copy.getMax();
-
-//	std::cout << " My Min first = " << myMin->first << "; My Min second = " << myMin->second << std::endl;
-//	std::cout << "My Max first = " << myMax->first << "; My Max second = " << myMax->second << std::endl;
-
-//	myMin = copy.begin();
-//	++myMin;
-
-//	std::cout << myMin->first << std::endl;
 
 
 	printMethod("EMPTY");
@@ -91,12 +44,18 @@ int main() {
 
 
 
+    printMethod("MAX SIZE");
+
+    std::cout << BLUE << "Original Map " << NC << " --->>> " << LIGHT_PURPLE << original.max_size() << "\n" << NC;
+    std::cout << YELLOW << "My Map " << NC << " --------->>> " << LIGHT_PURPLE << copy.max_size() << "\n" << NC;
+
+
+
 	printMethod("SIZE");
 
     emptyMaps(original, copy);
 	sizeMaps(original, copy);
 	printMaps(original, copy);
-//    printMapAndColor(copy);
 
 
 
@@ -121,7 +80,6 @@ int main() {
     emptyMaps(original, copy);
     sizeMaps(original, copy);
     printMaps(original, copy);
-//    printMapAndColor(copy);
 
 
 
@@ -140,8 +98,6 @@ int main() {
 
     std::map<int, char>::iterator it2 = original.find(7);
     ft::map<int, char>::iterator myIt2 = copy.find(7);
-//    std::map<int, std::string>::iterator it = original.find(2);
-//    ft::map<int, std::string>::iterator myIt = copy.find(2);
 
     std::cout << BLUE << "Original Map " << NC << " --->>> ";
     while (it != original.end()) {
@@ -182,12 +138,10 @@ int main() {
     emptyMaps(original, copy);
     sizeMaps(original, copy);
     printMaps(original, copy);
-//    original.insert(it1, 10);
 
 
 
     printMethod("LOWER BOUND");
-//    original.insert(++original.begin(), std::make_pair(10, 10 + 97));
 
 	it1 = original.lower_bound(5);
 	myIt1 = copy.lower_bound(5);
@@ -242,6 +196,74 @@ int main() {
 
     std::cout << BLUE <<  "Original count (Key = 1): " << GREEN << original[1] << NC << "\n";
     std::cout << YELLOW << "My count (Key = 1):       " << GREEN << copy[1] << NC << "\n";
+
+
+
+    printMethod("REVERSE ITERATOR");
+
+    emptyMaps(original, copy);
+    sizeMaps(original, copy);
+    reversePrintMaps(original, copy);
+
+
+
+    printMethod("CONST REVERSE ITERATOR");
+
+    emptyMaps(original, copy);
+    sizeMaps(original, copy);
+    constPrintMaps(original, copy);
+
+
+
+    printMethod("CONST ITERATOR");
+
+    emptyMaps(original, copy);
+    sizeMaps(original, copy);
+    constReversePrintMaps(original, copy);
+
+
+
+    printMethod("RELATIONAL OPERATORS");
+
+    ft::map<int, char> copy2(copy);
+
+    std::cout << RED << "*****" << CYAN << " Operator == " << RED << "*****\n";
+    if (copy == copy2)
+        std::cout << PURPLE << "Maps EQUALS\n";
+
+
+    std::cout << RED << "*****" << CYAN << " Operator <= " << RED << "*****\n";
+    if (copy2 <= copy)
+        std::cout << PURPLE << "Map 1 more or EQUAL Map 2\n";
+
+    std::cout << RED << "*****" << CYAN << " Operator >= " << RED << "*****\n";
+    if (copy2 >= copy)
+        std::cout << PURPLE << "Map 2 more or EQUAL Map 1\n";
+
+    copy2.erase(1);
+
+    std::cout << RED << "*****" << CYAN << " Operator != " << RED << "*****\n";
+    if (copy2 != copy)
+        std::cout << PURPLE << "Map NOT EQUALS\n";
+
+    std::cout << RED << "*****" << CYAN << " Operator < " << RED << "*****\n";
+    if (copy2 < copy)
+        std::cout << PURPLE << "Map 1 more than Map 2\n";
+
+    copy.erase(1);
+    copy.erase(2);
+
+    std::cout << RED << "*****" << CYAN << " Operator > " << RED << "*****\n";
+    if (copy2 > copy)
+        std::cout << PURPLE << "Map 2 more than Map 1\n";
+
+
+
+    printMethod("SWAP");
+
+    printTwoMaps(copy, copy2);
+    copy.swap(copy2);
+    printTwoMaps(copy, copy2);
 
 
 

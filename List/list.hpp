@@ -152,9 +152,7 @@ namespace ft {
 		constReverseIteratorList(listNode<T> *pointer) {
 			this->pointer = pointer;
 		}
-		constReverseIteratorList(reverseIteratorList<T> const &itConst): reverseIteratorList<T>(itConst) {
-//			this->pointer = itConst.pointer;
-		}
+		constReverseIteratorList(reverseIteratorList<T> const &itConst): reverseIteratorList<T>(itConst) {}
 		~constReverseIteratorList() {}
 
 		const T& operator*() {
@@ -183,9 +181,9 @@ namespace ft {
 		typedef reverseIteratorList<T> reverse_iterator;
 		typedef constReverseIteratorList<T> const_reverse_iterator;
 		typedef size_t size_type;
-//		typedef ptrdiff_t difference_type;
 
 		explicit list(const allocator_type& alloc = allocator_type()) {
+			this->alloc = alloc;
 			list_size = 0;
 			head = new node();
 			last = new node();
@@ -195,12 +193,13 @@ namespace ft {
 
 
 		explicit list(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) {
+			this->alloc = alloc;
 			head = new node();
 			last = new node();
 			last->prev = head;
 			head->next = last;
 			list_size = 0;
-			for (int i = 0; i < n; ++i) {
+			for (size_type i = 0; i < n; ++i) {
 				push_back(val);
 			}
 		}
@@ -217,6 +216,7 @@ namespace ft {
 		template <class InputIterator>
 		list(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
 				typename std::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
+			this->alloc = alloc;
 			list_size = 0;
 			head = new node();
 			this->last = new node();
@@ -302,7 +302,7 @@ namespace ft {
 		}
 
 		void insert(iterator position, size_type n, const value_type& val) {
-			for (int i = 0; i < n; ++i) {
+			for (size_type i = 0; i < n; ++i) {
 			 	position = ++insert(position, val);
 			}
 		}
@@ -437,12 +437,12 @@ namespace ft {
 		void resize(size_type n, value_type val = value_type()) {
 			iterator it = this->begin();
 			if (n < this->list_size) {
-				for (int i = 0; i < n; ++i) {
+				for (size_type i = 0; i < n; ++i) {
 					it++;
 				}
 				erase(it, last);
 			} else if (n > this->list_size) {
-				for (int i = this->list_size; i < n; ++i) {
+				for (size_type i = this->list_size; i < n; ++i) {
 					push_back(val);
 				}
 			}
@@ -464,126 +464,27 @@ namespace ft {
 			}
 		}
 
-
-//		node* partition(node *left, node *right) {
-//			node *i = left->prev;
-//
-//			node *start_left = left;
-//			while (start_left != right) {
-//				if (start_left->data <= right->data) {
-//					i = (i == this->last) ? left : i->next;
-////					node *tmp = start_left->next;
-////					swapNode(i, start_left);
-////					start_left = tmp->prev;
-////					swap(i, start_left);
-////					start_left = i;
-//					swap(i->data, start_left->data);
-////					start_left = i;
-//				}
-//				start_left = start_left->next;
-//			}
-//			i = (i == this->last) ? left : i->next;
-//
-//			swap(i->data, right->data);
-////			node *tmp1 = i->next;
-////			swapNode(i, right);
-////			i = tmp1->prev;
-////			swap(i, right);
-////			i = right;
-//			return i;
-//		}
-//
-//		void quickSort(node *left, node *right) {
-////			std::cout << "Sort doing :)\n";
-//			if (right != this->last && left != right && left != right->next) {
-//				node *p = partition(left, right);
-//				quickSort(left, p->prev);
-//				quickSort(p->next, right);
-//			}
-//		}
-//
-////		template <class B>
-//		void sort() {
-//			node *p1 = partition(head->next, this->last->prev);
-//
-//			node *p2 = partition(head->next, this->last->prev);
-//
-////			for (node *it = this->head->next; it != this->last; it = it->next) {
-////				std::cout << it->data << " ";
-////			}
-//
-////			std::cout << "\n p1 = " << p1->data << "; p2 = " << p2->data << std::endl;
-//			quickSort(p2->next, this->last->prev);
-//			quickSort(p1->next, p2->prev);
-//			quickSort(this->head->next, p1->prev);
-////			quickSort(this->head->next, this->last->prev);
-//
-//		}
-
-		node* partition(node *left, node *right) {
-			node *i = left->prev;
-
-			node *start_left = left;
-			while (start_left != right) {
-				if (start_left->data <= right->data) {
-					i = (i == this->last) ? left : i->next;
-//					iterator a = begin();
-//					a.pointer.
-					node *tmp = start_left->next;
-					swapNode(i, start_left);
-					start_left = tmp->prev;
-
-//					swap(i->data, start_left->data);
-				}
-				start_left = start_left->next;
-			}
-			i = (i == this->last) ? left : i->next;
-			node *tmp = i->next;
-			swapNode(i, right);
-			i = tmp->prev;
-//			swap(i->data, right->data);
-			return i;
-		}
-
-		void quickSort(node *left, node *right) {
-//			std::cout << "Sort doing :)\n";
-			if (right != NULL && left != right && left != right->next)
-			{
-//				node *p1 = partition(left, );
-				// PARTITION(left, p1.prev)и PARTITION(p2.next, right
-//				int p = partition(A, l, h); /* Partitioning index */
-//				quickSort(A, l, p - 1);
-//				quickSort(A, p + 1, h);
-//				node *p1 = ;
-				node *p = partition(left, right);
-				quickSort(left, p->prev);
-				quickSort(p->next, right);
-//				node *p = partition(left, right);
-//				quickSort(left, p->prev);
-//				quickSort(p->next, right);
-			}
-		}
-
-//		template <class B>
 		void sort() {
-
 
 			node *p1 = partition(head->next, this->last->prev);
 
 			node *p2 = partition(head->next, this->last->prev);
 
-//			std::cout << " p1 = " << p1->data << "; p2 = " << p2->data << std::endl;
 			quickSort(p2->next, this->last->prev);
 			quickSort(p1->next, p2->prev);
 			quickSort(this->head->next, p1->prev);
-//			quickSort(left, right);
-
-//			quickSort(head->next, last->prev);
 		}
 
 		template <class Compare>
 		void sort(Compare comp) {
 
+			node *p1 = partition(head->next, this->last->prev, comp);
+
+			node *p2 = partition(head->next, this->last->prev, comp);
+
+			quickSort(p2->next, this->last->prev, comp);
+			quickSort(p1->next, p2->prev,comp);
+			quickSort(this->head->next, p1->prev, comp);
 		}
 
 		void splice(iterator position, list& x) {
@@ -648,8 +549,6 @@ namespace ft {
 
 			iterator first = begin();
 			iterator nextFirst = ++begin();
-//			node *first = head->next;
-//			node *nextFirst = first->next;
 			while (nextFirst != last) {
 				if (binary_pred(*first, *nextFirst)) {
 					nextFirst = erase(nextFirst);
@@ -659,8 +558,6 @@ namespace ft {
 				}
 			}
 		}
-
-		// |a|b|c|d|e|f|f|
 
 		size_type max_size() const {
 			return (std::numeric_limits<size_type>::max() / sizeof(node));
@@ -678,6 +575,7 @@ namespace ft {
 		listNode<T> *head;
 		listNode<T> *last;
 		size_type list_size;
+		allocator_type alloc;
 
 		struct equals {
 			equals(T val):tmp(val) {}
@@ -686,25 +584,58 @@ namespace ft {
 			T tmp;
 		};
 
-		void swapNode(node *first, node *second) {
+		template <class Compare>
+		node* partition(node *left, node *right, Compare comp) {
+			node *i = left->prev;
 
-			node *saveFirstNext = first->next;
-			node *saveFirstPrev = first->prev;
+			node *start_left = left;
+			while (start_left != right) {
+				if (comp(start_left->data, right->data)) {
+					i = (i == this->last) ? left : i->next;
+					swap(i->data, start_left->data);
+				}
+				start_left = start_left->next;
+			}
+			i = (i == this->last) ? left : i->next;
 
-			first->next = second->next;
-			second->next->prev = first;
-			first->prev = second->prev;
-			second->prev->next = first;
+			swap(i->data, right->data);
+			return i;
+		}
 
-			second->next = saveFirstNext;
-			saveFirstNext->prev = second;
-			second->prev = saveFirstPrev;
-			saveFirstPrev->next = second;
-//			swap(first->data, second->data);
-//			swap(first->next->prev, second->next->prev);
-//			swap(first->prev->next, second->prev->next);
-//			swap(first->next, second->next);
-//			swap(first->prev, second->prev);
+		node* partition(node *left, node *right) {
+			node *i = left->prev;
+
+			node *start_left = left;
+			while (start_left != right) {
+				if (start_left->data <= right->data) {
+					i = (i == this->last) ? left : i->next;
+					swap(i->data, start_left->data);
+				}
+				start_left = start_left->next;
+			}
+			i = (i == this->last) ? left : i->next;
+
+			swap(i->data, right->data);
+			return i;
+		}
+
+		void quickSort(node *left, node *right) {
+			if (right != NULL && left != right && left != right->next)
+			{
+				node *p = partition(left, right);
+				quickSort(left, p->prev);
+				quickSort(p->next, right);
+			}
+		}
+
+		template <class Compare>
+		void quickSort(node *left, node *right, Compare comp) {
+			if (right != NULL && left != right && left != right->next)
+			{
+				node *p = partition(left, right, comp);
+				quickSort(left, p->prev, comp);
+				quickSort(p->next, right, comp);
+			}
 		}
 
 		template <typename TMP>
@@ -726,56 +657,6 @@ namespace ft {
 			itPos->prev = itSecond;
 
 		}
-
-
-		bool are_they_neighbours(node* A,node* B) {
-			return ((A->next == B && B->prev == A) || (A->prev == B && B->next == A));
-		}
-
-		void refresh_outer_pointers(node* A) {
-			A->prev->next = A;
-			A->next->prev = A;
-		}
-
-		void swap_node(node* A, node* B) {
-			node* swapper[4];
-			node* tmp;
-
-			if (A == B) {
-				return ;
-			}
-			if (B->next == A) {
-				tmp = A;
-				A = B;
-				B = tmp;
-			}
-			swapper[0] = A->prev;
-			swapper[1] = B->prev;
-			swapper[2] = A->next;
-			swapper[3] = B->next;
-			if (are_they_neighbours(A,B)) {
-				A->prev = swapper[2];
-				B->prev = swapper[0];
-				A->next = swapper[3];
-				B->next = swapper[1];
-			} else {
-				A->prev = swapper[1];
-				B->prev = swapper[0];
-				A->next = swapper[3];
-				B->next = swapper[2];
-			}
-			refresh_outer_pointers(A);
-			refresh_outer_pointers(B);
-		}
-//		void insert(iterator position, iterator second) {
-//			node *itFirst = position.pointer;
-//			node *itSecond = second.pointer;
-//
-//			itSecond->prev = itFirst->prev;
-//			itSecond->next = itFirst;
-//			itFirst->prev->next = itSecond;
-//			itFirst->prev = itSecond;
-//		}
 	};
 
 	template <class T, class Alloc>
@@ -840,8 +721,6 @@ namespace ft {
 	void swap(list<T,Alloc>& x, list<T,Alloc>& y) {
 		x.swap(y);
 	}
-
 }
-
 
 #endif

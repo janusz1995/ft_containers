@@ -299,9 +299,9 @@ int main() {
 
 
 //	list2.resize(5); // TODO    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//	list2.sort();
+	list2.sort();
 //	mylist2.resize(5);
-//	mylist2.sort();
+	mylist2.sort();
 //	std::cout << *it1 << " " << *myIt1 << std::endl;
 
 	sizeLists(list2, mylist2);
